@@ -51,8 +51,10 @@ public class PieChartWindow extends JFrame
     int piesNum;
     GridBagConstraints c;
 
-    // TODO: create JPanel for the current mixed fraction
+    // create JPanel for the current mixed fraction
+    JPanel mfp = new MixedFractionPanel(mf);
 
+    // add pies
     pies = new JPanel(new GridLayout(0, 5));
     piesNum = 0;
     if (mf.getWhole() > 49)
@@ -87,10 +89,13 @@ public class PieChartWindow extends JFrame
     c = new GridBagConstraints();
 
     c.weightx = 1;
-    getContentPane().add(heading);
+    getContentPane().add(heading, c);
+
+    c.gridy = 1;
+    getContentPane().add(mfp, c);
 
     // consume remaining vertical space with the pie grid
-    c.gridy = 1;
+    c.gridy = 2;
     c.weighty = 1;
     c.fill = GridBagConstraints.BOTH;
     getContentPane().add(pies, c);
