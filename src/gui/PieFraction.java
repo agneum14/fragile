@@ -38,9 +38,15 @@ public class PieFraction extends Pie
   protected void paintComponent(final Graphics g)
   {
     super.paintComponent(g);
-
-    g.setColor(RED);
     final int angle = 360 * num / denom * -1; // multiply by -1 to fill clockwise
+                                              //
+    g.setColor(Color.BLACK);
     g.fillArc(0, 0, getWidth() - MARGIN, getHeight() - MARGIN, 0, angle);
+
+    g.setColor(Color.RED);
+    int pos = STROKE / 2;
+    int width = getWidth() - MARGIN - STROKE;
+    int height = getHeight() - MARGIN - STROKE;
+    g.fillArc(pos, pos, width, height, 0, angle);
   }
 }
