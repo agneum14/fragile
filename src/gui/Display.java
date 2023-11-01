@@ -1,7 +1,8 @@
 package gui;
 
 
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public class Display extends JPanel
 {
@@ -9,7 +10,11 @@ public class Display extends JPanel
 
   public Display()
   {
-    
+    Dimension min = new Dimension(300, 50);
+    this.setBackground(new Color(20, 20, 20, 20));
+    this.setMinimumSize(min);
+    this.setPreferredSize(min);
+    this.setLayout(new GridBagLayout());
   }
 
 
