@@ -30,7 +30,7 @@ public class Menu
    * 
    * @return JMenuBar
    */
-  private static JMenuBar createMenuBarForTopOfCalculator()
+  public static JMenuBar createMenuBarForTopOfCalculator()
   {
     // Creating Menu bar
     JMenuBar menuBar = new JMenuBar();

@@ -14,13 +14,14 @@ import java.awt.geom.Line2D;
  */
 public class HorizontalLine extends JPanel
 {
+  private static final long serialVersionUID = 1L;
   private final double width;
 
   /**
    * This constructor sets the width of the horizontal line, which is also the width of the JPanel.
    *
    * @param width
-   *     The width of the horizontal line
+   *          The width of the horizontal line
    */
   public HorizontalLine(final int width)
   {
@@ -32,7 +33,7 @@ public class HorizontalLine extends JPanel
    * Paint the horizontal line of the JPanel.
    *
    * @param g
-   *     The panel's Graphics object
+   *          The panel's Graphics object
    */
   @Override
   protected void paintComponent(final Graphics g)
