@@ -108,6 +108,12 @@ public class Display extends JPanel {
         cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
         draw();
     }
+    
+    public void resetCMFP() {
+        clearCEP();
+        clear();
+        draw();
+    }
 
     public void updateCMFP() {
         cmfp = new CurrentMixedFractionPanel(cmf);
@@ -122,6 +128,9 @@ public class Display extends JPanel {
     public void handleButton(ActionEvent e) {
         final String ac = e.getActionCommand();
 
+        if(ac.equals(CalculatorButtons.RESET)) resetCMFP();
+        else if (ac.equals(CalculatorButtons.CLEAR)) clear();
+        
         Integer digit;
         try {
             digit = Integer.parseInt(ac);
@@ -184,6 +193,8 @@ public class Display extends JPanel {
             } else if (ac.equals(CalculatorButtons.DIVISION)) {
                 cop = Op.DIV;
             }
+            
+ 
         }
     }
 }
