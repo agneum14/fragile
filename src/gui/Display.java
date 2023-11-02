@@ -24,6 +24,19 @@ public class Display extends JPanel
     this.setLayout(new GridBagLayout());
   }
   
+  /**
+   * Resets the top left and bottom right of the display.
+   */
+  public void reset() {
+    clear();
+  }
+  
+  /**
+   * Clears the bottom right of the display.
+   */
+  public void clear() {
+    
+  }
   
   
 

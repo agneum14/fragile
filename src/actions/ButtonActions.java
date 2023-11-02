@@ -42,6 +42,11 @@ public class ButtonActions implements ActionListener
     //This is for the button "1"
     String command = e.getActionCommand();
     if(ONE.equals(command)) System.out.println("WORKS");
+    switch(e.getActionCommand()) {
+      case RESET:
+        break;
+      case CLEAR:
+    }
   }
 
 }
