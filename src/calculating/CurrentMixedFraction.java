@@ -102,6 +102,43 @@ public class CurrentMixedFraction
   }
 
   /**
+   * Remove a digit from either whole, num, or denom (depending on pos).
+   */
+  public void removeDigit()
+  {
+    Integer target;
+
+    target = switch (pos)
+    {
+      case WHOLE -> whole;
+      case NUM -> num;
+      case DENOM -> denom;
+      default -> 0; // impossible
+    };
+
+    if (target == null)
+    { // no digits
+      return;
+    }
+    if (target < 10)
+    { // one digit
+      target = null;
+    }
+    else
+    {
+      target /= 10;
+    }
+
+    switch (pos)
+    {
+      case WHOLE -> whole = target;
+      case NUM -> num = target;
+      case DENOM -> denom = target;
+      default -> whole = 0; // impossible
+    }
+  }
+
+  /**
    * Create a MixedFraction from the CurrentMixedFraction.
    *
    * @return The MixedFraction
