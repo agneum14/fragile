@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -12,6 +13,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
+import actions.ButtonActions;
 
 /**
  * This class is for the main window of the mixed calculator.
@@ -19,9 +23,9 @@ import javax.swing.JLabel;
  * @author Joshua Hairston
  * @version 10/31/2023
  * 
- * This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
-public class CalculatorWindow implements ActionListener
+public class CalculatorWindow
 {
   private JFrame calculatorWindow;
   private CalculatorButtons buttons;
@@ -32,14 +36,13 @@ public class CalculatorWindow implements ActionListener
    */
   public CalculatorWindow()
   {
-    this.calculatorWindow = new JFrame();
-    buttons = new CalculatorButtons(this);
-    this.display = new Display();
-    setupLayout();
+    this.calculatorWindow = new JFrame(); // creation of the main window
+    this.display = new Display(); // creation of the display obviously.
+    buttons = new CalculatorButtons(); // creation of the calculators buttons
+    setupLayout(); // creating the layout of the window.
     calculatorWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     calculatorWindow.setVisible(true);
-    calculatorWindow.setSize(300, 300);
-    calculatorWindow.pack();
+    calculatorWindow.pack(); // sets the size of the window to the components preferred size.
   }
 
   private void setupLayout()
@@ -62,17 +65,19 @@ public class CalculatorWindow implements ActionListener
     catch (IOException e)
     {
     }
-    label.setIcon(new ImageIcon(img));
-    calculatorWindow.add(label, BorderLayout.PAGE_START);
+    // Resizing the Fragile logo
+    BufferedImage resizedImage = new BufferedImage(150, 30, BufferedImage.SCALE_SMOOTH);
+    Graphics2D graphics2D = resizedImage.createGraphics();
+    graphics2D.drawImage(img, 0, 0, 150, 30, null);
+    graphics2D.dispose();
+    // Setting the Fragile logo to the top left of the window.
+    label.setHorizontalAlignment(SwingConstants.LEFT);
+    calculatorWindow.add(label, BorderLayout.NORTH);
+    label.setIcon(new ImageIcon(resizedImage));
 
     // Adding the display
     calculatorWindow.add(display, BorderLayout.CENTER);
 
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e)
-  {
-
-  }
 }

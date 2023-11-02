@@ -1,9 +1,16 @@
 package gui;
 
-
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Class which represents the display of the calculator window.
+ * 
+ * @author Joshua Hairston
+ * 
+ * @version 11/2/2023
+ * 
+ * This code complies with the JMU Honor Code.
+ */
 public class Display extends JPanel
 {
   private static final long serialVersionUID = 1L;
@@ -11,11 +18,13 @@ public class Display extends JPanel
   public Display()
   {
     Dimension min = new Dimension(300, 50);
-    this.setBackground(new Color(20, 20, 20, 20));
+    this.setBackground(new Color(153, 204, 255, 130));
     this.setMinimumSize(min);
     this.setPreferredSize(min);
     this.setLayout(new GridBagLayout());
   }
-
+  
+  
+  
 
 }
