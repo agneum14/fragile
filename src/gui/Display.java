@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
  */
 public class Display extends JPanel {
     public enum Op {
-        ADD, SUB, DIV, MULT
+        ADD, SUB, DIV, MULT, EQUAL
     }
 
     private static final Color POWDER_BLUE = new Color(210, 237, 255);
@@ -114,6 +114,11 @@ public class Display extends JPanel {
         draw();
     }
 
+    public void clear() {
+        cmf = new CurrentMixedFraction();
+        updateCMFP();
+    }
+
     public void handleButton(ActionEvent e) {
         final String ac = e.getActionCommand();
 
@@ -136,6 +141,49 @@ public class Display extends JPanel {
         } else if (ac.equals(CalculatorButtons.POSITION)) {
             cmf.nextPos();
             updateCMFP();
+        } else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
+                || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
+                || ac.equals(CalculatorButtons.DIVISION)) {
+            MixedFraction mf;
+            try {
+                mf = cmf.toMixedFraction();
+            } catch (IllegalArgumentException ile) {
+                JOptionPane.showMessageDialog(null, ile.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (cop == null) {
+                eval = mf;
+            } else if (cop == Op.ADD) {
+                eval = MixedFraction.add(eval, mf);
+            } else if (cop == Op.SUB) {
+                eval = MixedFraction.sub(eval, mf);
+            } else if (cop == Op.MULT) {
+                eval = MixedFraction.mult(eval, mf);
+            } else if (cop == Op.DIV) {
+                eval = MixedFraction.div(eval, mf);
+            }
+
+            if (ac != CalculatorButtons.EQUALS) {
+                addToCEP(new MixedFractionPanel(mf));
+                addToCEP(new JLabel(ac));
+            } else {
+                // fix
+                addToCEP(new MixedFractionPanel(eval));
+            }
+            clear();
+
+            if (ac.equals(CalculatorButtons.EQUALS)) {
+                cop = Op.EQUAL;
+            } else if (ac.equals(CalculatorButtons.ADDITION)) {
+                cop = Op.ADD;
+            } else if (ac.equals(CalculatorButtons.SUBTRACTION)) {
+                cop = Op.SUB;
+            } else if (ac.equals(CalculatorButtons.MULTIPLICATION)) {
+                cop = Op.MULT;
+            } else if (ac.equals(CalculatorButtons.DIVISION)) {
+                cop = Op.DIV;
+            }
         }
     }
 }
