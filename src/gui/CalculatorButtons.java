@@ -43,10 +43,10 @@ public class CalculatorButtons extends JPanel
    * Constructor which takes in the class ButtonActions which is an ActionListener.
    * 
    */
-  public CalculatorButtons()
+  public CalculatorButtons(ButtonActions actions)
   {
     super();
-    this.actions = new ButtonActions();
+    this.actions = actions;
     createCalculatorButtons();
   }
 

@@ -38,7 +38,7 @@ public class CalculatorWindow
   {
     this.calculatorWindow = new JFrame(); // creation of the main window
     this.display = new Display(); // creation of the display obviously.
-    buttons = new CalculatorButtons(); // creation of the calculators buttons
+    buttons = new CalculatorButtons(new ButtonActions(display)); // creation of the calculators buttons and the actions hold the display to make changes
     setupLayout(); // creating the layout of the window.
     calculatorWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     calculatorWindow.setVisible(true);

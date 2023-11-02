@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+
+import gui.Display;
+
 /**
  * Class which is an ActionListener for the calculatorButtons
  * 
@@ -11,11 +14,12 @@ import javax.swing.JButton;
  * 
  * @version 11/2/2023
  * 
- * This Code Complies with the JMU Honor code.
+ *          This Code Complies with the JMU Honor code.
  */
 public class ButtonActions implements ActionListener
 {
-  //All possible buttons on the calculator.
+
+  // All possible buttons on the calculator.
   private static final String ADDITION = "+";
   private static final String SUBTRACTION = "-";
   private static final String MULTIPLICATION = "\u00D7";
@@ -35,13 +39,22 @@ public class ButtonActions implements ActionListener
   private static final String SEVEN = "7";
   private static final String EIGHT = "8";
   private static final String NINE = "9";
+  private Display display;
+
+  public ButtonActions(Display display)
+  {
+    this.display = display;
+  }
 
   @Override
   public void actionPerformed(ActionEvent e)
   {
-    //This is for the button "1"
+    // This is for the button "1"
     String command = e.getActionCommand();
-    if(ONE.equals(command)) System.out.println("WORKS");
+    if (ONE.equals(command))
+      System.out.println("WORKS");
+    
+    
   }
 
 }
