@@ -24,29 +24,27 @@ import actions.ButtonActions;
  * 
  *          This Code Complies with the JMU Honor Code.
  */
-public class CalculatorButtons extends JPanel
+public class CalculatorButtons extends JPanel implements ActionListener
 {
-  private static final long serialVersionUID = 1L;
-  private static final String ADDITION = "+";
-  private static final String SUBTRACTION = "-";
-  private static final String MULTIPLICATION = "\u00D7";
-  private static final String DIVISION = "\u00F7";
-  private static final String EQUALS = "=";
-  private static final String SIGN = "\u00B1";
-  private static final String RESET = "R";
-  private static final String CLEAR = "C";
-  private static final String BACKSPACE = "\u2190";
-  private static final String POSITION = "?";
-  private ButtonActions actions;
+  public static final String ADDITION = "+";
+  public static final String SUBTRACTION = "-";
+  public static final String MULTIPLICATION = "\u00D7";
+  public static final String DIVISION = "\u00F7";
+  public static final String EQUALS = "=";
+  public static final String SIGN = "\u00B1";
+  public static final String RESET = "R";
+  public static final String CLEAR = "C";
+  public static final String BACKSPACE = "\u2190";
+  public static final String POSITION = "?";
+  private Display display;
 
   /**
    * Constructor which takes in the class ButtonActions which is an ActionListener.
    * 
    */
-  public CalculatorButtons(ButtonActions actions)
+  public CalculatorButtons(Display display)
   {
-    super();
-    this.actions = actions;
+    this.display = display;
     createCalculatorButtons();
   }
 
@@ -60,7 +58,7 @@ public class CalculatorButtons extends JPanel
   private JButton setButton(String string)
   {
     JButton button = new JButton(string);
-    button.addActionListener(actions); // adding the action
+    button.addActionListener(this); // adding the action
     button.setActionCommand(string);
     Font font = new Font(Font.MONOSPACED, Font.BOLD, 15); // Changed the font
     button.setFont(font);
@@ -158,6 +156,11 @@ public class CalculatorButtons extends JPanel
     c.gridy = 4;
     add(setButton(EQUALS), c);
 
+  }
+
+  @Override 
+  public void actionPerformed(ActionEvent e) {
+      display.handleButton(e);
   }
 
   /**
