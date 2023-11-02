@@ -108,8 +108,8 @@ public class Display extends JPanel {
         cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
         draw();
     }
-    
-    public void resetCMFP() {
+
+    public void reset() {
         clearCEP();
         clear();
         draw();
@@ -128,9 +128,6 @@ public class Display extends JPanel {
     public void handleButton(ActionEvent e) {
         final String ac = e.getActionCommand();
 
-        if(ac.equals(CalculatorButtons.RESET)) resetCMFP();
-        else if (ac.equals(CalculatorButtons.CLEAR)) clear();
-        
         Integer digit;
         try {
             digit = Integer.parseInt(ac);
@@ -150,6 +147,10 @@ public class Display extends JPanel {
         } else if (ac.equals(CalculatorButtons.POSITION)) {
             cmf.nextPos();
             updateCMFP();
+        } else if (ac.equals(CalculatorButtons.RESET)) {
+            reset();
+        } else if (ac.equals(CalculatorButtons.CLEAR)) {
+            clear();
         } else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
                 || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
                 || ac.equals(CalculatorButtons.DIVISION)) {
@@ -173,13 +174,13 @@ public class Display extends JPanel {
                 eval = MixedFraction.div(eval, mf);
             }
 
-            if (ac != CalculatorButtons.EQUALS) {
-                addToCEP(new MixedFractionPanel(mf));
-                addToCEP(new JLabel(ac));
-            } else {
-                // fix
+            addToCEP(new MixedFractionPanel(mf));
+            addToCEP(new JLabel(ac));
+
+            if (ac.equals(CalculatorButtons.EQUALS)) {
                 addToCEP(new MixedFractionPanel(eval));
             }
+
             clear();
 
             if (ac.equals(CalculatorButtons.EQUALS)) {
@@ -193,8 +194,6 @@ public class Display extends JPanel {
             } else if (ac.equals(CalculatorButtons.DIVISION)) {
                 cop = Op.DIV;
             }
-            
- 
         }
     }
 }
