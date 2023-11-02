@@ -62,7 +62,6 @@ public class CalculatorButtons extends JPanel
     JButton button = new JButton(string);
     button.addActionListener(actions); // adding the action
     button.setActionCommand(string);
-    button.setBorder(new EtchedBorder());
     Font font = new Font(Font.MONOSPACED, Font.BOLD, 15); // Changed the font
     button.setFont(font);
     return button;
