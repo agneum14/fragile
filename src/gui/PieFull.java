@@ -22,7 +22,13 @@ public class PieFull extends Pie
   protected void paintComponent(final Graphics g)
   {
     super.paintComponent(g);
-    g.setColor(RED);
+    g.setColor(Color.BLACK);
     g.fillOval(0, 0, getWidth() - MARGIN, getHeight() - MARGIN);
+
+    g.setColor(Color.RED);
+    int pos = STROKE / 2;
+    int width = getWidth() - MARGIN - STROKE;
+    int height = getHeight() - MARGIN - STROKE;
+    g.fillOval(pos, pos, width, height);
   }
 }

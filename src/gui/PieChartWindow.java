@@ -1,6 +1,7 @@
 package gui;
 
 import calculating.MixedFraction;
+import gui.mf.MixedFractionPanel;
 
 import javax.swing.*;
 import java.awt.*;

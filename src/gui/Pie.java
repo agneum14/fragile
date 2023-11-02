@@ -14,6 +14,6 @@ import java.awt.*;
  */
 public abstract class Pie extends JPanel
 {
-  protected static final Color RED = new Color(255, 0, 0);
   protected static final int MARGIN = 2;
+  protected static final int STROKE = 6;
 }
