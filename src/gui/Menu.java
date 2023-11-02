@@ -3,10 +3,14 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -21,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+
 
 public class Menu
 {
@@ -55,7 +60,7 @@ public class Menu
       }
     });
 
-    // Help box
+    // about box
     aboutMenuItem.addActionListener(new ActionListener()
     {
       @Override
@@ -64,6 +69,13 @@ public class Menu
         displayAboutDialog();
       }
     });
+    
+    helpMenuItem.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+          openHelpPage();
+      }
+  });
 
     // Adding sub menu objects to menu
     fileDropDown.add(exitMenuItem);
@@ -141,6 +153,16 @@ public class Menu
     // Center the dialog on the screen
     aboutDialog.setLocationRelativeTo(null);
   }
+  
+  //opens up the help page method.
+  private static void openHelpPage() {
+    try {
+      File file = new File("res/help.html");
+      Desktop.getDesktop().browse(file.toURI());
+  } catch (IOException e) {
+      e.printStackTrace();
+  }
+}
 
   // Shows how it looks
   public static void main(String[] args)
