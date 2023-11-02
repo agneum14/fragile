@@ -1,19 +1,11 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import actions.ButtonActions;
 
@@ -25,9 +17,8 @@ import actions.ButtonActions;
  * 
  *          This code complies with the JMU Honor Code.
  */
-public class CalculatorWindow
+public class CalculatorWindow extends JFrame
 {
-  private JFrame calculatorWindow;
   private CalculatorButtons buttons;
   private Display display;
 
@@ -36,24 +27,23 @@ public class CalculatorWindow
    */
   public CalculatorWindow()
   {
-    this.calculatorWindow = new JFrame(); // creation of the main window
     this.display = new Display(); // creation of the display obviously.
     buttons = new CalculatorButtons(new ButtonActions(display)); // creation of the calculators buttons and the actions hold the display to make changes
     setupLayout(); // creating the layout of the window.
-    calculatorWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    calculatorWindow.setVisible(true);
-    calculatorWindow.pack(); // sets the size of the window to the components preferred size.
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setVisible(true);
+    pack(); // sets the size of the window to the components preferred size.
   }
 
   private void setupLayout()
   {
 
     // Setting the layout
-    Container contentPane = calculatorWindow.getContentPane();
+    Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    calculatorWindow.setJMenuBar(Menu.createMenuBarForTopOfCalculator());
-    calculatorWindow.add(buttons, BorderLayout.SOUTH);
+    setJMenuBar(Menu.createMenuBarForTopOfCalculator());
+    add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window
     JLabel label = new JLabel();
@@ -72,12 +62,11 @@ public class CalculatorWindow
     graphics2D.dispose();
     // Setting the Fragile logo to the top left of the window.
     label.setHorizontalAlignment(SwingConstants.LEFT);
-    calculatorWindow.add(label, BorderLayout.NORTH);
+    add(label, BorderLayout.NORTH);
     label.setIcon(new ImageIcon(resizedImage));
 
     // Adding the display
-    calculatorWindow.add(display, BorderLayout.CENTER);
-
+    add(display, BorderLayout.CENTER);
   }
 
 }
