@@ -101,6 +101,11 @@ public class CurrentMixedFraction
     pos = pos.next();
   }
 
+  public void prevPos()
+  {
+    pos = pos.prev();
+  }
+
   /**
    * Remove a digit from either whole, num, or denom (depending on pos).
    */
@@ -118,6 +123,7 @@ public class CurrentMixedFraction
 
     if (target == null)
     { // no digits
+      prevPos();
       return;
     }
     if (target < 10)
@@ -207,7 +213,14 @@ public class CurrentMixedFraction
 
   public enum Pos
   {
-    WHOLE, NUM, DENOM
+    WHOLE
+        {
+          @Override
+          public Pos prev()
+          {
+            return values()[2];
+          }
+        }, NUM, DENOM
       {
         @Override
         public Pos next()
@@ -219,6 +232,11 @@ public class CurrentMixedFraction
     public Pos next()
     {
       return values()[ordinal() + 1];
+    }
+
+    public Pos prev()
+    {
+      return values()[ordinal() - 1];
     }
   }
 }
