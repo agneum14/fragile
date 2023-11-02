@@ -154,7 +154,7 @@ public class Menu
     aboutDialog.setLocationRelativeTo(null);
   }
   
-  //opens up the help page.
+  //opens up the help page method.
   private static void openHelpPage() {
     try {
       File file = new File("res/help.html");
