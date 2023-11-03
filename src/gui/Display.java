@@ -15,7 +15,7 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- * This code complies with the JMU Honor Code.
+ *     This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
@@ -98,6 +98,19 @@ public class Display extends JPanel
     repaint();
   }
 
+  private void acToOp(String ac) throws IllegalArgumentException
+  {
+    cop = switch (ac)
+    {
+      case CalculatorButtons.EQUALS -> Op.EQUAL;
+      case CalculatorButtons.ADDITION -> Op.ADD;
+      case CalculatorButtons.SUBTRACTION -> Op.SUB;
+      case CalculatorButtons.MULTIPLICATION -> Op.MULT;
+      case CalculatorButtons.DIVISION -> Op.DIV;
+      default -> throw new IllegalArgumentException("action command isn't an operator");
+    };
+  }
+
   public void addToCEP(JPanel p)
   {
     cep.add(p);
@@ -143,7 +156,8 @@ public class Display extends JPanel
     try
     {
       digit = Integer.parseInt(ac);
-    } catch (NumberFormatException nfe)
+    }
+    catch (NumberFormatException nfe)
     {
       digit = null;
     }
@@ -152,33 +166,54 @@ public class Display extends JPanel
     {
       cmf.addDigit(digit);
       updateCMFP();
-    } else if (ac.equals(CalculatorButtons.BACKSPACE))
+    }
+    else if (ac.equals(CalculatorButtons.BACKSPACE))
     {
       cmf.removeDigit();
       updateCMFP();
-    } else if (ac.equals(CalculatorButtons.SIGN))
+    }
+    else if (ac.equals(CalculatorButtons.SIGN))
     {
       cmf.changeSign();
       updateCMFP();
-    } else if (ac.equals(CalculatorButtons.POSITION))
+    }
+    else if (ac.equals(CalculatorButtons.POSITION))
     {
       cmf.nextPos();
       updateCMFP();
-    } else if (ac.equals(CalculatorButtons.RESET))
+    }
+    else if (ac.equals(CalculatorButtons.RESET))
     {
       reset();
-    } else if (ac.equals(CalculatorButtons.CLEAR))
+    }
+    else if (ac.equals(CalculatorButtons.CLEAR))
     {
       clear();
-    } else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
-            || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
-            || ac.equals(CalculatorButtons.DIVISION))
+    }
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
+        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
+        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION))
     {
+      if (cop == Op.EQUAL)
+      {
+        if (ac != CalculatorButtons.EQUALS)
+        {
+          acToOp(ac);
+          eval = new MixedFraction(cmf.toMixedFraction());
+          reset();
+          addToCEP(new MixedFractionPanel(eval));
+          addToCEP(new JLabel(ac));
+        }
+
+        return;
+      }
+
       MixedFraction mf;
       try
       {
         mf = cmf.toMixedFraction();
-      } catch (IllegalArgumentException ile)
+      }
+      catch (IllegalArgumentException ile)
       {
         JOptionPane.showMessageDialog(null, ile.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         return;
@@ -187,16 +222,20 @@ public class Display extends JPanel
       if (cop == null)
       {
         eval = mf;
-      } else if (cop == Op.ADD)
+      }
+      else if (cop == Op.ADD)
       {
         eval = MixedFraction.add(eval, mf);
-      } else if (cop == Op.SUB)
+      }
+      else if (cop == Op.SUB)
       {
         eval = MixedFraction.sub(eval, mf);
-      } else if (cop == Op.MULT)
+      }
+      else if (cop == Op.MULT)
       {
         eval = MixedFraction.mult(eval, mf);
-      } else if (cop == Op.DIV)
+      }
+      else if (cop == Op.DIV)
       {
         eval = MixedFraction.div(eval, mf);
       }
@@ -211,14 +250,7 @@ public class Display extends JPanel
 
       clear();
 
-      switch (ac)
-      {
-        case CalculatorButtons.EQUALS -> cop = Op.EQUAL;
-        case CalculatorButtons.ADDITION -> cop = Op.ADD;
-        case CalculatorButtons.SUBTRACTION -> cop = Op.SUB;
-        case CalculatorButtons.MULTIPLICATION -> cop = Op.MULT;
-        case CalculatorButtons.DIVISION -> cop = Op.DIV;
-      }
+      acToOp(ac);
     }
   }
 }
