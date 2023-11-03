@@ -191,6 +191,7 @@ public class Display extends JPanel
       reset();
       cop = null;
       eval = new MixedFraction(1, 0, 0, 1);
+      pcw.draw(eval);
     }
     else if (ac.equals(CalculatorButtons.CLEAR))
     {
