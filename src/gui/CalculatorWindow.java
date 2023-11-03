@@ -32,6 +32,7 @@ public class CalculatorWindow extends JFrame
         display); // creation of the calculators buttons and the actions hold the display to make changes
     setupLayout(); // creating the layout of the window.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setPreferredSize(new Dimension(400, 500));
     pack(); // sets the size of the window to the components preferred size.
     setVisible(true);
   }
@@ -57,9 +58,9 @@ public class CalculatorWindow extends JFrame
     {
     }
     // Resizing the Fragile logo
-    BufferedImage resizedImage = new BufferedImage(150, 30, BufferedImage.SCALE_SMOOTH);
+    BufferedImage resizedImage = new BufferedImage(150, 50, BufferedImage.SCALE_SMOOTH);
     Graphics2D graphics2D = resizedImage.createGraphics();
-    graphics2D.drawImage(img, 0, 0, 150, 30, null);
+    graphics2D.drawImage(img, 0, 0, 150, 50, null);
     graphics2D.dispose();
     // Setting the Fragile logo to the top left of the window.
     label.setHorizontalAlignment(SwingConstants.LEFT);
