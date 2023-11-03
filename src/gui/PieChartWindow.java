@@ -5,6 +5,8 @@ import gui.mf.MixedFractionPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * This class implements the pie chart window, which visualizes the current mixed fraction
@@ -31,13 +33,22 @@ public class PieChartWindow extends JFrame
     getContentPane().setLayout(new GridBagLayout());
     setPreferredSize(new Dimension(500, 850));
 
-    // TODO: make default close operation toggle window visibility
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
     heading = new JPanel();
     final JLabel headingLabel = new JLabel("Current Mixed Fraction");
     heading.add(headingLabel);
 
     draw(new MixedFraction(1, 0, 0, 1));
+
+    addWindowListener(new WindowAdapter()
+    {
+      @Override
+      public void windowClosed(WindowEvent e)
+      {
+        toggleVisibility();
+      }
+    });
   }
 
   /**
@@ -103,5 +114,17 @@ public class PieChartWindow extends JFrame
 
     pack();
     repaint();
+  }
+
+  public void toggleVisibility()
+  {
+    if (isVisible())
+    {
+      setVisible(false);
+    }
+    else
+    {
+      setVisible(true);
+    }
   }
 }

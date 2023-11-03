@@ -1,6 +1,5 @@
 package gui;
 
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -12,8 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-
-public class Menu
+public class Menu extends JMenuBar
 {
 
   /**
@@ -21,11 +19,8 @@ public class Menu
    *
    * @return JMenuBar
    */
-  public static JMenuBar createMenuBarForTopOfCalculator()
+  public Menu(PieChartWindow pcw)
   {
-    // Creating Menu bar
-    JMenuBar menuBar = new JMenuBar();
-
     // Creating the main menu objects
     JMenu fileDropDown = new JMenu("File");
     JMenu viewDropDown = new JMenu("View");
@@ -36,6 +31,16 @@ public class Menu
     JMenuItem aboutMenuItem = new JMenuItem("About");
     JMenuItem helpMenuItem = new JMenuItem("Help");
     JCheckBoxMenuItem pieChartMenuItem = new JCheckBoxMenuItem("Pie Chart");
+
+    pieChartMenuItem.addActionListener(new ActionListener()
+    {
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+        System.out.println(pcw);
+        pcw.toggleVisibility();
+      }
+    });
 
     // Exiting Action
     exitMenuItem.addActionListener(new ActionListener()
@@ -72,12 +77,9 @@ public class Menu
     helpDropDown.add(helpMenuItem);
 
     // Adding main menu objects to menu
-    menuBar.add(fileDropDown);
-    menuBar.add(viewDropDown);
-    menuBar.add(helpDropDown);
-
-    // Returning whole menu
-    return menuBar;
+    add(fileDropDown);
+    add(viewDropDown);
+    add(helpDropDown);
   }
 
   /**
@@ -99,9 +101,10 @@ public class Menu
     try
     {
       URL imgUrl = new URL(
-              "https://w3.cs.jmu.edu/bernstdh/web/CS345/project/Fragile_Icon_32x32.png");
+          "https://w3.cs.jmu.edu/bernstdh/web/CS345/project/Fragile_Icon_32x32.png");
       img = ImageIO.read(imgUrl);
-    } catch (IOException e)
+    }
+    catch (IOException e)
     {
       e.printStackTrace();
     }
@@ -111,10 +114,7 @@ public class Menu
     imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
     // Words that need to be under the logo
-    String companyInfo = "Fragile v1.0\n\n"
-            + "Fragile is a modern, easy-to-use mixed-fraction calculator.\n"
-            + "It is a product of Sagacious Media that was developed by:\n\n"
-            + "Joshua, Andrew, Logan, Ray, Asa, Zach";
+    String companyInfo = "Fragile v1.0\n\n" + "Fragile is a modern, easy-to-use mixed-fraction calculator.\n" + "It is a product of Sagacious Media that was developed by:\n\n" + "Joshua, Andrew, Logan, Ray, Asa, Zach";
 
     // Putting the String companyInfo on the JDialog
     // Creating the pane to hold the companyInfo (centered)
@@ -132,7 +132,8 @@ public class Menu
     try
     {
       doc.insertString(doc.getLength(), companyInfo, style);
-    } catch (BadLocationException e)
+    }
+    catch (BadLocationException e)
     {
       e.printStackTrace();
     }
@@ -161,22 +162,11 @@ public class Menu
     {
       File file = new File("res/help.html");
       Desktop.getDesktop().browse(file.toURI());
-    } catch (IOException e)
+    }
+    catch (IOException e)
     {
       e.printStackTrace();
     }
   }
-
-  // Shows how it looks
-  public static void main(String[] args)
-  {
-    JFrame frame = new JFrame("Example of what it would look like");
-    frame.setSize(400, 300);
-
-    frame.setJMenuBar(Menu.createMenuBarForTopOfCalculator());
-
-    frame.setVisible(true);
-  }
-
 }
 

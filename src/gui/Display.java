@@ -30,12 +30,14 @@ public class Display extends JPanel
   private CurrentMixedFraction cmf;
   private MixedFraction eval;
   private Op cop;
+  private PieChartWindow pcw;
 
-  public Display()
+  public Display(PieChartWindow pcw)
   {
-    this.setBackground(POWDER_BLUE);
-    this.setLayout(new GridBagLayout());
+    setBackground(POWDER_BLUE);
+    setLayout(new GridBagLayout());
 
+    this.pcw = pcw;
     eval = new MixedFraction(1, 0, 0, 1);
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
     cmf = new CurrentMixedFraction();
@@ -245,6 +247,7 @@ public class Display extends JPanel
 
       if (ac.equals(CalculatorButtons.EQUALS))
       {
+        pcw.draw(eval);
         addToCEP(new MixedFractionPanel(eval));
       }
 

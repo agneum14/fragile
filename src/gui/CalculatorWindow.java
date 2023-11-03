@@ -1,34 +1,35 @@
 package gui;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import actions.ButtonActions;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class is for the main window of the mixed calculator.
- * 
+ *
  * @author Joshua Hairston
  * @version 10/31/2023
- * 
- *          This code complies with the JMU Honor Code.
+ *
+ *     This code complies with the JMU Honor Code.
  */
 public class CalculatorWindow extends JFrame
 {
   private CalculatorButtons buttons;
   private Display display;
+  private PieChartWindow pcw;
 
   /**
    * Constructor
    */
   public CalculatorWindow()
   {
-    display = new Display(); // creation of the display obviously.
-    buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions hold the display to make changes
+    pcw = new PieChartWindow();
+    display = new Display(pcw); // creation of the display obviously.
+    buttons = new CalculatorButtons(
+        display); // creation of the calculators buttons and the actions hold the display to make changes
     setupLayout(); // creating the layout of the window.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack(); // sets the size of the window to the components preferred size.
@@ -42,7 +43,7 @@ public class CalculatorWindow extends JFrame
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(Menu.createMenuBarForTopOfCalculator());
+    setJMenuBar(new Menu(pcw));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window
