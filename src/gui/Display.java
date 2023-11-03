@@ -201,7 +201,6 @@ public class Display extends JPanel
         if (ac != CalculatorButtons.EQUALS)
         {
           acToOp(ac);
-          eval = new MixedFraction(cmf.toMixedFraction());
           reset();
           addToCEP(new MixedFractionPanel(eval));
           addToCEP(new JLabel(ac));
