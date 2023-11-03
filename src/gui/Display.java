@@ -242,7 +242,15 @@ public class Display extends JPanel
       }
       else if (cop == Op.DIV)
       {
-        eval = MixedFraction.div(eval, mf);
+        try
+        {
+          eval = MixedFraction.div(eval, mf);
+        }
+        catch (ArithmeticException ae)
+        {
+          JOptionPane.showMessageDialog(null, ae.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          return;
+        }
       }
       else if (cop == Op.EQUAL)
       {
