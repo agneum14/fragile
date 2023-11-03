@@ -189,6 +189,8 @@ public class Display extends JPanel
     else if (ac.equals(CalculatorButtons.RESET))
     {
       reset();
+      cop = null;
+      eval = new MixedFraction(1, 0, 0, 1);
     }
     else if (ac.equals(CalculatorButtons.CLEAR))
     {
@@ -200,15 +202,15 @@ public class Display extends JPanel
     {
       if (cop == Op.EQUAL)
       {
-        if (ac != CalculatorButtons.EQUALS)
+        if (cmf.getWhole() == null && cmf.getNum() == null && cmf.getDenom() == null)
         {
           acToOp(ac);
           reset();
           addToCEP(new MixedFractionPanel(eval));
           addToCEP(new JLabel(ac));
-        }
 
-        return;
+          return;
+        }
       }
 
       MixedFraction mf;
@@ -241,6 +243,11 @@ public class Display extends JPanel
       else if (cop == Op.DIV)
       {
         eval = MixedFraction.div(eval, mf);
+      }
+      else if (cop == Op.EQUAL)
+      {
+        eval = mf;
+        clearCEP();
       }
 
       addToCEP(new MixedFractionPanel(mf));
