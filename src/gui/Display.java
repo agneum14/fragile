@@ -15,185 +15,210 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *          This code complies with the JMU Honor Code.
+ * This code complies with the JMU Honor Code.
  */
-public class Display extends JPanel {
-    public enum Op {
-        ADD, SUB, DIV, MULT, EQUAL
+public class Display extends JPanel
+{
+  public enum Op
+  {
+    ADD, SUB, DIV, MULT, EQUAL
+  }
+
+  private static final Color POWDER_BLUE = new Color(210, 237, 255);
+  private JPanel cep;
+  private JPanel cmfp;
+  private CurrentMixedFraction cmf;
+  private MixedFraction eval;
+  private Op cop;
+
+  public Display()
+  {
+    this.setBackground(POWDER_BLUE);
+    this.setLayout(new GridBagLayout());
+
+    eval = new MixedFraction(1, 0, 0, 1);
+    cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    cmf = new CurrentMixedFraction();
+    cmfp = new CurrentMixedFractionPanel(cmf);
+    cop = null;
+
+    draw();
+  }
+
+  private void draw()
+  {
+    GridBagConstraints c;
+    removeAll();
+    JPanel empty;
+    // add current expression panel
+    {
+      c = new GridBagConstraints();
+      c.gridx = 0;
+      c.gridy = 0;
+      c.anchor = GridBagConstraints.NORTHWEST;
+      add(cep, c);
     }
 
-    private static final Color POWDER_BLUE = new Color(210, 237, 255);
-    private JPanel cep;
-    private JPanel cmfp;
-    private CurrentMixedFraction cmf;
-    private MixedFraction eval;
-    private Op cop;
-
-    public Display() {
-        this.setBackground(POWDER_BLUE);
-        this.setLayout(new GridBagLayout());
-
-        eval = new MixedFraction(1, 0, 0, 1);
-        cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        cmf = new CurrentMixedFraction();
-        cmfp = new CurrentMixedFractionPanel(cmf);
-        cop = null;
-
-        draw();
+    // float current expression panel west
+    {
+      c = new GridBagConstraints();
+      c.gridx = 1;
+      c.gridy = 0;
+      c.weightx = 1;
+      add(Box.createHorizontalStrut(10), c);
     }
 
-    private void draw() {
-        GridBagConstraints c;
-        removeAll();
-
-        // add current expression panel
-        {
-            c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 0;
-            c.anchor = GridBagConstraints.NORTHWEST;
-            add(cep, c);
-        }
-
-        // float current expression panel west
-        {
-            c = new GridBagConstraints();
-            c.gridx = 1;
-            c.gridy = 0;
-            c.weightx = 1;
-            add(new JPanel(), c);
-        }
-
-        // float current expression panel north
-        {
-            c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 1;
-            c.weighty = 1;
-            add(new JPanel(), c);
-        }
-
-        // add current mixed fraction panel
-        {
-            c = new GridBagConstraints();
-            c.gridx = 1;
-            c.gridy = 2;
-            c.anchor = GridBagConstraints.SOUTHEAST;
-            add(cmfp, c);
-        }
-
-        {
-            c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 2;
-            c.weightx = 1;
-            add(new JPanel(), c);
-        }
-
-        revalidate();
-        repaint();
+    // float current expression panel north
+    {
+      c = new GridBagConstraints();
+      c.gridx = 0;
+      c.gridy = 1;
+      c.weighty = 1;
+      add(Box.createHorizontalStrut(10), c);
     }
 
-    public void addToCEP(JPanel p) {
-        cep.add(p);
-        draw();
+    // add current mixed fraction panel
+    {
+      c = new GridBagConstraints();
+      c.gridx = 1;
+      c.gridy = 2;
+      c.anchor = GridBagConstraints.SOUTHEAST;
+      add(cmfp, c);
     }
 
-    public void addToCEP(JLabel l) {
-        cep.add(l);
-        draw();
+    {
+      c = new GridBagConstraints();
+      c.gridx = 0;
+      c.gridy = 2;
+      c.weightx = 1;
+      add(Box.createHorizontalStrut(10), c);
     }
 
-    public void clearCEP() {
-        cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        draw();
+    revalidate();
+    repaint();
+  }
+
+  public void addToCEP(JPanel p)
+  {
+    cep.add(p);
+    draw();
+  }
+
+  public void addToCEP(JLabel l)
+  {
+    cep.add(l);
+    draw();
+  }
+
+  public void clearCEP()
+  {
+    cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    draw();
+  }
+
+  public void reset()
+  {
+    clearCEP();
+    clear();
+    draw();
+  }
+
+  public void updateCMFP()
+  {
+    cmfp = new CurrentMixedFractionPanel(cmf);
+    draw();
+  }
+
+  public void clear()
+  {
+    cmf = new CurrentMixedFraction();
+    updateCMFP();
+  }
+
+  public void handleButton(ActionEvent e)
+  {
+    final String ac = e.getActionCommand();
+
+    Integer digit;
+    try
+    {
+      digit = Integer.parseInt(ac);
+    } catch (NumberFormatException nfe)
+    {
+      digit = null;
     }
 
-    public void reset() {
-        clearCEP();
-        clear();
-        draw();
+    if (digit != null)
+    {
+      cmf.addDigit(digit);
+      updateCMFP();
+    } else if (ac.equals(CalculatorButtons.BACKSPACE))
+    {
+      cmf.removeDigit();
+      updateCMFP();
+    } else if (ac.equals(CalculatorButtons.SIGN))
+    {
+      cmf.changeSign();
+      updateCMFP();
+    } else if (ac.equals(CalculatorButtons.POSITION))
+    {
+      cmf.nextPos();
+      updateCMFP();
+    } else if (ac.equals(CalculatorButtons.RESET))
+    {
+      reset();
+    } else if (ac.equals(CalculatorButtons.CLEAR))
+    {
+      clear();
+    } else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
+            || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
+            || ac.equals(CalculatorButtons.DIVISION))
+    {
+      MixedFraction mf;
+      try
+      {
+        mf = cmf.toMixedFraction();
+      } catch (IllegalArgumentException ile)
+      {
+        JOptionPane.showMessageDialog(null, ile.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+
+      if (cop == null)
+      {
+        eval = mf;
+      } else if (cop == Op.ADD)
+      {
+        eval = MixedFraction.add(eval, mf);
+      } else if (cop == Op.SUB)
+      {
+        eval = MixedFraction.sub(eval, mf);
+      } else if (cop == Op.MULT)
+      {
+        eval = MixedFraction.mult(eval, mf);
+      } else if (cop == Op.DIV)
+      {
+        eval = MixedFraction.div(eval, mf);
+      }
+
+      addToCEP(new MixedFractionPanel(mf));
+      addToCEP(new JLabel(ac));
+
+      if (ac.equals(CalculatorButtons.EQUALS))
+      {
+        addToCEP(new MixedFractionPanel(eval));
+      }
+
+      clear();
+
+      switch (ac)
+      {
+        case CalculatorButtons.EQUALS -> cop = Op.EQUAL;
+        case CalculatorButtons.ADDITION -> cop = Op.ADD;
+        case CalculatorButtons.SUBTRACTION -> cop = Op.SUB;
+        case CalculatorButtons.MULTIPLICATION -> cop = Op.MULT;
+        case CalculatorButtons.DIVISION -> cop = Op.DIV;
+      }
     }
-
-    public void updateCMFP() {
-        cmfp = new CurrentMixedFractionPanel(cmf);
-        draw();
-    }
-
-    public void clear() {
-        cmf = new CurrentMixedFraction();
-        updateCMFP();
-    }
-
-    public void handleButton(ActionEvent e) {
-        final String ac = e.getActionCommand();
-
-        Integer digit;
-        try {
-            digit = Integer.parseInt(ac);
-        } catch (NumberFormatException nfe) {
-            digit = null;
-        }
-
-        if (digit != null) {
-            cmf.addDigit(digit);
-            updateCMFP();
-        } else if (ac.equals(CalculatorButtons.BACKSPACE)) {
-            cmf.removeDigit();
-            updateCMFP();
-        } else if (ac.equals(CalculatorButtons.SIGN)) {
-            cmf.changeSign();
-            updateCMFP();
-        } else if (ac.equals(CalculatorButtons.POSITION)) {
-            cmf.nextPos();
-            updateCMFP();
-        } else if (ac.equals(CalculatorButtons.RESET)) {
-            reset();
-        } else if (ac.equals(CalculatorButtons.CLEAR)) {
-            clear();
-        } else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
-                || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
-                || ac.equals(CalculatorButtons.DIVISION)) {
-            MixedFraction mf;
-            try {
-                mf = cmf.toMixedFraction();
-            } catch (IllegalArgumentException ile) {
-                JOptionPane.showMessageDialog(null, ile.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            if (cop == null) {
-                eval = mf;
-            } else if (cop == Op.ADD) {
-                eval = MixedFraction.add(eval, mf);
-            } else if (cop == Op.SUB) {
-                eval = MixedFraction.sub(eval, mf);
-            } else if (cop == Op.MULT) {
-                eval = MixedFraction.mult(eval, mf);
-            } else if (cop == Op.DIV) {
-                eval = MixedFraction.div(eval, mf);
-            }
-
-            addToCEP(new MixedFractionPanel(mf));
-            addToCEP(new JLabel(ac));
-
-            if (ac.equals(CalculatorButtons.EQUALS)) {
-                addToCEP(new MixedFractionPanel(eval));
-            }
-
-            clear();
-
-            if (ac.equals(CalculatorButtons.EQUALS)) {
-                cop = Op.EQUAL;
-            } else if (ac.equals(CalculatorButtons.ADDITION)) {
-                cop = Op.ADD;
-            } else if (ac.equals(CalculatorButtons.SUBTRACTION)) {
-                cop = Op.SUB;
-            } else if (ac.equals(CalculatorButtons.MULTIPLICATION)) {
-                cop = Op.MULT;
-            } else if (ac.equals(CalculatorButtons.DIVISION)) {
-                cop = Op.DIV;
-            }
-        }
-    }
+  }
 }
