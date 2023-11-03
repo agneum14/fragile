@@ -1,6 +1,7 @@
 package gui.mf;
 
 import calculating.MixedFraction;
+import gui.Display;
 import gui.HorizontalLine;
 
 import javax.swing.*;
@@ -56,6 +57,7 @@ public class MixedFractionPanel extends JPanel
       final Integer denom)
   {
     setLayout(new FlowLayout(FlowLayout.LEFT));
+    setBackground(Display.POWDER_BLUE);
 
     setSignPanel(sign);
     setWholePanel(whole);
@@ -75,6 +77,7 @@ public class MixedFractionPanel extends JPanel
     denomFullPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     denomFullPanel.add(denomPanel);
     fractionPanel.add(denomFullPanel, c);
+    fractionPanel.setBackground(Display.POWDER_BLUE);
 
     draw(sign, num);
   }
@@ -118,6 +121,7 @@ public class MixedFractionPanel extends JPanel
     final JLabel denomLabel = new JLabel(String.valueOf(denom));
     denomLabel.setFont(fracFont);
     denomPanel.add(denomLabel);
+    denomPanel.setBackground(Display.POWDER_BLUE);
   }
 
   /**
@@ -133,6 +137,7 @@ public class MixedFractionPanel extends JPanel
     final JLabel numLabel = new JLabel(String.valueOf(num));
     numLabel.setFont(fracFont);
     numPanel.add(numLabel);
+    numPanel.setBackground(Display.POWDER_BLUE);
   }
 
   /**
@@ -151,6 +156,7 @@ public class MixedFractionPanel extends JPanel
     {
       signPanel = new JPanel();
     }
+    signPanel.setBackground(Display.POWDER_BLUE);
   }
 
   /**
@@ -166,5 +172,6 @@ public class MixedFractionPanel extends JPanel
     final Font wholeLabelFont = new Font(wholeLabel.getFont().getName(), Font.PLAIN, 25);
     wholeLabel.setFont(wholeLabelFont);
     wholePanel.add(wholeLabel);
+    wholePanel.setBackground(Display.POWDER_BLUE);
   }
 }

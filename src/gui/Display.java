@@ -24,7 +24,7 @@ public class Display extends JPanel
     ADD, SUB, DIV, MULT, EQUAL
   }
 
-  private static final Color POWDER_BLUE = new Color(210, 237, 255);
+  public static final Color POWDER_BLUE = new Color(210, 237, 255);
   private JPanel cep;
   private JPanel cmfp;
   private CurrentMixedFraction cmf;
@@ -40,6 +40,7 @@ public class Display extends JPanel
     this.pcw = pcw;
     eval = new MixedFraction(1, 0, 0, 1);
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    cep.setBackground(POWDER_BLUE);
     cmf = new CurrentMixedFraction();
     cmfp = new CurrentMixedFractionPanel(cmf);
     cop = null;
@@ -128,6 +129,7 @@ public class Display extends JPanel
   public void clearCEP()
   {
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    cep.setBackground(POWDER_BLUE);
     draw();
   }
 

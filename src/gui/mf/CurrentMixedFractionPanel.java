@@ -1,6 +1,7 @@
 package gui.mf;
 
 import calculating.CurrentMixedFraction;
+import gui.Display;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -67,6 +68,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     {
       wholePanel = new JPanel();
       wholePanel.setPreferredSize(WHOLE_DIM);
+      wholePanel.setBackground(Display.POWDER_BLUE);
     }
   }
 
@@ -88,6 +90,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     {
       numPanel = new JPanel();
       numPanel.setPreferredSize(NUM_DIM);
+      numPanel.setBackground(Display.POWDER_BLUE);
     }
   }
 
@@ -109,6 +112,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     {
       denomPanel = new JPanel();
       denomPanel.setPreferredSize(NUM_DIM);
+      denomPanel.setBackground(Display.POWDER_BLUE);
     }
   }
 

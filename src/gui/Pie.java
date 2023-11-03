@@ -1,7 +1,6 @@
 package gui;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * This abstract class represents a "pie," which is a circular JPanel used in combination to
