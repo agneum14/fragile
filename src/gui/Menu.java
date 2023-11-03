@@ -1,30 +1,16 @@
 package gui;
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.text.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 
 
 public class Menu
@@ -32,7 +18,7 @@ public class Menu
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
-   * 
+   *
    * @return JMenuBar
    */
   public static JMenuBar createMenuBarForTopOfCalculator()
@@ -69,13 +55,15 @@ public class Menu
         displayAboutDialog();
       }
     });
-    
-    helpMenuItem.addActionListener(new ActionListener() {
+
+    helpMenuItem.addActionListener(new ActionListener()
+    {
       @Override
-      public void actionPerformed(ActionEvent e) {
-          openHelpPage();
+      public void actionPerformed(ActionEvent e)
+      {
+        openHelpPage();
       }
-  });
+    });
 
     // Adding sub menu objects to menu
     fileDropDown.add(exitMenuItem);
@@ -100,7 +88,7 @@ public class Menu
 
     // Creating dialog box for help
     JDialog aboutDialog = new JDialog();
-    aboutDialog.setTitle("                                                         About");
+    aboutDialog.setTitle("About");
     aboutDialog.setSize(450, 200);
 
     // Setting the background color to grey
@@ -111,10 +99,9 @@ public class Menu
     try
     {
       URL imgUrl = new URL(
-          "https://w3.cs.jmu.edu/bernstdh/web/CS345/project/Fragile_Icon_32x32.png");
+              "https://w3.cs.jmu.edu/bernstdh/web/CS345/project/Fragile_Icon_32x32.png");
       img = ImageIO.read(imgUrl);
-    }
-    catch (IOException e)
+    } catch (IOException e)
     {
       e.printStackTrace();
     }
@@ -124,22 +111,35 @@ public class Menu
     imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
     // Words that need to be under the logo
-    String companyInfo = "                                                              Fragile v1.0\n\n"
-        + "                       Fragile is a modern, easy-to-use mixed-fraction calculator.\n"
-        + "                                     It is a product of Sagacious Media that was\n"
-        + "                                                              developed by:\n\n"
-        + "                                      Joshua, Andrew, Logan, Ray, Asa, Zach";
+    String companyInfo = "Fragile v1.0\n\n"
+            + "Fragile is a modern, easy-to-use mixed-fraction calculator.\n"
+            + "It is a product of Sagacious Media that was developed by:\n\n"
+            + "Joshua, Andrew, Logan, Ray, Asa, Zach";
 
     // Putting the String companyInfo on the JDialog
-    JTextArea textArea = new JTextArea(companyInfo);
-    textArea.setEditable(false);
-    textArea.setWrapStyleWord(true);
-    textArea.setLineWrap(true);
-    textArea.setCaretPosition(0);
+    // Creating the pane to hold the companyInfo (centered)
+    JTextPane textPane = new JTextPane();
+    textPane.setEditable(false);
+    textPane.setCaretPosition(0);
+    // Setting the style attributes of the pane to center the contents
+    StyledDocument doc = textPane.getStyledDocument();
+    SimpleAttributeSet center = new SimpleAttributeSet();
+    StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+    doc.setParagraphAttributes(0, doc.getLength(), center, false);
+    // Setting foreground text color
+    Style style = textPane.addStyle("Color Style", null);
+    StyleConstants.setForeground(style, Color.BLACK);
+    try
+    {
+      doc.insertString(doc.getLength(), companyInfo, style);
+    } catch (BadLocationException e)
+    {
+      e.printStackTrace();
+    }
 
     // Creating a panel to hold the image and text, and center the image
     JPanel panel = new JPanel(new BorderLayout());
-    panel.add(textArea, BorderLayout.CENTER);
+    panel.add(textPane, BorderLayout.CENTER);
 
     // Setting the background color of the panel to grey
     panel.setBackground(Color.BLACK);
@@ -153,16 +153,19 @@ public class Menu
     // Center the dialog on the screen
     aboutDialog.setLocationRelativeTo(null);
   }
-  
+
   //opens up the help page method.
-  private static void openHelpPage() {
-    try {
+  private static void openHelpPage()
+  {
+    try
+    {
       File file = new File("res/help.html");
       Desktop.getDesktop().browse(file.toURI());
-  } catch (IOException e) {
+    } catch (IOException e)
+    {
       e.printStackTrace();
+    }
   }
-}
 
   // Shows how it looks
   public static void main(String[] args)
@@ -172,7 +175,7 @@ public class Menu
 
     frame.setJMenuBar(Menu.createMenuBarForTopOfCalculator());
 
-    frame.setVisible(true); 
+    frame.setVisible(true);
   }
 
 }
