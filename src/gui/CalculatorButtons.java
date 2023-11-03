@@ -5,10 +5,12 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
@@ -35,7 +37,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
   public static final String RESET = "R";
   public static final String CLEAR = "C";
   public static final String BACKSPACE = "\u2190";
-  public static final String POSITION = "?";
+  public static final String POSITION = "P";
   private Display display;
 
   /**
@@ -146,11 +148,16 @@ public class CalculatorButtons extends JPanel implements ActionListener
     c.gridy = 4;
     c.gridwidth = 2;
     add(setButton(String.valueOf(0)), c);
-    // The position button
+    // The position button with the position picture
     c.gridx = 2;
     c.gridy = 4;
     c.gridwidth = 1;
-    add(setButton(POSITION), c);
+    ImageIcon icon = new ImageIcon("res/position_logo.png");
+    JButton button = new JButton();
+    button.addActionListener(this);
+    button.setActionCommand(POSITION);
+    button.setIcon(icon);
+    add(button, c);
     // The equals button
     c.gridx = 3;
     c.gridy = 4;
@@ -158,9 +165,10 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
   }
 
-  @Override 
-  public void actionPerformed(ActionEvent e) {
-      display.handleButton(e);
+  @Override
+  public void actionPerformed(ActionEvent e)
+  {
+    display.handleButton(e);
   }
 
   /**
