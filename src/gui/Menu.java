@@ -11,8 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class Menu extends JMenuBar
+public class Menu extends JMenuBar implements ActionListener
 {
+  private PieChartWindow pcw;
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
@@ -21,6 +22,8 @@ public class Menu extends JMenuBar
    */
   public Menu(PieChartWindow pcw)
   {
+    this.pcw = pcw;
+
     // Creating the main menu objects
     JMenu fileDropDown = new JMenu("File");
     JMenu viewDropDown = new JMenu("View");
@@ -32,44 +35,6 @@ public class Menu extends JMenuBar
     JMenuItem helpMenuItem = new JMenuItem("Help");
     JCheckBoxMenuItem pieChartMenuItem = new JCheckBoxMenuItem("Pie Chart");
 
-    pieChartMenuItem.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-        System.out.println(pcw);
-        pcw.toggleVisibility();
-      }
-    });
-
-    // Exiting Action
-    exitMenuItem.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        System.exit(0);
-      }
-    });
-
-    // about box
-    aboutMenuItem.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-        displayAboutDialog();
-      }
-    });
-
-    helpMenuItem.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-        openHelpPage();
-      }
-    });
-
     // Adding sub menu objects to menu
     fileDropDown.add(exitMenuItem);
     viewDropDown.add(pieChartMenuItem);
@@ -80,6 +45,12 @@ public class Menu extends JMenuBar
     add(fileDropDown);
     add(viewDropDown);
     add(helpDropDown);
+
+    // add action listeners
+    exitMenuItem.addActionListener(this);
+    aboutMenuItem.addActionListener(this);
+    helpMenuItem.addActionListener(this);
+    pieChartMenuItem.addActionListener(this);
   }
 
   /**
@@ -153,6 +124,19 @@ public class Menu extends JMenuBar
     aboutDialog.setResizable(false);
     // Center the dialog on the screen
     aboutDialog.setLocationRelativeTo(null);
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e)
+  {
+    switch (e.getActionCommand())
+    {
+      case "Exit" -> System.exit(0);
+      case "Pie Chart" -> pcw.toggleVisibility();
+      case "About" -> displayAboutDialog();
+      case "Help" -> openHelpPage();
+      default -> System.out.println("unknown menu option");
+    }
   }
 
   //opens up the help page method.
