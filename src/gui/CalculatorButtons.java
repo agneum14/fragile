@@ -15,8 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-import actions.ButtonActions;
-
 /**
  * Class for the calculator buttons, which is added to the main window.
  * 
