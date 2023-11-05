@@ -3,6 +3,9 @@ package gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
+
+import utilities.Language;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,15 +28,25 @@ public class Menu extends JMenuBar implements ActionListener
     this.pcw = pcw;
 
     // Creating the main menu objects
-    JMenu fileDropDown = new JMenu("File");
-    JMenu viewDropDown = new JMenu("View");
-    JMenu helpDropDown = new JMenu("Help");
+    JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "ファイル"));
+    JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "ビュー"));
+    JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "ビュー"));
 
     // Creating sub menu objects
-    JMenuItem exitMenuItem = new JMenuItem("Exit");
-    JMenuItem aboutMenuItem = new JMenuItem("About");
-    JMenuItem helpMenuItem = new JMenuItem("Help");
-    JCheckBoxMenuItem pieChartMenuItem = new JCheckBoxMenuItem("Pie Chart");
+    String englishText = "Exit";
+    JMenuItem exitMenuItem = new JMenuItem(Language.translate(englishText, "Sortie", "出口"));
+    exitMenuItem.setActionCommand(englishText);
+    englishText = "About";
+    JMenuItem aboutMenuItem = new JMenuItem(
+        Language.translate(englishText, "À Propos", "について"));
+    aboutMenuItem.setActionCommand(englishText);
+    englishText = "Help";
+    JMenuItem helpMenuItem = new JMenuItem(Language.translate(englishText, "Aide", "ヘルプ"));
+    helpMenuItem.setActionCommand(englishText);
+    englishText = "Pie Chart";
+    JCheckBoxMenuItem pieChartMenuItem = new JCheckBoxMenuItem(
+        Language.translate(englishText, "Diagramme Circulaire", "円グラフ"));
+    pieChartMenuItem.setActionCommand(englishText);
 
     // Adding sub menu objects to menu
     fileDropDown.add(exitMenuItem);
@@ -85,7 +98,10 @@ public class Menu extends JMenuBar implements ActionListener
     imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
     // Words that need to be under the logo
-    String companyInfo = "Fragile v1.0\n\n" + "Fragile is a modern, easy-to-use mixed-fraction calculator.\n" + "It is a product of Sagacious Media that was developed by:\n\n" + "Joshua, Andrew, Logan, Ray, Asa, Zach";
+    String companyInfo = Language.translate(
+        "Fragile v1.0\n\nFragile is a modern, easy-to-use mixed-fraction calculator.\nIt is a product of Sagacious Media that was developed by:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
+        "Fragile v1.0\n\nFragile est une calculatrice de fractions mixtes moderne et facile à utiliser.\nC'est un produit de Sagacious Media qui a été développé par:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
+        "Fragile v1.0\n\nFragileは、モダンで使いやすい混合分数計算機です。\nこれはSagacious Mediaの製品で、以下によって開発されました:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach");
 
     // Putting the String companyInfo on the JDialog
     // Creating the pane to hold the companyInfo (centered)

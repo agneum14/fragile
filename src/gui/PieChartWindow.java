@@ -2,6 +2,7 @@ package gui;
 
 import calculating.MixedFraction;
 import gui.mf.MixedFractionPanel;
+import utilities.Language;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +37,7 @@ public class PieChartWindow extends JFrame
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
     heading = new JPanel();
-    final JLabel headingLabel = new JLabel("Current Mixed Fraction");
+    final JLabel headingLabel = new JLabel(Language.translate("Current Mixed Fraction", "Fraction Mixte Actuelle", "現在の混合分数"));
     heading.add(headingLabel);
 
     draw(new MixedFraction(1, 0, 0, 1));
