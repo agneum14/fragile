@@ -1,11 +1,12 @@
 package gui;
 
+import calculating.FractionStylePublisher;
+import calculating.FractionStylePublisher.FractionStyle;
+import utilities.Language;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
-
-import utilities.Language;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,19 +18,22 @@ import java.net.URL;
 public class Menu extends JMenuBar implements ActionListener
 {
   private PieChartWindow pcw;
+  private FractionStylePublisher fractionStylePublisher;
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
    *
    * @return JMenuBar
    */
-  public Menu(PieChartWindow pcw)
+  public Menu(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher)
   {
     this.pcw = pcw;
+    this.fractionStylePublisher = fractionStylePublisher;
 
     // Creating the main menu objects
     JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "ファイル"));
     JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "ビュー"));
+    JMenu styleDropDown = new JMenu("Style");
     JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "ビュー"));
 
     // Creating sub menu objects
@@ -48,6 +52,19 @@ public class Menu extends JMenuBar implements ActionListener
         Language.translate(englishText, "Diagramme Circulaire", "円グラフ"));
     pieChartMenuItem.setActionCommand(englishText);
 
+    // style menu items
+    JRadioButton barMenuItem = new JRadioButton("Bar");
+    barMenuItem.setSelected(true);
+    JRadioButton slashMenuItem = new JRadioButton("Slash");
+    JRadioButton solidusMenuItem = new JRadioButton("Solidus");
+    ButtonGroup styleGroup = new ButtonGroup();
+    styleGroup.add(barMenuItem);
+    styleGroup.add(slashMenuItem);
+    styleGroup.add(solidusMenuItem);
+    styleDropDown.add(barMenuItem);
+    styleDropDown.add(slashMenuItem);
+    styleDropDown.add(solidusMenuItem);
+
     // Adding sub menu objects to menu
     fileDropDown.add(exitMenuItem);
     viewDropDown.add(pieChartMenuItem);
@@ -57,6 +74,7 @@ public class Menu extends JMenuBar implements ActionListener
     // Adding main menu objects to menu
     add(fileDropDown);
     add(viewDropDown);
+    add(styleDropDown);
     add(helpDropDown);
 
     // add action listeners
@@ -64,6 +82,9 @@ public class Menu extends JMenuBar implements ActionListener
     aboutMenuItem.addActionListener(this);
     helpMenuItem.addActionListener(this);
     pieChartMenuItem.addActionListener(this);
+    barMenuItem.addActionListener(this);
+    slashMenuItem.addActionListener(this);
+    solidusMenuItem.addActionListener(this);
   }
 
   /**
@@ -151,11 +172,14 @@ public class Menu extends JMenuBar implements ActionListener
       case "Pie Chart" -> pcw.toggleVisibility();
       case "About" -> displayAboutDialog();
       case "Help" -> openHelpPage();
+      case "Bar" -> fractionStylePublisher.notifyStyle(FractionStyle.BAR);
+      case "Slash" -> fractionStylePublisher.notifyStyle(FractionStyle.SLASH);
+      case "Solidus" -> fractionStylePublisher.notifyStyle(FractionStyle.SOLIDUS);
       default -> System.out.println("unknown menu option");
     }
   }
 
-  //opens up the help page method.
+  // opens up the help page method.
   private static void openHelpPage()
   {
     try
@@ -169,4 +193,3 @@ public class Menu extends JMenuBar implements ActionListener
     }
   }
 }
-

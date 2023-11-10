@@ -1,6 +1,7 @@
 package gui;
 
 import calculating.CurrentMixedFraction;
+import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
 import gui.mf.MixedFractionPanel;
@@ -31,13 +32,15 @@ public class Display extends JPanel
   private MixedFraction eval;
   private Op cop;
   private PieChartWindow pcw;
+  private FractionStylePublisher fractionStylePublisher;
 
-  public Display(PieChartWindow pcw)
+  public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher)
   {
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
 
     this.pcw = pcw;
+    this.fractionStylePublisher = fractionStylePublisher;
     eval = new MixedFraction(1, 0, 0, 1);
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
     cep.setBackground(POWDER_BLUE);
@@ -114,9 +117,10 @@ public class Display extends JPanel
     };
   }
 
-  public void addToCEP(JPanel p)
+  public void addToCEP(MixedFractionPanel p)
   {
     cep.add(p);
+    fractionStylePublisher.addSubscriber(p);
     draw();
   }
 

@@ -1,5 +1,7 @@
 package gui;
 
+import calculating.FractionStylePublisher;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +22,7 @@ public class CalculatorWindow extends JFrame
   private CalculatorButtons buttons;
   private Display display;
   private PieChartWindow pcw;
+  private FractionStylePublisher fractionStylePublisher;
 
   /**
    * Constructor
@@ -27,7 +30,8 @@ public class CalculatorWindow extends JFrame
   public CalculatorWindow()
   {
     pcw = new PieChartWindow();
-    display = new Display(pcw); // creation of the display obviously.
+    fractionStylePublisher = new FractionStylePublisher();
+    display = new Display(pcw, fractionStylePublisher); // creation of the display obviously.
     buttons = new CalculatorButtons(
         display); // creation of the calculators buttons and the actions hold the display to make changes
     setupLayout(); // creating the layout of the window.
@@ -44,7 +48,7 @@ public class CalculatorWindow extends JFrame
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(new Menu(pcw));
+    setJMenuBar(new Menu(pcw, fractionStylePublisher));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window

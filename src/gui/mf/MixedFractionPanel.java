@@ -100,6 +100,7 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
       add(fractionPanel);
     }
 
+    revalidate();
     repaint();
   }
 
