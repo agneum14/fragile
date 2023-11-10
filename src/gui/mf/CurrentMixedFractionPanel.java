@@ -1,6 +1,7 @@
 package gui.mf;
 
 import calculating.CurrentMixedFraction;
+import calculating.FractionStylePublisher.FractionStyle;
 import gui.Display;
 
 import javax.swing.*;

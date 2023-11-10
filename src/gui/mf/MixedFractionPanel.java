@@ -1,8 +1,11 @@
 package gui.mf;
 
+import calculating.FractionStylePublisher.FractionStyle;
+import calculating.FractionStyleSubscriber;
 import calculating.MixedFraction;
 import gui.Display;
 import gui.HorizontalLine;
+import gui.JPanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,9 +21,11 @@ import java.awt.*;
  * @author Andrew G. Neumann
  * @version 1.0
  */
-public class MixedFractionPanel extends JPanel
+public class MixedFractionPanel extends JPanel implements FractionStyleSubscriber
 {
   protected static final int MINUS_SIZE = 10;
+  private final int sign;
+  private final Integer num;
   protected JPanel signPanel;
   protected JPanel wholePanel;
   protected JPanel numPanel;
@@ -56,6 +61,9 @@ public class MixedFractionPanel extends JPanel
   protected MixedFractionPanel(final int sign, final Integer whole, final Integer num,
       final Integer denom)
   {
+    this.sign = sign;
+    this.num = num;
+
     setLayout(new FlowLayout(FlowLayout.LEFT));
     setBackground(Display.POWDER_BLUE);
 
@@ -64,20 +72,7 @@ public class MixedFractionPanel extends JPanel
     setNumPanel(num);
     setDenomPanel(denom);
 
-    fractionPanel = new JPanel(new GridBagLayout());
-    final GridBagConstraints c = new GridBagConstraints();
-
-    c.gridx = 0;
-    c.gridy = 0;
-    fractionPanel.add(numPanel, c);
-
-    c.gridy = 1;
-    final JPanel denomFullPanel = new JPanel();
-    denomFullPanel.setLayout(new BoxLayout(denomFullPanel, BoxLayout.PAGE_AXIS));
-    denomFullPanel.add(new JSeparator(JSeparator.HORIZONTAL));
-    denomFullPanel.add(denomPanel);
-    fractionPanel.add(denomFullPanel, c);
-    fractionPanel.setBackground(Display.POWDER_BLUE);
+    styleAsBar();
 
     draw(sign, num);
   }
@@ -173,5 +168,67 @@ public class MixedFractionPanel extends JPanel
     wholeLabel.setFont(wholeLabelFont);
     wholePanel.add(wholeLabel);
     wholePanel.setBackground(Display.POWDER_BLUE);
+  }
+
+  private void styleAsBar()
+  {
+    fractionPanel = new JPanel(new GridBagLayout());
+    final GridBagConstraints c = new GridBagConstraints();
+
+    c.gridx = 0;
+    c.gridy = 0;
+    fractionPanel.add(numPanel, c);
+
+    c.gridy = 1;
+    final JPanel denomFullPanel = new JPanel();
+    denomFullPanel.setLayout(new BoxLayout(denomFullPanel, BoxLayout.PAGE_AXIS));
+    denomFullPanel.add(new JSeparator(JSeparator.HORIZONTAL));
+    denomFullPanel.add(denomPanel);
+    fractionPanel.add(denomFullPanel, c);
+    fractionPanel.setBackground(Display.POWDER_BLUE);
+  }
+
+  private void styleAsSlash()
+  {
+    fractionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    fractionPanel.add(numPanel);
+    JLabel solidus = new JLabel("/");
+    fractionPanel.add(solidus);
+    fractionPanel.add(denomPanel);
+    fractionPanel.setBackground(Display.POWDER_BLUE);
+  }
+
+  private void styleAsSolidus()
+  {
+    fractionPanel = new JPanel()
+    {
+      @Override
+      protected void paintComponent(Graphics g)
+      {
+        super.paintComponent(g);
+
+        g.drawLine(0, getHeight(), getWidth(), 0);
+      }
+    };
+
+    fractionPanel.setLayout(new GridLayout(0, 2));
+    fractionPanel.add(numPanel);
+    fractionPanel.add(new JPanelBuilder().transparent());
+    fractionPanel.add(new JPanelBuilder().transparent());
+    fractionPanel.add(denomPanel);
+    fractionPanel.setBackground(Display.POWDER_BLUE);
+  }
+
+  @Override
+  public void handleStyle(final FractionStyle style)
+  {
+    switch (style)
+    {
+      case BAR -> styleAsBar();
+      case SLASH -> styleAsSlash();
+      default -> styleAsSolidus();
+    }
+
+    draw(sign, num);
   }
 }
