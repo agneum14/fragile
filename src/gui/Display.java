@@ -175,7 +175,7 @@ public class Display extends JPanel
       cmf.addDigit(digit);
       updateCMFP();
     }
-    else if (ac.equals(CalculatorButtons.BACKSPACE))
+    else if (ac.equals(CalculatorButtons.BACK_SPACE))
     {
       cmf.removeDigit();
       updateCMFP();

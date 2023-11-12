@@ -15,10 +15,11 @@ import java.io.IOException;
  * @author Joshua Hairston
  * @version 10/31/2023
  *
- *     This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
 public class CalculatorWindow extends JFrame
 {
+  private static final long serialVersionUID = 1L;
   private CalculatorButtons buttons;
   private Display display;
   private PieChartWindow pcw;
@@ -32,8 +33,8 @@ public class CalculatorWindow extends JFrame
     pcw = new PieChartWindow();
     fractionStylePublisher = new FractionStylePublisher();
     display = new Display(pcw, fractionStylePublisher); // creation of the display obviously.
-    buttons = new CalculatorButtons(
-        display); // creation of the calculators buttons and the actions hold the display to make changes
+    buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
+                                              // hold the display to make changes
     setupLayout(); // creating the layout of the window.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setPreferredSize(new Dimension(400, 500));
