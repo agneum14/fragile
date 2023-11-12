@@ -31,7 +31,7 @@ public class LanguagePublisher
     localeLang = switch (Locale.getDefault().getLanguage())
     {
       case "fr" -> Lang.FR;
-      case "ja" -> Lang.JA;
+      case "de" -> Lang.DE;
       default -> Lang.EN;
     };
   }
@@ -75,6 +75,6 @@ public class LanguagePublisher
    */
   public enum Lang
   {
-    EN, FR, JA
+    EN, FR, DE
   }
 }

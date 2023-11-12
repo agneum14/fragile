@@ -31,29 +31,32 @@ public class Menu extends JMenuBar implements ActionListener
     this.fractionStylePublisher = fractionStylePublisher;
 
     // Creating the main menu objects
-    JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "ファイル"));
-    JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "ビュー"));
-    JMenu styleDropDown = new JMenu("Style");
-    JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "ビュー"));
+    JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "Datei"));
+    JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "Ansehen"));
+    JMenu styleDropDown = new JMenu(Language.translate("Style", "Modèle", "Stil"));
+    JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "Hilfe"));
 
     // Creating sub menu objects
     String englishText = "Exit";
-    JMenuItem exitMenuItem = new JMenuItem(Language.translate(englishText, "Sortie", "出口"));
+    JMenuItem exitMenuItem = new JMenuItem(Language.translate(englishText, "Sortie", "Ausgang"));
     exitMenuItem.setActionCommand(englishText);
     englishText = "About";
-    JMenuItem aboutMenuItem = new JMenuItem(
-        Language.translate(englishText, "À Propos", "について"));
+    JMenuItem aboutMenuItem = new JMenuItem(Language.translate(englishText, "À Propos", "Über"));
     aboutMenuItem.setActionCommand(englishText);
     englishText = "Help";
-    JMenuItem helpMenuItem = new JMenuItem(Language.translate(englishText, "Aide", "ヘルプ"));
+    JMenuItem helpMenuItem = new JMenuItem(Language.translate(englishText, "Aide", "Hilfe"));
     helpMenuItem.setActionCommand(englishText);
     englishText = "Pie Chart";
     JCheckBoxMenuItem pieChartMenuItem = new JCheckBoxMenuItem(
-        Language.translate(englishText, "Diagramme Circulaire", "円グラフ"));
+        Language.translate(englishText, "Diagramme Circulaire", "Kreisdiagramm"));
     pieChartMenuItem.setActionCommand(englishText);
+    englishText = "Print Session";
+    JMenuItem printMenuItem = new JMenuItem(
+        Language.translate(englishText, "Session d'impression", "Sitzung drucken"));
+    printMenuItem.setActionCommand(englishText);
 
     // style menu items
-    JRadioButton barMenuItem = new JRadioButton("Bar");
+    JRadioButton barMenuItem = new JRadioButton(Language.translate("Bar", "Bar", "Bar"));
     barMenuItem.setSelected(true);
     JRadioButton slashMenuItem = new JRadioButton("Slash");
     JRadioButton solidusMenuItem = new JRadioButton("Solidus");
@@ -66,6 +69,7 @@ public class Menu extends JMenuBar implements ActionListener
     styleDropDown.add(solidusMenuItem);
 
     // Adding sub menu objects to menu
+    fileDropDown.add(printMenuItem);
     fileDropDown.add(exitMenuItem);
     viewDropDown.add(pieChartMenuItem);
     helpDropDown.add(aboutMenuItem);
@@ -79,6 +83,7 @@ public class Menu extends JMenuBar implements ActionListener
 
     // add action listeners
     exitMenuItem.addActionListener(this);
+    printMenuItem.addActionListener(this);
     aboutMenuItem.addActionListener(this);
     helpMenuItem.addActionListener(this);
     pieChartMenuItem.addActionListener(this);
@@ -122,7 +127,7 @@ public class Menu extends JMenuBar implements ActionListener
     String companyInfo = Language.translate(
         "Fragile v1.0\n\nFragile is a modern, easy-to-use mixed-fraction calculator.\nIt is a product of Sagacious Media that was developed by:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
         "Fragile v1.0\n\nFragile est une calculatrice de fractions mixtes moderne et facile à utiliser.\nC'est un produit de Sagacious Media qui a été développé par:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
-        "Fragile v1.0\n\nFragileは、モダンで使いやすい混合分数計算機です。\nこれはSagacious Mediaの製品で、以下によって開発されました:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach");
+        "Fragile v1.0\n\nFragile ist ein moderner, einfach zu bedienender Rechner für gemischte Brüche.\nEr ist ein Produkt von Sagacious Media, das entwickelt wurde von:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach");
 
     // Putting the String companyInfo on the JDialog
     // Creating the pane to hold the companyInfo (centered)
@@ -175,6 +180,7 @@ public class Menu extends JMenuBar implements ActionListener
       case "Bar" -> fractionStylePublisher.notifyStyle(FractionStyle.BAR);
       case "Slash" -> fractionStylePublisher.notifyStyle(FractionStyle.SLASH);
       case "Solidus" -> fractionStylePublisher.notifyStyle(FractionStyle.SOLIDUS);
+//      case "Print Session" -> ; //TODO Put print session action here
       default -> System.out.println("unknown menu option");
     }
   }

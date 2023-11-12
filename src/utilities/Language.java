@@ -19,13 +19,13 @@ public class Language
    */
   public static enum LocaleLanguage
   {
-    ENGLISH, FRENCH, JAPANESE;
+    ENGLISH, FRENCH, GERMAN;
   }
 
   private static final LocaleLanguage LANGUAGE = setLanguage();
 
   /**
-   * Return either the English, French, or Japanese string depending on the language from the user's
+   * Return either the English, French, or German string depending on the language from the user's
    * default locale. English is the default if the language isn't supported.
    *
    * @param english The English String
@@ -33,12 +33,12 @@ public class Language
    * @param japanese The Japanese String
    * @return The String of the corresponding language
    */
-  public static String translate(final String english, final String french, final String japanese)
+  public static String translate(final String english, final String french, final String german)
   {
     return switch (LANGUAGE)
     {
       case FRENCH -> french;
-      case JAPANESE -> japanese;
+      case GERMAN -> german;
       default -> english;
     };
   }
@@ -65,7 +65,7 @@ public class Language
     return switch (Locale.getDefault().getLanguage())
     {
       case "fr" -> LocaleLanguage.FRENCH;
-      case "ja" -> LocaleLanguage.JAPANESE;
+      case "de" -> LocaleLanguage.GERMAN;
       default -> LocaleLanguage.ENGLISH;
     };
   }
