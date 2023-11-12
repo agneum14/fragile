@@ -80,7 +80,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
     // getting the action map so the keyboard action for this button can be
     ActionMap actionMap = this.getActionMap();
-    actionMap.put(string, new PressAction(display, button));
+    actionMap.put(string, new PressAction(button));
 
     return button;
 
@@ -194,7 +194,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
     button.setActionCommand(POSITION);
     button.setIcon(icon);
     ActionMap actionMap = this.getActionMap();
-    actionMap.put(POSITION, new PressAction(display, button));
+    actionMap.put(POSITION, new PressAction(button));
     add(button, c);
 
     // The equals button

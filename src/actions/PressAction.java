@@ -20,13 +20,11 @@ public class PressAction extends AbstractAction
 {
 
   private static final long serialVersionUID = 1L;
-  private Display display;
   private JButton button;
 
-  public PressAction(Display display, JButton button)
+  public PressAction(JButton button)
   {
     super();
-    this.display = display;
     this.button = button;
   }
 
