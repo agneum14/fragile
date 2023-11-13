@@ -90,6 +90,7 @@ public class MixedFractionTest
   void reduceNegativeZero()
   {
     final MixedFraction mf = new MixedFraction(-1, 0, 0, 7);
+    mf.reduce();
 
     assertMFVars(mf, 1, 0, 0, 1);
   }

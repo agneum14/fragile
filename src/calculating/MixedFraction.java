@@ -34,7 +34,7 @@ public class MixedFraction
    * @throws IllegalArgumentException
    *           if denom is 0 or sign isn't either 1 or -1
    */
-  public MixedFraction(final int sign, final int whole, final int num, final int denom)
+  public MixedFraction(int sign, final int whole, final int num, final int denom)
       throws IllegalArgumentException
   {
     if (denom == 0)
@@ -45,6 +45,13 @@ public class MixedFraction
     {
       throw new IllegalArgumentException("sign must be 1 or -1");
     }
+
+    // make -0 unrepresentable
+    if (whole == 0 && num == 0)
+    {
+      sign = 1;
+    }
+
     this.denom = denom;
     this.num = num;
     this.sign = sign;
