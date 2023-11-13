@@ -60,31 +60,34 @@ public class MixedFractionTest
   }
 
   @Test
-  void simplify()
+  void reduce()
   {
     final MixedFraction mf = new MixedFraction(-1, 1, 14, 6);
+    mf.reduce();
 
     assertMFVars(mf, -1, 3, 1, 3);
   }
 
   @Test
-  void simplifyZero()
+  void reduceZero()
   {
     final MixedFraction mf = new MixedFraction(1, 0, 0, 3);
+    mf.reduce();
 
     assertMFVars(mf, 1, 0, 0, 1);
   }
 
   @Test
-  void simplifyNumBecomesZero()
+  void reduceNumBecomesZero()
   {
     final MixedFraction mf = new MixedFraction(1, 2, 6, 3);
+    mf.reduce();
 
     assertMFVars(mf, 1, 4, 0, 1);
   }
 
   @Test
-  void simplifyNegativeZero()
+  void reduceNegativeZero()
   {
     final MixedFraction mf = new MixedFraction(-1, 0, 0, 7);
 
@@ -98,7 +101,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 1, 1, 4);
     final MixedFraction sum = MixedFraction.add(mf1, mf2);
 
-    assertMFVars(sum, 1, 3, 3, 4);
+    assertMFVars(sum, 1, 0, 60, 16);
   }
 
   @Test
@@ -108,7 +111,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 0, 0, 5);
     final MixedFraction sum = MixedFraction.add(mf1, mf2);
 
-    assertMFVars(sum, 1, 0, 0, 1);
+    assertMFVars(sum, 1, 0, 0, 5);
   }
 
   @Test
@@ -118,7 +121,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(-1, 5, 6, 7);
     final MixedFraction sum = MixedFraction.add(mf1, mf2);
 
-    assertMFVars(sum, -1, 5, 3, 28);
+    assertMFVars(sum, -1, 0, 143, 28);
   }
 
   @Test
@@ -128,7 +131,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 1, 1, 4);
     final MixedFraction sum = MixedFraction.sub(mf1, mf2);
 
-    assertMFVars(sum, 1, 1, 1, 2);
+    assertMFVars(sum, 1, 0, 24, 16);
   }
 
   @Test
@@ -138,7 +141,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 0, 0, 5);
     final MixedFraction sum = MixedFraction.sub(mf1, mf2);
 
-    assertMFVars(sum, 1, 0, 0, 1);
+    assertMFVars(sum, 1, 0, 0, 3);
   }
 
   @Test
@@ -148,7 +151,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 5, 6, 7);
     final MixedFraction sum = MixedFraction.sub(mf1, mf2);
 
-    assertMFVars(sum, -1, 6, 17, 28);
+    assertMFVars(sum, -1, 0, 185, 28);
   }
 
   @Test
@@ -158,7 +161,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 1, 1, 2);
     final MixedFraction prod = MixedFraction.div(mf1, mf2);
 
-    assertMFVars(prod, 1, 2, 1, 3);
+    assertMFVars(prod, 1, 0, 14, 6);
   }
 
   @Test
@@ -179,7 +182,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 0, 1, 1);
     final MixedFraction prod = MixedFraction.div(mf1, mf2);
 
-    assertMFVars(prod, 1, 2, 3, 4);
+    assertMFVars(prod, 1, 0, 11, 4);
   }
 
   @Test
@@ -189,7 +192,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 1, 0, 1);
     final MixedFraction prod = MixedFraction.div(mf1, mf2);
 
-    assertMFVars(prod, 1, 2, 3, 4);
+    assertMFVars(prod, 1, 0, 11, 4);
   }
 
   @Test
@@ -199,7 +202,7 @@ public class MixedFractionTest
     final MixedFraction mf2 = new MixedFraction(1, 2, 1, 2);
     final MixedFraction prod = MixedFraction.mult(mf1, mf2);
 
-    assertMFVars(prod, 1, 3, 3, 4);
+    assertMFVars(prod, 1, 0, 15, 4);
   }
 
   @Test
