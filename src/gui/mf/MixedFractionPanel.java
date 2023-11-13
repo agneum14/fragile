@@ -25,7 +25,9 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
 {
   protected static final int MINUS_SIZE = 10;
   private final int sign;
-  private final Integer num;
+  private Integer whole;
+  private Integer num;
+  private Integer denom;
   protected JPanel signPanel;
   protected JPanel wholePanel;
   protected JPanel numPanel;
@@ -62,19 +64,21 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
       final Integer denom)
   {
     this.sign = sign;
+    this.whole = whole;
     this.num = num;
+    this.denom = denom;
 
     setLayout(new FlowLayout(FlowLayout.LEFT));
     setBackground(Display.POWDER_BLUE);
 
-    setSignPanel(sign);
-    setWholePanel(whole);
-    setNumPanel(num);
-    setDenomPanel(denom);
+    setSignPanel();
+    setWholePanel();
+    setNumPanel();
+    setDenomPanel();
 
     styleAsBar();
 
-    draw(sign, num);
+    draw();
   }
 
   /**
@@ -86,7 +90,7 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
    * @param num
    *     The numerator of the mixed fraction
    */
-  protected void draw(final int sign, final Integer num)
+  protected void draw()
   {
     removeAll();
 
@@ -110,7 +114,7 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
    * @param denom
    *     The denominator of the mixed fraction
    */
-  protected void setDenomPanel(final Integer denom)
+  protected void setDenomPanel()
   {
     final Font fracFont = new Font(getFont().getName(), Font.PLAIN, 18);
     denomPanel = new JPanel(new BorderLayout());
@@ -126,7 +130,7 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
    * @param num
    *     The numerator of the mixed fraction
    */
-  protected void setNumPanel(final Integer num)
+  protected void setNumPanel()
   {
     final Font fracFont = new Font(getFont().getName(), Font.PLAIN, 18);
     numPanel = new JPanel(new BorderLayout());
@@ -142,7 +146,7 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
    * @param sign
    *     The sign of the mixed fraction
    */
-  protected void setSignPanel(final int sign)
+  protected void setSignPanel()
   {
     if (sign == -1)
     {
@@ -161,7 +165,7 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
    * @param whole
    *     The sign of the mixed fraction
    */
-  protected void setWholePanel(final Integer whole)
+  protected void setWholePanel()
   {
     wholePanel = new JPanel(new BorderLayout());
     final JLabel wholeLabel = new JLabel(String.valueOf(whole));
@@ -230,6 +234,46 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
       default -> styleAsSolidus();
     }
 
-    draw(sign, num);
+    draw();
+  }
+
+  /**
+   * Getter for denom.
+   *
+   * @return denom
+   */
+  public Integer getDenom()
+  {
+    return denom;
+  }
+
+  /**
+   * Getter for num.
+   *
+   * @return num
+   */
+  public Integer getNum()
+  {
+    return num;
+  }
+
+  /**
+   * Getter for sign.
+   *
+   * @return sign
+   */
+  public int getSign()
+  {
+    return sign;
+  }
+
+  /**
+   * Getter for whole.
+   *
+   * @return whole
+   */
+  public Integer getWhole()
+  {
+    return whole;
   }
 }

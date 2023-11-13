@@ -1,7 +1,6 @@
 package gui.mf;
 
 import calculating.CurrentMixedFraction;
-import calculating.FractionStylePublisher.FractionStyle;
 import gui.Display;
 
 import javax.swing.*;
@@ -59,11 +58,11 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    *     The whole of the current mixed fraction
    */
   @Override
-  protected void setWholePanel(final Integer whole)
+  protected void setWholePanel()
   {
-    if (whole != null)
+    if (getWhole() != null)
     {
-      super.setWholePanel(whole);
+      super.setWholePanel();
     }
     else
     {
@@ -81,11 +80,11 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    *     The numerator of the current mixed fraction
    */
   @Override
-  protected void setNumPanel(final Integer num)
+  protected void setNumPanel()
   {
-    if (num != null)
+    if (getNum() != null)
     {
-      super.setNumPanel(num);
+      super.setNumPanel();
     }
     else
     {
@@ -103,11 +102,11 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    *     The denominator of the current mixed fraction
    */
   @Override
-  protected void setDenomPanel(final Integer denom)
+  protected void setDenomPanel()
   {
-    if (denom != null)
+    if (getDenom() != null)
     {
-      super.setDenomPanel(denom);
+      super.setDenomPanel();
     }
     else
     {
@@ -126,7 +125,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    *     Irrelevant, only used in the parent class
    */
   @Override
-  protected void draw(final int sign, final Integer num)
+  protected void draw()
   {
     removeAll();
 
