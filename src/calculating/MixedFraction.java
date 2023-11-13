@@ -77,8 +77,8 @@ public class MixedFraction
     MixedFraction f1, f2;
     int sign, num, denom;
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
     // early return for adding 0
     if (f1.getNum() == 0)
@@ -127,8 +127,8 @@ public class MixedFraction
       throw new ArithmeticException("can't divide a MixedFraction by 0");
     }
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
     num = f1.getNum() * f2.getDenom();
     denom = f1.getDenom() * f2.getNum();
@@ -151,8 +151,8 @@ public class MixedFraction
     MixedFraction f1, f2;
     int num, denom, sign;
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
     num = f1.getNum() * f2.getNum();
     denom = f1.getDenom() * f2.getDenom();
@@ -175,8 +175,8 @@ public class MixedFraction
     MixedFraction f1, f2;
     int sign, num, denom;
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
     // early return for subtracting 0
     if (f2.getNum() == 0)
@@ -208,7 +208,7 @@ public class MixedFraction
    *
    * @return The fractionalized MixedFraction
    */
-  public MixedFraction fractionalize()
+  public MixedFraction improper()
   {
     num += whole * denom;
     whole = 0;
@@ -216,6 +216,12 @@ public class MixedFraction
     return this;
   }
 
+  /**
+   * Make this MixedFraction proper, meaning the numerator is less than the denominator with the
+   * excess in the whole component.
+   * 
+   * @return The proper MixedFraction
+   */
   public MixedFraction proper()
   {
     int carry;
@@ -228,10 +234,10 @@ public class MixedFraction
   }
 
   /**
-   * Reduce this MixedFraction. If num is top-heavy, it's reduced and carried into whole. Also, if
-   * num is 0 after this operation, denom becomes 1 (simplifying the arithmetic in this class).
-   * Furthermore, if both whole and num are zero, meaning the entire MixedFraction is 0, then the
-   * sign is changed to 1, so -0 is unrepresentable.
+   * Reduce this MixedFraction. A reduced MixedFraction is proper and the numerator and denominator
+   * are in the lowest terms.
+   *
+   * @return The reduced MixedFraction
    */
   public MixedFraction reduce()
   {
