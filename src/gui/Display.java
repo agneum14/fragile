@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *     This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
@@ -201,9 +201,9 @@ public class Display extends JPanel
     {
       clear();
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
-        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
-        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION))
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
+        || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
+        || ac.equals(CalculatorButtons.DIVISION))
     {
       if (cop == Op.EQUAL)
       {
@@ -221,7 +221,7 @@ public class Display extends JPanel
       MixedFraction mf;
       try
       {
-        mf = cmf.toMixedFraction();
+        mf = new MixedFraction(cmf);
       }
       catch (IllegalArgumentException ile)
       {

@@ -29,9 +29,9 @@ public class CurrentMixedFraction
    * Add a digit to the either whole, num, or denom (depending on pos).
    *
    * @param d
-   *     The digit to add
+   *          The digit to add
    * @throws IllegalArgumentException
-   *     if d is greater than 9 or less than 0
+   *           if d is greater than 9 or less than 0
    */
   public void addDigit(int d) throws IllegalArgumentException
   {
@@ -145,23 +145,6 @@ public class CurrentMixedFraction
   }
 
   /**
-   * Create a MixedFraction from the CurrentMixedFraction.
-   *
-   * @return The MixedFraction
-   * @throws IllegalArgumentException
-   *     if whole, num, or denom is null, or denom is 0
-   */
-  public MixedFraction toMixedFraction() throws IllegalArgumentException
-  {
-    if (whole == null || num == null || denom == null)
-    {
-      throw new IllegalArgumentException("some values of the mixed fraction aren't set");
-    }
-
-    return new MixedFraction(sign, whole, num, denom);
-  }
-
-  /**
    * The getter for sign.
    *
    * @return sign
@@ -214,20 +197,21 @@ public class CurrentMixedFraction
   public enum Pos
   {
     WHOLE
-        {
-          @Override
-          public Pos prev()
-          {
-            return values()[2];
-          }
-        }, NUM, DENOM
+    {
+      @Override
+      public Pos prev()
       {
-        @Override
-        public Pos next()
-        {
-          return values()[0];
-        }
-      };
+        return values()[2];
+      }
+    },
+    NUM, DENOM
+    {
+      @Override
+      public Pos next()
+      {
+        return values()[0];
+      }
+    };
 
     public Pos next()
     {

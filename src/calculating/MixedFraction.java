@@ -34,9 +34,24 @@ public class MixedFraction
    * @throws IllegalArgumentException
    *           if denom is 0 or sign isn't either 1 or -1
    */
-  public MixedFraction(int sign, final int whole, final int num, final int denom)
+  public MixedFraction(int sign, Integer whole, Integer num, Integer denom)
       throws IllegalArgumentException
   {
+    // replace nulls with default values
+    if (whole == null)
+    {
+      whole = 0;
+    }
+    if (num == null)
+    {
+      num = 0;
+    }
+    if (denom == null)
+    {
+      denom = 1;
+    }
+
+    // throw exceptions for zero denominator or invalid sign
     if (denom == 0)
     {
       throw new IllegalArgumentException("denominator can't be 0");
@@ -68,6 +83,18 @@ public class MixedFraction
   public MixedFraction(final MixedFraction o)
   {
     this(o.sign, o.whole, o.num, o.denom);
+  }
+
+  /**
+   * This constructor creates a CurrentMixedFraction from the member variables of a
+   * CurrentMixedFraction.
+   *
+   * @param cmf
+   *          The CurrentMixedFraction to convert to a MixedFraction
+   */
+  public MixedFraction(final CurrentMixedFraction cmf)
+  {
+    this(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom());
   }
 
   /**
