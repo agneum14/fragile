@@ -68,7 +68,7 @@ public class PieChartWindow extends JFrame
     GridBagConstraints c;
 
     // create JPanel for the current mixed fraction
-    JPanel mfp = new MixedFractionPanel(mf, FractionStyle.BAR);
+    JPanel mfp = new MixedFractionPanel(mf, FractionStyle.BAR, false, true);
 
     // add pies
     pies = new JPanel(new GridLayout(0, 5));

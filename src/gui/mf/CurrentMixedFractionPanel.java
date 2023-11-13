@@ -38,7 +38,8 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    */
   public CurrentMixedFractionPanel(final CurrentMixedFraction cmf)
   {
-    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom(), FractionStyle.BAR);
+    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom(), FractionStyle.BAR, false,
+        false);
 
     // add a border to the component of the current position
     final Border border = BorderFactory.createDashedBorder(Color.BLACK);
@@ -135,5 +136,11 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     add(fractionPanel);
 
     repaint();
+  }
+
+  @Override
+  protected void update()
+  {
+    setPanelsAndDraw();
   }
 }

@@ -1,5 +1,6 @@
 package gui;
 
+import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 
 import javax.imageio.ImageIO;
@@ -15,7 +16,7 @@ import java.io.IOException;
  * @author Joshua Hairston
  * @version 10/31/2023
  *
- *          This code complies with the JMU Honor Code.
+ *     This code complies with the JMU Honor Code.
  */
 public class CalculatorWindow extends JFrame
 {
@@ -24,6 +25,7 @@ public class CalculatorWindow extends JFrame
   private Display display;
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
+  private FractionModePublisher fractionModePublisher;
 
   /**
    * Constructor
@@ -32,9 +34,11 @@ public class CalculatorWindow extends JFrame
   {
     pcw = new PieChartWindow();
     fractionStylePublisher = new FractionStylePublisher();
-    display = new Display(pcw, fractionStylePublisher); // creation of the display obviously.
+    fractionModePublisher = new FractionModePublisher();
+    display = new Display(pcw, fractionStylePublisher,
+        fractionModePublisher); // creation of the display obviously.
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
-                                              // hold the display to make changes
+    // hold the display to make changes
     setupLayout(); // creating the layout of the window.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setPreferredSize(new Dimension(400, 500));
@@ -49,7 +53,7 @@ public class CalculatorWindow extends JFrame
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(new Menu(pcw, fractionStylePublisher));
+    setJMenuBar(new Menu(pcw, fractionStylePublisher, fractionModePublisher));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window

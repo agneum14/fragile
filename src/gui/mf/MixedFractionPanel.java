@@ -1,6 +1,7 @@
 package gui.mf;
 
 import calculating.FractionStylePublisher.FractionStyle;
+import calculating.FractionModeSubscriber;
 import calculating.FractionStyleSubscriber;
 import calculating.MixedFraction;
 import gui.Display;
@@ -21,10 +22,11 @@ import java.awt.*;
  * @author Andrew G. Neumann
  * @version 1.0
  */
-public class MixedFractionPanel extends JPanel implements FractionStyleSubscriber
+public class MixedFractionPanel extends JPanel
+    implements FractionStyleSubscriber, FractionModeSubscriber
 {
   protected static final int MINUS_SIZE = 10;
-  private final int sign;
+  private int sign;
   private Integer whole;
   private Integer num;
   private Integer denom;
@@ -36,6 +38,8 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
   protected JPanel fractionPanel;
 
   private FractionStyle style;
+  private boolean proper;
+  private boolean reduced;
 
   /**
    * This constructor constructs the JPanel from the given MixedFraction.
@@ -43,9 +47,10 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
    * @param mf
    *     The MixedFraction to display
    */
-  public MixedFractionPanel(final MixedFraction mf, FractionStyle style)
+  public MixedFractionPanel(final MixedFraction mf, FractionStyle style, boolean proper,
+      boolean reduced)
   {
-    this(mf.getSign(), mf.getWhole(), mf.getNum(), mf.getDenom(), style);
+    this(mf.getSign(), mf.getWhole(), mf.getNum(), mf.getDenom(), style, proper, reduced);
   }
 
   /**
@@ -64,17 +69,24 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
    *     The denominator of the mixed fraction
    */
   protected MixedFractionPanel(final int sign, final Integer whole, final Integer num,
-      final Integer denom, FractionStyle style)
+      final Integer denom, FractionStyle style, boolean proper, boolean reduced)
   {
     this.sign = sign;
     this.whole = whole;
     this.num = num;
     this.denom = denom;
     this.style = style;
+    this.proper = proper;
+    this.reduced = reduced;
 
     setLayout(new FlowLayout(FlowLayout.LEFT));
     setBackground(Display.POWDER_BLUE);
 
+    update();
+  }
+
+  protected void setPanelsAndDraw()
+  {
     setSignPanel();
     setWholePanel();
     setNumPanel();
@@ -239,6 +251,44 @@ public class MixedFractionPanel extends JPanel implements FractionStyleSubscribe
     }
 
     draw();
+  }
+
+  protected void update()
+  {
+    MixedFraction mf = new MixedFraction(sign, whole, num, denom);
+
+    if (reduced)
+    {
+      mf.reduce();
+    }
+    else if (proper)
+    {
+      mf.proper();
+    }
+    else
+    {
+      mf.improper();
+    }
+    sign = mf.getSign();
+    whole = mf.getWhole();
+    num = mf.getNum();
+    denom = mf.getDenom();
+
+    setPanelsAndDraw();
+  }
+
+  @Override
+  public void handleProperMode(boolean proper)
+  {
+    this.proper = proper;
+    update();
+  }
+
+  @Override
+  public void handleReducedMode(boolean reduced)
+  {
+    this.reduced = reduced;
+    update();
   }
 
   /**

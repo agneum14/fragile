@@ -1,5 +1,6 @@
 package gui;
 
+import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 import calculating.FractionStylePublisher.FractionStyle;
 import utilities.Language;
@@ -20,19 +21,26 @@ public class Menu extends JMenuBar implements ActionListener
 {
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
+  private FractionModePublisher fractionModePublisher;
+
+  private final JCheckBoxMenuItem properMenuItem;
+  private final JCheckBoxMenuItem reducedMenuItem;
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
    *
    * @return JMenuBar
    */
-  public Menu(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher)
+  public Menu(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
+      FractionModePublisher fractionModePublisher)
   {
     this.pcw = pcw;
     this.fractionStylePublisher = fractionStylePublisher;
+    this.fractionModePublisher = fractionModePublisher;
 
     // Creating the main menu objects
     JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "Datei"));
+    JMenu modeDropDown = new JMenu("Mode");
     JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "Ansehen"));
     JMenu styleDropDown = new JMenu(Language.translate("Style", "Modèle", "Stil"));
     JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "Hilfe"));
@@ -69,6 +77,14 @@ public class Menu extends JMenuBar implements ActionListener
     styleDropDown.add(slashMenuItem);
     styleDropDown.add(solidusMenuItem);
 
+    // mode menu items
+    JCheckBoxMenuItem properMenuItem = new JCheckBoxMenuItem("Proper");
+    this.properMenuItem = properMenuItem;
+    modeDropDown.add(properMenuItem);
+    JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
+    this.reducedMenuItem = reducedMenuItem;
+    modeDropDown.add(reducedMenuItem);
+
     // Adding sub menu objects to menu
     fileDropDown.add(printMenuItem);
     fileDropDown.add(exitMenuItem);
@@ -78,6 +94,7 @@ public class Menu extends JMenuBar implements ActionListener
 
     // Adding main menu objects to menu
     add(fileDropDown);
+    add(modeDropDown);
     add(viewDropDown);
     add(styleDropDown);
     add(helpDropDown);
@@ -91,6 +108,8 @@ public class Menu extends JMenuBar implements ActionListener
     barMenuItem.addActionListener(this);
     slashMenuItem.addActionListener(this);
     solidusMenuItem.addActionListener(this);
+    properMenuItem.addActionListener(this);
+    reducedMenuItem.addActionListener(this);
   }
 
   /**
@@ -181,7 +200,9 @@ public class Menu extends JMenuBar implements ActionListener
       case "Bar" -> fractionStylePublisher.notifyStyle(FractionStyle.BAR);
       case "Slash" -> fractionStylePublisher.notifyStyle(FractionStyle.SLASH);
       case "Solidus" -> fractionStylePublisher.notifyStyle(FractionStyle.SOLIDUS);
-//      case "Print Session" -> ; //TODO Put print session action here
+      case "Proper" -> fractionModePublisher.notifyProperMode(properMenuItem.isSelected());
+      case "Reduced" -> fractionModePublisher.notifyReducedMode(reducedMenuItem.isSelected());
+      //      case "Print Session" -> ; //TODO Put print session action here
       default -> System.out.println("unknown menu option");
     }
   }
@@ -194,7 +215,8 @@ public class Menu extends JMenuBar implements ActionListener
       File fileEnglish = new File("res/help.html");
       File fileGerman = new File("res/helpGER.html");
       File fileFrench = new File("res/helpFR.html");
-      switch(Locale.getDefault().getLanguage()) {
+      switch (Locale.getDefault().getLanguage())
+      {
         case "fr" -> Desktop.getDesktop().browse(fileFrench.toURI());
         case "de" -> Desktop.getDesktop().browse(fileGerman.toURI());
         default -> Desktop.getDesktop().browse(fileEnglish.toURI());
