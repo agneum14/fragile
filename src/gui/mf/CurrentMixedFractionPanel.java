@@ -1,6 +1,7 @@
 package gui.mf;
 
 import calculating.CurrentMixedFraction;
+import calculating.FractionStylePublisher.FractionStyle;
 import gui.Display;
 
 import javax.swing.*;
@@ -37,7 +38,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    */
   public CurrentMixedFractionPanel(final CurrentMixedFraction cmf)
   {
-    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom());
+    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom(), FractionStyle.BAR);
 
     // add a border to the component of the current position
     final Border border = BorderFactory.createDashedBorder(Color.BLACK);

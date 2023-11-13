@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *          This code complies with the JMU Honor Code.
+ *     This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
@@ -139,6 +139,7 @@ public class Display extends JPanel
 
   public void reset()
   {
+    fractionStylePublisher.removeAllSubscribers();
     clearCEP();
     clear();
     draw();
@@ -201,9 +202,9 @@ public class Display extends JPanel
     {
       clear();
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
-        || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
-        || ac.equals(CalculatorButtons.DIVISION))
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
+        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
+        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION))
     {
       if (cop == Op.EQUAL)
       {
@@ -211,7 +212,7 @@ public class Display extends JPanel
         {
           acToOp(ac);
           reset();
-          addToCEP(new MixedFractionPanel(eval));
+          addToCEP(new MixedFractionPanel(eval, fractionStylePublisher.getStyle()));
           addToCEP(new JLabel(ac));
 
           return;
@@ -263,13 +264,13 @@ public class Display extends JPanel
         clearCEP();
       }
 
-      addToCEP(new MixedFractionPanel(mf));
+      addToCEP(new MixedFractionPanel(mf, fractionStylePublisher.getStyle()));
       addToCEP(new JLabel(ac));
 
       if (ac.equals(CalculatorButtons.EQUALS))
       {
         pcw.draw(eval);
-        addToCEP(new MixedFractionPanel(eval));
+        addToCEP(new MixedFractionPanel(eval, fractionStylePublisher.getStyle()));
       }
 
       clear();
