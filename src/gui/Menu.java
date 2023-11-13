@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 
 public class Menu extends JMenuBar implements ActionListener
 {
@@ -190,8 +191,14 @@ public class Menu extends JMenuBar implements ActionListener
   {
     try
     {
-      File file = new File("res/help.html");
-      Desktop.getDesktop().browse(file.toURI());
+      File fileEnglish = new File("res/help.html");
+      File fileGerman = new File("res/helpGER.html");
+      File fileFrench = new File("res/helpFR.html");
+      switch(Locale.getDefault().getLanguage()) {
+        case "fr" -> Desktop.getDesktop().browse(fileFrench.toURI());
+        case "de" -> Desktop.getDesktop().browse(fileGerman.toURI());
+        default -> Desktop.getDesktop().browse(fileEnglish.toURI());
+      }
     }
     catch (IOException e)
     {
