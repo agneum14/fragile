@@ -34,7 +34,6 @@ public class Fragile implements Runnable
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    Locale.setDefault(Locale.GERMAN);
     CalculatorWindow window = new CalculatorWindow();
 
   }
