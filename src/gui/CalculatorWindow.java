@@ -5,6 +5,8 @@ import calculating.FractionStylePublisher;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,13 +19,14 @@ import java.io.IOException;
  *
  *          This code complies with the JMU Honor Code.
  */
-public class CalculatorWindow extends JFrame
+public class CalculatorWindow extends JFrame implements ComponentListener
 {
   private static final long serialVersionUID = 1L;
   private CalculatorButtons buttons;
   private Display display;
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
+  private History history;
 
   /**
    * Constructor
@@ -33,8 +36,9 @@ public class CalculatorWindow extends JFrame
     pcw = new PieChartWindow();
     fractionStylePublisher = new FractionStylePublisher();
     display = new Display(pcw, fractionStylePublisher); // creation of the display obviously.
+    history = new History(this);
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
-                                              // hold the display to make changes
+    this.addComponentListener(this);                                         // hold the display to make changes
     setupLayout(); // creating the layout of the window.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setPreferredSize(new Dimension(400, 500));
@@ -74,5 +78,35 @@ public class CalculatorWindow extends JFrame
 
     // Adding the display
     add(display, BorderLayout.CENTER);
+  }
+
+  @Override
+  public void componentResized(ComponentEvent e)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void componentMoved(ComponentEvent e)
+  {
+    int x = this.getX() + this.getWidth() - 8;
+    int y = this.getY() + 110;
+    history.setHistoryLocation(x,y);
+    
+  }
+
+  @Override
+  public void componentShown(ComponentEvent e)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void componentHidden(ComponentEvent e)
+  {
+    // TODO Auto-generated method stub
+    
   }
 }

@@ -33,12 +33,12 @@ public class Display extends JPanel
   private Op cop;
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
+  private History history;
 
   public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher)
   {
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
-
     this.pcw = pcw;
     this.fractionStylePublisher = fractionStylePublisher;
     eval = new MixedFraction(1, 0, 0, 1);
