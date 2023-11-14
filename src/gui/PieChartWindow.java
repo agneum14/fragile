@@ -1,5 +1,6 @@
 package gui;
 
+import calculating.FractionStylePublisher.FractionStyle;
 import calculating.MixedFraction;
 import gui.mf.MixedFractionPanel;
 import utilities.Language;
@@ -37,7 +38,9 @@ public class PieChartWindow extends JFrame
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
     heading = new JPanel();
-    final JLabel headingLabel = new JLabel(Language.translate("Current Mixed Fraction", "Fraction Mixte Actuelle", "Aktuelle Gemischte Fraktion"));
+    final JLabel headingLabel = new JLabel(
+        Language.translate("Current Mixed Fraction", "Fraction Mixte Actuelle",
+            "Aktuelle Gemischte Fraktion"));
     heading.add(headingLabel);
 
     draw(new MixedFraction(1, 0, 0, 1));
@@ -65,7 +68,7 @@ public class PieChartWindow extends JFrame
     GridBagConstraints c;
 
     // create JPanel for the current mixed fraction
-    JPanel mfp = new MixedFractionPanel(mf);
+    JPanel mfp = new MixedFractionPanel(mf, FractionStyle.BAR, false, true);
 
     // add pies
     pies = new JPanel(new GridLayout(0, 5));

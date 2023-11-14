@@ -91,18 +91,6 @@ public class CurrentMixedFractionTest
   }
 
   @Test
-  void toMixedFractionNull()
-  {
-    final CurrentMixedFraction cmf = new CurrentMixedFraction();
-
-    final Throwable e = assertThrows(IllegalArgumentException.class, () -> {
-      cmf.toMixedFraction();
-    });
-
-    assertEquals("some values of the mixed fraction aren't set", e.getMessage());
-  }
-
-  @Test
   void toMixedFraction()
   {
     final CurrentMixedFraction cmf = new CurrentMixedFraction();
@@ -115,11 +103,11 @@ public class CurrentMixedFractionTest
     cmf.nextPos();
     cmf.addDigit(1);
     cmf.addDigit(5);
-    final MixedFraction mf = cmf.toMixedFraction();
+    final MixedFraction mf = new MixedFraction(cmf);
 
     assertEquals(-1, mf.getSign());
     assertEquals(15, mf.getWhole());
-    assertEquals(1, mf.getNum());
-    assertEquals(3, mf.getDenom());
+    assertEquals(5, mf.getNum());
+    assertEquals(15, mf.getDenom());
   }
 }

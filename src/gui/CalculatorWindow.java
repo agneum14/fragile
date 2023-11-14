@@ -1,5 +1,6 @@
 package gui;
 
+import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 
 import javax.imageio.ImageIO;
@@ -7,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +23,7 @@ import java.io.IOException;
  *
  *          This code complies with the JMU Honor Code.
  */
-public class CalculatorWindow extends JFrame implements ComponentListener
+public class CalculatorWindow extends JFrame implements ComponentListener, WindowListener
 {
   private static final long serialVersionUID = 1L;
   private CalculatorButtons buttons;
@@ -27,6 +31,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
   private History history;
+  private FractionModePublisher fractionModePublisher;
 
   /**
    * Constructor
@@ -35,10 +40,12 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   {
     pcw = new PieChartWindow();
     fractionStylePublisher = new FractionStylePublisher();
-    display = new Display(pcw, fractionStylePublisher); // creation of the display obviously.
-    history = new History(this);
+    history = new History();
+    fractionModePublisher = new FractionModePublisher();
+    display = new Display(pcw, fractionStylePublisher, fractionModePublisher); // creation of the display obviously.
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
-    this.addComponentListener(this);                                         // hold the display to make changes
+    this.addComponentListener(this); // hold the display to make changes
+    this.addWindowListener(this);
     setupLayout(); // creating the layout of the window.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setPreferredSize(new Dimension(400, 500));
@@ -53,7 +60,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(new Menu(pcw, fractionStylePublisher));
+    setJMenuBar(new Menu(pcw, fractionStylePublisher, fractionModePublisher));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window
@@ -80,33 +87,83 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     add(display, BorderLayout.CENTER);
   }
 
-  @Override
-  public void componentResized(ComponentEvent e)
-  {
-    // TODO Auto-generated method stub
-    
-  }
-
+  
+  /**
+   * Method changes the history classes position dependent on the position of the window.
+   */
   @Override
   public void componentMoved(ComponentEvent e)
   {
     int x = this.getX() + this.getWidth() - 8;
     int y = this.getY() + 110;
-    history.setHistoryLocation(x,y);
-    
+    history.setHistoryLocation(x, y);
+
   }
 
   @Override
   public void componentShown(ComponentEvent e)
   {
-    // TODO Auto-generated method stub
-    
+    return;
   }
 
   @Override
   public void componentHidden(ComponentEvent e)
   {
-    // TODO Auto-generated method stub
+    return;
+  }
+
+
+  @Override
+  public void componentResized(ComponentEvent e)
+  {
+    return;
     
+  }
+
+  @Override
+  public void windowOpened(WindowEvent e)
+  {
+   return;
+    
+  }
+
+  @Override
+  public void windowClosing(WindowEvent e)
+  {
+    return;
+  }
+
+  @Override
+  public void windowClosed(WindowEvent e)
+  {
+    return;
+  }
+  /**
+   * closes when the window disappears.
+   */
+  @Override
+  public void windowIconified(WindowEvent e)
+  {
+    history.setVisible(false);
+  }
+  /**
+   * Opens when the window appears.
+   */
+  @Override
+  public void windowDeiconified(WindowEvent e)
+  {
+    history.setVisible(true);
+  }
+
+  @Override
+  public void windowActivated(WindowEvent e)
+  {
+    return;
+  }
+
+  @Override
+  public void windowDeactivated(WindowEvent e)
+  {
+    return;
   }
 }

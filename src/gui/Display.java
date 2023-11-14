@@ -1,6 +1,7 @@
 package gui;
 
 import calculating.CurrentMixedFraction;
+import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
@@ -34,13 +35,16 @@ public class Display extends JPanel
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
   private History history;
+  private FractionModePublisher fractionModePublisher;
 
-  public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher)
+  public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
+      FractionModePublisher fractionModePublisher)
   {
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
     this.pcw = pcw;
     this.fractionStylePublisher = fractionStylePublisher;
+    this.fractionModePublisher = fractionModePublisher;
     eval = new MixedFraction(1, 0, 0, 1);
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
     cep.setBackground(POWDER_BLUE);
@@ -121,6 +125,7 @@ public class Display extends JPanel
   {
     cep.add(p);
     fractionStylePublisher.addSubscriber(p);
+    fractionModePublisher.addSubscriber(p);
     draw();
   }
 
@@ -139,6 +144,7 @@ public class Display extends JPanel
 
   public void reset()
   {
+    fractionStylePublisher.removeAllSubscribers();
     clearCEP();
     clear();
     draw();
@@ -211,7 +217,8 @@ public class Display extends JPanel
         {
           acToOp(ac);
           reset();
-          addToCEP(new MixedFractionPanel(eval));
+          addToCEP(new MixedFractionPanel(eval, fractionStylePublisher.getStyle(),
+              fractionModePublisher.getProper(), fractionModePublisher.getReduced()));
           addToCEP(new JLabel(ac));
 
           return;
@@ -221,7 +228,7 @@ public class Display extends JPanel
       MixedFraction mf;
       try
       {
-        mf = cmf.toMixedFraction();
+        mf = new MixedFraction(cmf);
       }
       catch (IllegalArgumentException ile)
       {
@@ -263,13 +270,15 @@ public class Display extends JPanel
         clearCEP();
       }
 
-      addToCEP(new MixedFractionPanel(mf));
+      addToCEP(new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
+          fractionModePublisher.getProper(), fractionModePublisher.getReduced()));
       addToCEP(new JLabel(ac));
 
       if (ac.equals(CalculatorButtons.EQUALS))
       {
         pcw.draw(eval);
-        addToCEP(new MixedFractionPanel(eval));
+        addToCEP(new MixedFractionPanel(eval, fractionStylePublisher.getStyle(),
+            fractionModePublisher.getProper(), fractionModePublisher.getReduced()));
       }
 
       clear();

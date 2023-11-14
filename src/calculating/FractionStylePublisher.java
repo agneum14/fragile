@@ -59,6 +59,13 @@ public class FractionStylePublisher
   }
 
   /**
+   * Remove all FractionModeSubscribers.
+   */
+  public void removeAllSubscribers() {
+      subscribers.removeAll(subscribers);
+  }
+
+  /**
    * Notify all the subscribers the mixed fraction style has changed.
    *
    * @param fractionStyle
