@@ -116,7 +116,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
   @Override
   public void componentResized(ComponentEvent e)
   {
-    return;
+    componentMoved(e);
     
   }
 
@@ -158,12 +158,10 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
   @Override
   public void windowActivated(WindowEvent e)
   {
-    return;
   }
 
   @Override
   public void windowDeactivated(WindowEvent e)
   {
-    return;
   }
 }
