@@ -114,10 +114,14 @@ public class MixedFractionPanel extends JPanel
     {
       add(signPanel);
     }
-    add(wholePanel);
-    if (num != 0)
-    {
-      add(fractionPanel);
+
+    if (whole == 0 && num != 0) {
+        add(fractionPanel);
+    } else {
+        add(wholePanel);
+        if (num != 0) {
+            add(fractionPanel);
+        }
     }
 
     revalidate();
