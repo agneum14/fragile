@@ -59,7 +59,6 @@ public class Display extends JPanel
   {
     GridBagConstraints c;
     removeAll();
-    JPanel empty;
     // add current expression panel
     {
       c = new GridBagConstraints();
@@ -217,8 +216,7 @@ public class Display extends JPanel
         {
           acToOp(ac);
           reset();
-          addToCEP(new MixedFractionPanel(eval, fractionStylePublisher.getStyle(),
-              fractionModePublisher.getProper(), fractionModePublisher.getReduced()));
+          addToCEP(createMixedFractionPanel(eval));
           addToCEP(new JLabel(ac));
 
           return;
@@ -270,20 +268,24 @@ public class Display extends JPanel
         clearCEP();
       }
 
-      addToCEP(new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
-          fractionModePublisher.getProper(), fractionModePublisher.getReduced()));
+      addToCEP(createMixedFractionPanel(mf));
       addToCEP(new JLabel(ac));
 
       if (ac.equals(CalculatorButtons.EQUALS))
       {
         pcw.draw(eval);
-        addToCEP(new MixedFractionPanel(eval, fractionStylePublisher.getStyle(),
-            fractionModePublisher.getProper(), fractionModePublisher.getReduced()));
+        addToCEP(createMixedFractionPanel(eval));
       }
 
       clear();
 
       acToOp(ac);
     }
+  }
+
+  public MixedFractionPanel createMixedFractionPanel(final MixedFraction mf)
+  {
+    return new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
+        fractionModePublisher.getProper(), fractionModePublisher.getReduced());
   }
 }
