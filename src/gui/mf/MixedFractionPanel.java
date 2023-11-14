@@ -18,7 +18,7 @@ import java.awt.*;
  * numerator component is also 0. The numerator panel isn't displayed if the numerator component is
  * 0. There are 3 fraction panel styles as detailed in the Domain Glossary: bar, slash, and solidus.
  * MixedFractionPanels listen for changes in this style and update the fraction panel accordingly.
- * There are also two modes: proper and reduced, also defined in the Domain Glossary. Changes in
+ * There are two fraction modes: proper and reduced, also defined in the Domain Glossary. Changes in
  * these modes are listened for as well.
  *
  * This work complies with the JMU Honor Code

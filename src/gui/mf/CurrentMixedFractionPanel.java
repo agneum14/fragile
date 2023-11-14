@@ -55,9 +55,6 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   /**
    * Set the whole panel. If whole isn't null, the super method is used. Otherwise, a blank JPanel
    * is used
-   *
-   * @param whole
-   *     The whole of the current mixed fraction
    */
   @Override
   protected void setWholePanel()
@@ -77,9 +74,6 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   /**
    * Set the num panel. If num isn't null, the super method is used. Otherwise, a blank JPanel is
    * used
-   *
-   * @param num
-   *     The numerator of the current mixed fraction
    */
   @Override
   protected void setNumPanel()
@@ -99,9 +93,6 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   /**
    * Set the denom panel. If dneom isn't null, the super method is used. Otherwise, a blank JPanel
    * is used
-   *
-   * @param denom
-   *     The denominator of the current mixed fraction
    */
   @Override
   protected void setDenomPanel()
@@ -120,11 +111,6 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
 
   /**
    * Add all the panels to the JPanel and repaint.
-   *
-   * @param sign
-   *     Irrelevant, only used in the parent class
-   * @param num
-   *     Irrelevant, only used in the parent class
    */
   @Override
   protected void draw()
@@ -138,6 +124,10 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     repaint();
   }
 
+  /**
+   * Override update so the current mixed fraction isn't manipulated when the reduced or proper mode
+   * is set.
+   */
   @Override
   protected void update()
   {
