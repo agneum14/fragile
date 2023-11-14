@@ -1,8 +1,6 @@
 package app;
 
-import java.awt.GraphicsEnvironment;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.SwingUtilities;
@@ -35,7 +33,5 @@ public class Fragile implements Runnable
       e.printStackTrace();
     }
     CalculatorWindow window = new CalculatorWindow();
-
   }
-
 }

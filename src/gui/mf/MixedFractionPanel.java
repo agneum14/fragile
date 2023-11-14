@@ -1,7 +1,7 @@
 package gui.mf;
 
-import calculating.FractionStylePublisher.FractionStyle;
 import calculating.FractionModeSubscriber;
+import calculating.FractionStylePublisher.FractionStyle;
 import calculating.FractionStyleSubscriber;
 import calculating.MixedFraction;
 import gui.Display;
@@ -12,10 +12,14 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class visually represents a MixedFraction with a JPanel. The minus sign (if it exists) is
- * displayed leftmost, followed by the whole number, followed by the fraction. The fraction (as in
- * not the negative sign or the whole number) is comprised the numerator, solidus, and denominator
- * in a vertical stack. The fraction will not be displayed if the numerator is 0.
+ * This class visually represents a MixedFraction with a JPanel. The sign is displayed leftmost,
+ * followed by the whole and the fraction panel. The sign panel isn't displayed unless the sign
+ * component is -1. The whole panel isn't displayed if the whole component is 0, unless the
+ * numerator component is also 0. The numerator panel isn't displayed if the numerator component is
+ * 0. There are 3 fraction panel styles as detailed in the Domain Glossary: bar, slash, and solidus.
+ * MixedFractionPanels listen for changes in this style and update the fraction panel accordingly.
+ * There are two fraction modes: proper and reduced, also defined in the Domain Glossary. Changes in
+ * these modes are listened for as well.
  *
  * This work complies with the JMU Honor Code
  *
@@ -26,38 +30,43 @@ public class MixedFractionPanel extends JPanel
     implements FractionStyleSubscriber, FractionModeSubscriber
 {
   protected static final int MINUS_SIZE = 10;
-  private int sign;
-  private Integer whole;
-  private Integer num;
-  private Integer denom;
-
   protected JPanel signPanel;
   protected JPanel wholePanel;
   protected JPanel numPanel;
   protected JPanel denomPanel;
   protected JPanel fractionPanel;
 
-  private FractionStyle style;
+  private int sign;
+  private Integer whole;
+  private Integer num;
+  private Integer denom;
+
+  private final FractionStyle style;
   private boolean proper;
   private boolean reduced;
 
   /**
-   * This constructor constructs the JPanel from the given MixedFraction.
+   * This constructor constructs the JPanel from the given MixedFraction, fraction style, proper
+   * mode and reduced mode.
    *
    * @param mf
    *     The MixedFraction to display
+   * @param style
+   *     The fraction style
+   * @param proper
+   *     The fraction proper mode
+   * @param reduced
+   *     The fraction reduced mode
    */
-  public MixedFractionPanel(final MixedFraction mf, FractionStyle style, boolean proper,
-      boolean reduced)
+  public MixedFractionPanel(final MixedFraction mf, final FractionStyle style, final boolean proper,
+      final boolean reduced)
   {
     this(mf.getSign(), mf.getWhole(), mf.getNum(), mf.getDenom(), style, proper, reduced);
   }
 
   /**
    * This constructor constructs the JPanel given the sign, whole, num, and denom of a mixed
-   * fraction. For this class, this constructor is called from the constructor that accepts a
-   * MixedFraction, the Integer values will never be null. This exists for compatbility with the
-   * CurrentMixedFractionPanel class, which extends this class
+   * fraction. The fraction style, proper mode, and reduced mode are also specified.
    *
    * @param sign
    *     The sign of the mixed fraction
@@ -67,9 +76,15 @@ public class MixedFractionPanel extends JPanel
    *     The numerator of the mixed fraction
    * @param denom
    *     The denominator of the mixed fraction
+   * @param style
+   *     The fraction style
+   * @param proper
+   *     The proper mode
+   * @param reduced
+   *     The reduced mode
    */
   protected MixedFractionPanel(final int sign, final Integer whole, final Integer num,
-      final Integer denom, FractionStyle style, boolean proper, boolean reduced)
+      final Integer denom, final FractionStyle style, final boolean proper, final boolean reduced)
   {
     this.sign = sign;
     this.whole = whole;
@@ -85,6 +100,10 @@ public class MixedFractionPanel extends JPanel
     update();
   }
 
+  /**
+   * Set all component panels from the component member variables (i.e sign, whole, num and denom)
+   * and draw the panel.
+   */
   protected void setPanelsAndDraw()
   {
     setSignPanel();
@@ -98,13 +117,7 @@ public class MixedFractionPanel extends JPanel
   }
 
   /**
-   * Add all the panels to the JPanel and repaint. The sign panel is only added if sign is -1, and
-   * the fraction panel is only added if num isn't 0
-   *
-   * @param sign
-   *     The sign of the mixed fraction
-   * @param num
-   *     The numerator of the mixed fraction
+   * Add all component panels (in compliance with #3886) to the JPanel and repaint.
    */
   protected void draw()
   {
@@ -114,10 +127,18 @@ public class MixedFractionPanel extends JPanel
     {
       add(signPanel);
     }
-    add(wholePanel);
-    if (num != 0)
+
+    if (whole == 0 && num != 0)
     {
       add(fractionPanel);
+    }
+    else
+    {
+      add(wholePanel);
+      if (num != 0)
+      {
+        add(fractionPanel);
+      }
     }
 
     revalidate();
@@ -126,9 +147,6 @@ public class MixedFractionPanel extends JPanel
 
   /**
    * Set the denom panel.
-   *
-   * @param denom
-   *     The denominator of the mixed fraction
    */
   protected void setDenomPanel()
   {
@@ -142,9 +160,6 @@ public class MixedFractionPanel extends JPanel
 
   /**
    * Set the num panel.
-   *
-   * @param num
-   *     The numerator of the mixed fraction
    */
   protected void setNumPanel()
   {
@@ -158,9 +173,6 @@ public class MixedFractionPanel extends JPanel
 
   /**
    * Set the sign panel.
-   *
-   * @param sign
-   *     The sign of the mixed fraction
    */
   protected void setSignPanel()
   {
@@ -177,9 +189,6 @@ public class MixedFractionPanel extends JPanel
 
   /**
    * Set the whole panel.
-   *
-   * @param whole
-   *     The sign of the mixed fraction
    */
   protected void setWholePanel()
   {
@@ -191,6 +200,9 @@ public class MixedFractionPanel extends JPanel
     wholePanel.setBackground(Display.POWDER_BLUE);
   }
 
+  /**
+   * Style the fraction panel in the bar style.
+   */
   private void styleAsBar()
   {
     fractionPanel = new JPanel(new GridBagLayout());
@@ -209,22 +221,28 @@ public class MixedFractionPanel extends JPanel
     fractionPanel.setBackground(Display.POWDER_BLUE);
   }
 
+  /**
+   * Style the fraction panel in the slash style.
+   */
   private void styleAsSlash()
   {
     fractionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     fractionPanel.add(numPanel);
-    JLabel solidus = new JLabel("/");
+    final JLabel solidus = new JLabel("/");
     fractionPanel.add(solidus);
     fractionPanel.add(denomPanel);
     fractionPanel.setBackground(Display.POWDER_BLUE);
   }
 
+  /**
+   * Style the fraction panel in the solidus style.
+   */
   private void styleAsSolidus()
   {
     fractionPanel = new JPanel()
     {
       @Override
-      protected void paintComponent(Graphics g)
+      protected void paintComponent(final Graphics g)
       {
         super.paintComponent(g);
 
@@ -240,22 +258,12 @@ public class MixedFractionPanel extends JPanel
     fractionPanel.setBackground(Display.POWDER_BLUE);
   }
 
-  @Override
-  public void handleStyle(final FractionStyle style)
-  {
-    switch (style)
-    {
-      case BAR -> styleAsBar();
-      case SLASH -> styleAsSlash();
-      default -> styleAsSolidus();
-    }
-
-    draw();
-  }
-
+  /**
+   * Update the panel with the current style, proper mode, and reduce mode.
+   */
   protected void update()
   {
-    MixedFraction mf = new MixedFraction(sign, whole, num, denom);
+    final MixedFraction mf = new MixedFraction(sign, whole, num, denom);
 
     if (reduced)
     {
@@ -277,17 +285,46 @@ public class MixedFractionPanel extends JPanel
     setPanelsAndDraw();
   }
 
+  /**
+   * Update the fraction style.
+   *
+   * @param fractionStyle
+   *     The fraction style
+   */
   @Override
-  public void handleProperMode(boolean proper)
+  public void handleStyle(final FractionStyle fractionStyle)
   {
-    this.proper = proper;
+    switch (fractionStyle)
+    {
+      case BAR -> styleAsBar();
+      case SLASH -> styleAsSlash();
+      default -> styleAsSolidus();
+    }
+  }
+
+  /**
+   * Update the fraction proper mode.
+   *
+   * @param properMode
+   *     The updated proper mode
+   */
+  @Override
+  public void handleProperMode(final boolean properMode)
+  {
+    this.proper = properMode;
     update();
   }
 
+  /**
+   * Update the fraction reduced mode.
+   *
+   * @param reducedMode
+   *     The updated reduced mode
+   */
   @Override
-  public void handleReducedMode(boolean reduced)
+  public void handleReducedMode(final boolean reducedMode)
   {
-    this.reduced = reduced;
+    this.reduced = reducedMode;
     update();
   }
 
