@@ -47,7 +47,6 @@ public class CalculatorButtons extends JPanel implements ActionListener
   public static final String INVERSE = "inv";
   public static final String SIMPLIFY = "\u21A1";
   private Display display;
-
   /**
    * Constructor which takes in the class ButtonActions which is an ActionListener.
    * 

@@ -34,6 +34,7 @@ public class Display extends JPanel
   private Op cop;
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
+  private History history;
   private FractionModePublisher fractionModePublisher;
 
   public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
@@ -41,7 +42,6 @@ public class Display extends JPanel
   {
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
-
     this.pcw = pcw;
     this.fractionStylePublisher = fractionStylePublisher;
     this.fractionModePublisher = fractionModePublisher;
