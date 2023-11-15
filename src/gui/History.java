@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JWindow;
 
 /**
  * Class for the session history of the calculator
@@ -16,7 +18,7 @@ import javax.swing.JFrame;
  * 
  *          This Code Complies with the JMU Honor code.
  */
-public class History extends JFrame implements ActionListener
+public class History extends JWindow implements ActionListener
 {
   private static final long serialVersionUID = 1L;
   private static final int CLOSED = 0;
@@ -27,15 +29,12 @@ public class History extends JFrame implements ActionListener
   /**
    * Constructor for the History class
    */
-  public History()
+  public History(JFrame frame)
   {
-    super();
+    super(frame);
     this.status = CLOSED; // Tracking the status of the window.
     setupLayout();
     setSize(30, 300);
-    setUndecorated(true);
-    setResizable(false);
-    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     setVisible(true);
   }
   /**
@@ -80,5 +79,9 @@ public class History extends JFrame implements ActionListener
   {
     this.setLocation(x, y);
 
+  }
+  
+  public void draw() {
+    
   }
 }

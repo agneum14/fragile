@@ -280,6 +280,8 @@ public class Display extends JPanel
 
       addToCEP(createMixedFractionPanel(mf));
       addToCEP(new JLabel(ac));
+      history.add(createMixedFractionPanel(mf));
+
 
       if (ac.equals(CalculatorButtons.EQUALS))
       {
