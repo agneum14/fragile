@@ -3,16 +3,16 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JWindow;
+import javax.swing.Timer;
 
 /**
  * Class for the session history of the calculator
  * 
- * @author Joshua Hairston
+ * @author Joshua Hairston, Zachary Buchan
+ * 
  * 
  * @version 11/13/2023
  * 
@@ -25,6 +25,7 @@ public class History extends JWindow implements ActionListener
   private static final int OPENED = 1;
   private int status;
   private JButton button;
+  private Timer timer;
 
   /**
    * Constructor for the History class
@@ -39,7 +40,7 @@ public class History extends JWindow implements ActionListener
   }
 
   /**
-   * Setting up the background and the layout of the history window.
+   * Setting up the background, the layout of the history window, and the animation.
    */
   private void setupLayout()
   {
@@ -49,6 +50,15 @@ public class History extends JWindow implements ActionListener
     button.addActionListener(this);
     add(button, BorderLayout.EAST);
 
+    // animation
+    timer = new Timer(10, new ActionListener()
+    {
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+        animate();
+      }
+    });
   }
 
   /**
@@ -62,31 +72,50 @@ public class History extends JWindow implements ActionListener
     {
       if (status == CLOSED)
       {
-
-        setSize(300, 300);
-
         status = OPENED;
         button.setText("<");
-
+        timer.start();
       }
-
     }
     else
     {
-      setSize(30, 300);
       status = CLOSED;
       button.setText(">");
+      timer.start();
     }
-  }
-
-  public void setHistoryLocation(int x, int y)
-  {
-    this.setLocation(x, y);
-
   }
 
   public void draw()
   {
 
+  }
+
+  /**
+   * Animates the button.
+   */
+  private void animate()
+  {
+    int targetWidth = (status == OPENED) ? 300 : 30;
+    int currentWidth = getWidth();
+
+    if (currentWidth != targetWidth)
+    {
+      int newWidth = (currentWidth < targetWidth) ? currentWidth + 5 : currentWidth - 5;
+      setSize(newWidth, 300);
+
+      if (currentWidth < targetWidth && newWidth >= targetWidth)
+      {
+        timer.stop();
+      }
+      else if (currentWidth > targetWidth && newWidth <= targetWidth)
+      {
+        timer.stop();
+      }
+    }
+  }
+
+  public void setHistoryLocation(int x, int y)
+  {
+    setLocation(x, y);
   }
 }
