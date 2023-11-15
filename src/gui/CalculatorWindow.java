@@ -10,7 +10,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
   {
     pcw = new PieChartWindow();
     fractionStylePublisher = new FractionStylePublisher();
-    history = new History();
+    history = new History(this);
     fractionModePublisher = new FractionModePublisher();
     display = new Display(pcw, fractionStylePublisher, fractionModePublisher, history); // creation of the display obviously.
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
