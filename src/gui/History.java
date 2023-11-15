@@ -37,6 +37,7 @@ public class History extends JWindow implements ActionListener
     setSize(30, 300);
     setVisible(true);
   }
+
   /**
    * Setting up the background and the layout of the history window.
    */
@@ -49,8 +50,9 @@ public class History extends JWindow implements ActionListener
     add(button, BorderLayout.EAST);
 
   }
+
   /**
-   * Method for checking to see if the window is either closed or open. 
+   * Method for checking to see if the window is either closed or open.
    */
   @Override
   public void actionPerformed(ActionEvent e)
@@ -60,7 +62,9 @@ public class History extends JWindow implements ActionListener
     {
       if (status == CLOSED)
       {
+
         setSize(300, 300);
+
         status = OPENED;
         button.setText("<");
 
@@ -80,8 +84,9 @@ public class History extends JWindow implements ActionListener
     this.setLocation(x, y);
 
   }
-  
-  public void draw() {
-    
+
+  public void draw()
+  {
+
   }
 }
