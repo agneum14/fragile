@@ -1,37 +1,23 @@
 package gui;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import actions.PressAction;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-
-import javax.swing.ActionMap;
-import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-
-import actions.PressAction;
 
 /**
  * Class for the calculator buttons, which is added to the main window.
- * 
+ *
  * @author Joshua Hairston
- * 
  * @version 11/2/2023
- * 
- *          This Code Complies with the JMU Honor Code.
+ *
+ *     This Code Complies with the JMU Honor Code.
  */
 public class CalculatorButtons extends JPanel implements ActionListener
 {
-  private static final long serialVersionUID = 1L;
   public static final String ADDITION = "+";
   public static final String SUBTRACTION = "-";
   public static final String MULTIPLICATION = "\u00D7";
@@ -46,14 +32,20 @@ public class CalculatorButtons extends JPanel implements ActionListener
   public static final String EXPONENT = "X\u207F";
   public static final String INVERSE = "inv";
   public static final String SIMPLIFY = "\u21A1";
+
+  private static final long serialVersionUID = 1L;
+
+  private static final Color YELLOW = new Color(138, 138, 26);
+  private static final Color AQUA = new Color(39, 142, 142);
+  private static final Color PURPLE = new Color(139, 29, 139);
+
   private Display display;
 
   /**
    * Constructor which takes in the class ButtonActions which is an ActionListener.
-   * 
+   *
    * @param display
-   *          the main window's display.
-   * 
+   *     the main window's display.
    */
   public CalculatorButtons(final Display display)
   {
@@ -64,17 +56,17 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
   /**
    * Private helper method for making buttons.
-   * 
+   *
    * @param string
-   *          the button's text
+   *     the button's text
    * @return JButton a new JButton
    */
   private JButton setButton(final String string)
   {
-
     JButton button = new JButton(string);
     button.addActionListener(this);
-//    button.setActionCommand(string); //TODO figure out why this is not needed
+    button.setActionCommand(string);
+    //    button.setActionCommand(string); //TODO figure out why this is not needed
     Font font = new Font(Font.MONOSPACED, Font.BOLD, 15); // Changed the font
     button.setFont(font);
 
@@ -84,6 +76,22 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
     return button;
 
+  }
+
+  /**
+   * Helper function to create a calculator button.
+   *
+   * @param string
+   *     The button text
+   * @param textColor
+   *     The button text color
+   * @return The JButton
+   */
+  private JButton setButton(final String string, final Color textColor)
+  {
+    JButton button = setButton(string);
+    button.setForeground(textColor);
+    return button;
   }
 
   private void createCalculatorButtons()
@@ -99,28 +107,28 @@ public class CalculatorButtons extends JPanel implements ActionListener
     c.weighty = 1.0;
     c.fill = GridBagConstraints.BOTH;
     c.insets = new Insets(5, 5, 5, 5);
-    add(setButton(RESET), c);
+    add(setButton(RESET, YELLOW), c);
 
     // Clear button
     c.gridx = 1;
-    add(setButton(CLEAR), c);
+    add(setButton(CLEAR, YELLOW), c);
 
     // Backspace button
     c.gridx = 2;
     c.ipadx = 100;
-    add(setButton(BACK_SPACE), c);
+    add(setButton(BACK_SPACE, YELLOW), c);
 
     // Addition button
     c.gridx = 3;
-    add(setButton(ADDITION), c);
+    add(setButton(ADDITION, AQUA), c);
 
     // Mediant button
     c.gridx = 4;
-    add(setButton(MEDIANT), c);
+    add(setButton(MEDIANT, AQUA), c);
 
     // Sign button
     c.gridx = 5;
-    add(setButton(SIGN), c);
+    add(setButton(SIGN, PURPLE), c);
 
     // buttons for numbers 7-9
     c.gridx = 0;
@@ -135,15 +143,15 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
     // Subtraction button
     c.gridx = 3;
-    add(setButton(SUBTRACTION), c);
+    add(setButton(SUBTRACTION, AQUA), c);
 
     // Exponent button
     c.gridx = 4;
-    add(setButton(EXPONENT), c);
+    add(setButton(EXPONENT, AQUA), c);
 
     // Inverse button
     c.gridx = 5;
-    add(setButton(INVERSE), c);
+    add(setButton(INVERSE, PURPLE), c);
 
     // buttons for the numbers 4,6
     c.gridx = 0;
@@ -158,11 +166,11 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
     // the multiplication button
     c.gridx = 3;
-    add(setButton(MULTIPLICATION), c);
+    add(setButton(MULTIPLICATION, AQUA), c);
 
     // Simplify button
     c.gridx = 5;
-    add(setButton(SIMPLIFY), c);
+    add(setButton(SIMPLIFY, PURPLE), c);
 
     // buttons for the numbers 1-3
     c.gridx = 0;
@@ -177,7 +185,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
     // Division button
     c.gridx = 3;
-    add(setButton(DIVISION), c);
+    add(setButton(DIVISION, AQUA), c);
 
     // button for the number zero
     c.gridx = 0;
@@ -199,7 +207,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
     // The equals button
     c.gridx = 3;
-    add(setButton(EQUALS), c);
+    add(setButton(EQUALS, AQUA), c);
 
   }
 
@@ -236,7 +244,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
 
   /**
    * Setting the preferred size of the buttons.
-   * 
+   *
    * @return the minimum size of the buttons.
    */
   public Dimension setPreferredSize()

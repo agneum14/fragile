@@ -30,4 +30,6 @@ public class AlgorithmsTest
   {
     assertEquals(24, Algorithms.lcm(8, 12));
   }
+  
+  
 }

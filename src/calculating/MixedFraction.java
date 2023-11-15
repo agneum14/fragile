@@ -24,19 +24,34 @@ public class MixedFraction
    * This constructor sets all member variables explicity, then simplifies the mixed fraction.
    *
    * @param sign
-   *     Indicates whether the number is negative (-1) or positive (1)
+   *          Indicates whether the number is negative (-1) or positive (1)
    * @param whole
-   *     The whole number component of the mixed fraction
+   *          The whole number component of the mixed fraction
    * @param num
-   *     The numerator of the mixed fraction
+   *          The numerator of the mixed fraction
    * @param denom
-   *     The denominator of the mixed fraction
+   *          The denominator of the mixed fraction
    * @throws IllegalArgumentException
-   *     if denom is 0 or sign isn't either 1 or -1
+   *           if denom is 0 or sign isn't either 1 or -1
    */
-  public MixedFraction(final int sign, final int whole, final int num, final int denom)
+  public MixedFraction(int sign, Integer whole, Integer num, Integer denom)
       throws IllegalArgumentException
   {
+    // replace nulls with default values
+    if (whole == null)
+    {
+      whole = 0;
+    }
+    if (num == null)
+    {
+      num = 0;
+    }
+    if (denom == null)
+    {
+      denom = 1;
+    }
+
+    // throw exceptions for zero denominator or invalid sign
     if (denom == 0)
     {
       throw new IllegalArgumentException("denominator can't be 0");
@@ -45,12 +60,17 @@ public class MixedFraction
     {
       throw new IllegalArgumentException("sign must be 1 or -1");
     }
+
+    // make -0 unrepresentable
+    if (whole == 0 && num == 0)
+    {
+      sign = 1;
+    }
+
     this.denom = denom;
     this.num = num;
     this.sign = sign;
     this.whole = whole;
-
-    this.simplify();
   }
 
   /**
@@ -58,7 +78,7 @@ public class MixedFraction
    * (a deep copy).
    *
    * @param o
-   *     The Mixed Fraction to deep copy
+   *          The Mixed Fraction to deep copy
    */
   public MixedFraction(final MixedFraction o)
   {
@@ -66,51 +86,69 @@ public class MixedFraction
   }
 
   /**
+   * This constructor creates a CurrentMixedFraction from the member variables of a
+   * CurrentMixedFraction.
+   *
+   * @param cmf
+   *          The CurrentMixedFraction to convert to a MixedFraction
+   */
+  public MixedFraction(final CurrentMixedFraction cmf)
+  {
+    this(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom());
+  }
+
+  /**
    * Add two MixedFractions.
    *
    * @param mf1
-   *     The first MixedFraction to sum
+   *          The first MixedFraction to sum
    * @param mf2
-   *     The second MixedFraction to sum
+   *          The second MixedFraction to sum
    * @return The sum of the two MixedFractions
    */
   public static MixedFraction add(final MixedFraction mf1, final MixedFraction mf2)
   {
     MixedFraction f1, f2;
-    int lcm, num, num1, num2, sign;
+    int sign, num, denom;
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
-    // scale the numerators to the least common denominator
-    lcm = Algorithms.lcm(f1.denom, f2.denom);
-    num1 = f1.getNum() * lcm / f1.getDenom();
-    num2 = f2.getNum() * lcm / f2.getDenom();
+    // early return for adding 0
+    if (f1.getNum() == 0)
+    {
+      return f2;
+    }
+    else if (f2.getNum() == 0)
+    {
+      return f1;
+    }
 
-    num = num1 * f1.getSign() + num2 * f2.getSign();
+    num = f1.getNum() * f1.getSign() * f2.getDenom() + f2.getNum() * f2.getSign() * f1.getDenom();
     if (num < 0)
     {
-      sign = -1;
       num *= -1;
+      sign = -1;
     }
     else
     {
       sign = 1;
     }
+    denom = f1.getDenom() * f2.getDenom();
 
-    return new MixedFraction(sign, 0, num, lcm);
+    return new MixedFraction(sign, 0, num, denom);
   }
 
   /**
    * Divide two MixedFractions.
    *
    * @param mf1
-   *     The MixedFraction dividend
+   *          The MixedFraction dividend
    * @param mf2
-   *     The MixedFraction divisor
+   *          The MixedFraction divisor
    * @return The MixedFraction quotient
    * @throws ArithmeticException
-   *     if the divisor is 0
+   *           if the divisor is 0
    */
   public static MixedFraction div(final MixedFraction mf1, final MixedFraction mf2)
       throws ArithmeticException
@@ -123,8 +161,8 @@ public class MixedFraction
       throw new ArithmeticException("can't divide a MixedFraction by 0");
     }
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
     num = f1.getNum() * f2.getDenom();
     denom = f1.getDenom() * f2.getNum();
@@ -137,9 +175,9 @@ public class MixedFraction
    * Multiply two MixedFractions.
    *
    * @param mf1
-   *     The first MixedFraction to multiply
+   *          The first MixedFraction to multiply
    * @param mf2
-   *     The second MixedFraction to multiply
+   *          The second MixedFraction to multiply
    * @return The MixedFraction product
    */
   public static MixedFraction mult(final MixedFraction mf1, final MixedFraction mf2)
@@ -147,8 +185,8 @@ public class MixedFraction
     MixedFraction f1, f2;
     int num, denom, sign;
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
     num = f1.getNum() * f2.getNum();
     denom = f1.getDenom() * f2.getDenom();
@@ -161,36 +199,42 @@ public class MixedFraction
    * Subtract two MixedFractions.
    *
    * @param mf1
-   *     The MixedFraction minuend
+   *          The MixedFraction minuend
    * @param mf2
-   *     The MixedFraction subtrahend
+   *          The MixedFraction subtrahend
    * @return The MixedFraction result of the subtraction operation
    */
   public static MixedFraction sub(final MixedFraction mf1, final MixedFraction mf2)
   {
     MixedFraction f1, f2;
-    int lcm, num, num1, num2, sign;
+    int sign, num, denom;
 
-    f1 = new MixedFraction(mf1).fractionalize();
-    f2 = new MixedFraction(mf2).fractionalize();
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
 
-    // scale the numerators to the least common denominator
-    lcm = Algorithms.lcm(f1.denom, f2.denom);
-    num1 = f1.getNum() * lcm / f1.getDenom();
-    num2 = f2.getNum() * lcm / f2.getDenom();
+    // early return for subtracting 0
+    if (f2.getNum() == 0)
+    {
+      return f1;
+    }
+    else if (f1.getNum() == 0)
+    {
+      return new MixedFraction(f2.getSign() * -1, 0, f2.getNum(), f2.getDenom());
+    }
 
-    num = num1 * f1.getSign() - num2 * f2.getSign();
+    num = f1.getNum() * f1.getSign() * f2.getDenom() - f2.getNum() * f2.getSign() * f1.getDenom();
     if (num < 0)
     {
-      sign = -1;
       num *= -1;
+      sign = -1;
     }
     else
     {
       sign = 1;
     }
+    denom = f1.getDenom() * f2.getDenom();
 
-    return new MixedFraction(sign, 0, num, lcm);
+    return new MixedFraction(sign, 0, num, denom);
   }
 
   /**
@@ -198,7 +242,7 @@ public class MixedFraction
    *
    * @return The fractionalized MixedFraction
    */
-  public MixedFraction fractionalize()
+  public MixedFraction improper()
   {
     num += whole * denom;
     whole = 0;
@@ -207,33 +251,39 @@ public class MixedFraction
   }
 
   /**
-   * Reduce this MixedFraction. If num is top-heavy, it's reduced and carried into whole. Also, if
-   * num is 0 after this operation, denom becomes 1 (simplifying the arithmetic in this class).
-   * Furthermore, if both whole and num are zero, meaning the entire MixedFraction is 0, then the
-   * sign is changed to 1, so -0 is unrepresentable.
+   * Make this MixedFraction proper, meaning the numerator is less than the denominator with the
+   * excess in the whole component.
+   * 
+   * @return The proper MixedFraction
    */
-  private void simplify()
+  public MixedFraction proper()
   {
-    int carry, gcd;
+    int carry;
 
     carry = num / denom;
     whole += carry;
     num %= denom;
 
-    if (num == 0)
-    {
-      if (whole == 0)
-      { // eliminate -0
-        sign = 1;
-      }
-      denom = 1;
-    }
-    else
-    {
-      gcd = Algorithms.gcd(num, denom);
-      num /= gcd;
-      denom /= gcd;
-    }
+    return this;
+  }
+
+  /**
+   * Reduce this MixedFraction. A reduced MixedFraction is proper and the numerator and denominator
+   * are in the lowest terms.
+   *
+   * @return The reduced MixedFraction
+   */
+  public MixedFraction reduce()
+  {
+    int gcd;
+
+    proper();
+
+    gcd = Algorithms.gcd(num, denom);
+    num /= gcd;
+    denom /= gcd;
+
+    return this;
   }
 
   /**

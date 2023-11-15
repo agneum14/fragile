@@ -1,5 +1,7 @@
 package calculating;
 
+import utilities.Algorithms;
+
 /**
  * This class represents the data of the current mixed fraction and provides functionality for
  * manipulating it.
@@ -29,9 +31,9 @@ public class CurrentMixedFraction
    * Add a digit to the either whole, num, or denom (depending on pos).
    *
    * @param d
-   *     The digit to add
+   *          The digit to add
    * @throws IllegalArgumentException
-   *     if d is greater than 9 or less than 0
+   *           if d is greater than 9 or less than 0
    */
   public void addDigit(int d) throws IllegalArgumentException
   {
@@ -145,20 +147,20 @@ public class CurrentMixedFraction
   }
 
   /**
-   * Create a MixedFraction from the CurrentMixedFraction.
-   *
-   * @return The MixedFraction
-   * @throws IllegalArgumentException
-   *     if whole, num, or denom is null, or denom is 0
+   * Method for when the user presses the simplify button. Simplifies the CurrentMixedFraction's numerator and denominator.
    */
-  public MixedFraction toMixedFraction() throws IllegalArgumentException
+  public void simplify() throws IllegalArgumentException
   {
-    if (whole == null || num == null || denom == null)
-    {
-      throw new IllegalArgumentException("some values of the mixed fraction aren't set");
+    if(num == null || denom == null ) {
+      throw new IllegalArgumentException("cannot simplify because numerator or denominator is not entered");
     }
-
-    return new MixedFraction(sign, whole, num, denom);
+    int gcf = Algorithms.gcd(num, denom);
+    if (gcf == 1)
+    {
+      return;
+    }
+    num /= gcf;
+    denom /= gcf;
   }
 
   /**
@@ -214,20 +216,21 @@ public class CurrentMixedFraction
   public enum Pos
   {
     WHOLE
-        {
-          @Override
-          public Pos prev()
-          {
-            return values()[2];
-          }
-        }, NUM, DENOM
+    {
+      @Override
+      public Pos prev()
       {
-        @Override
-        public Pos next()
-        {
-          return values()[0];
-        }
-      };
+        return values()[2];
+      }
+    },
+    NUM, DENOM
+    {
+      @Override
+      public Pos next()
+      {
+        return values()[0];
+      }
+    };
 
     public Pos next()
     {

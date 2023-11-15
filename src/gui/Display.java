@@ -1,6 +1,7 @@
 package gui;
 
 import calculating.CurrentMixedFraction;
+import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
@@ -16,7 +17,7 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *     This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
@@ -33,14 +34,18 @@ public class Display extends JPanel
   private Op cop;
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
+  private History history;
+  private FractionModePublisher fractionModePublisher;
 
-  public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher)
+  public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
+      FractionModePublisher fractionModePublisher, History history)
   {
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
-
     this.pcw = pcw;
     this.fractionStylePublisher = fractionStylePublisher;
+    this.fractionModePublisher = fractionModePublisher;
+    this.history = history;
     eval = new MixedFraction(1, 0, 0, 1);
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
     cep.setBackground(POWDER_BLUE);
@@ -55,7 +60,6 @@ public class Display extends JPanel
   {
     GridBagConstraints c;
     removeAll();
-    JPanel empty;
     // add current expression panel
     {
       c = new GridBagConstraints();
@@ -121,6 +125,7 @@ public class Display extends JPanel
   {
     cep.add(p);
     fractionStylePublisher.addSubscriber(p);
+    fractionModePublisher.addSubscriber(p);
     draw();
   }
 
@@ -139,6 +144,7 @@ public class Display extends JPanel
 
   public void reset()
   {
+    fractionStylePublisher.removeAllSubscribers();
     clearCEP();
     clear();
     draw();
@@ -180,6 +186,15 @@ public class Display extends JPanel
       cmf.removeDigit();
       updateCMFP();
     }
+    else if (ac.equals(CalculatorButtons.SIMPLIFY))
+    {
+      try { 
+        cmf.simplify();
+        updateCMFP();
+      } catch(IllegalArgumentException arg) {
+        JOptionPane.showMessageDialog(null, arg.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    }
     else if (ac.equals(CalculatorButtons.SIGN))
     {
       cmf.changeSign();
@@ -201,9 +216,9 @@ public class Display extends JPanel
     {
       clear();
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
-        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
-        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION))
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
+        || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
+        || ac.equals(CalculatorButtons.DIVISION))
     {
       if (cop == Op.EQUAL)
       {
@@ -211,7 +226,7 @@ public class Display extends JPanel
         {
           acToOp(ac);
           reset();
-          addToCEP(new MixedFractionPanel(eval));
+          addToCEP(createMixedFractionPanel(eval));
           addToCEP(new JLabel(ac));
 
           return;
@@ -221,7 +236,7 @@ public class Display extends JPanel
       MixedFraction mf;
       try
       {
-        mf = cmf.toMixedFraction();
+        mf = new MixedFraction(cmf);
       }
       catch (IllegalArgumentException ile)
       {
@@ -263,18 +278,24 @@ public class Display extends JPanel
         clearCEP();
       }
 
-      addToCEP(new MixedFractionPanel(mf));
+      addToCEP(createMixedFractionPanel(mf));
       addToCEP(new JLabel(ac));
 
       if (ac.equals(CalculatorButtons.EQUALS))
       {
         pcw.draw(eval);
-        addToCEP(new MixedFractionPanel(eval));
+        addToCEP(createMixedFractionPanel(eval));
       }
 
       clear();
 
       acToOp(ac);
     }
+  }
+
+  public MixedFractionPanel createMixedFractionPanel(final MixedFraction mf)
+  {
+    return new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
+        fractionModePublisher.getProper(), fractionModePublisher.getReduced());
   }
 }

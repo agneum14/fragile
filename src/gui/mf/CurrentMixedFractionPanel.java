@@ -3,6 +3,7 @@ package gui.mf;
 import calculating.CurrentMixedFraction;
 import calculating.FractionStylePublisher.FractionStyle;
 import gui.Display;
+import utilities.Algorithms;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -38,7 +39,8 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    */
   public CurrentMixedFractionPanel(final CurrentMixedFraction cmf)
   {
-    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom());
+    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom(), FractionStyle.BAR, false,
+        false);
 
     // add a border to the component of the current position
     final Border border = BorderFactory.createDashedBorder(Color.BLACK);
@@ -54,16 +56,13 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   /**
    * Set the whole panel. If whole isn't null, the super method is used. Otherwise, a blank JPanel
    * is used
-   *
-   * @param whole
-   *     The whole of the current mixed fraction
    */
   @Override
-  protected void setWholePanel(final Integer whole)
+  protected void setWholePanel()
   {
-    if (whole != null)
+    if (getWhole() != null)
     {
-      super.setWholePanel(whole);
+      super.setWholePanel();
     }
     else
     {
@@ -76,16 +75,13 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   /**
    * Set the num panel. If num isn't null, the super method is used. Otherwise, a blank JPanel is
    * used
-   *
-   * @param num
-   *     The numerator of the current mixed fraction
    */
   @Override
-  protected void setNumPanel(final Integer num)
+  protected void setNumPanel()
   {
-    if (num != null)
+    if (getNum() != null)
     {
-      super.setNumPanel(num);
+      super.setNumPanel();
     }
     else
     {
@@ -98,16 +94,13 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   /**
    * Set the denom panel. If dneom isn't null, the super method is used. Otherwise, a blank JPanel
    * is used
-   *
-   * @param denom
-   *     The denominator of the current mixed fraction
    */
   @Override
-  protected void setDenomPanel(final Integer denom)
+  protected void setDenomPanel()
   {
-    if (denom != null)
+    if (getDenom() != null)
     {
-      super.setDenomPanel(denom);
+      super.setDenomPanel();
     }
     else
     {
@@ -119,14 +112,9 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
 
   /**
    * Add all the panels to the JPanel and repaint.
-   *
-   * @param sign
-   *     Irrelevant, only used in the parent class
-   * @param num
-   *     Irrelevant, only used in the parent class
    */
   @Override
-  protected void draw(final int sign, final Integer num)
+  protected void draw()
   {
     removeAll();
 
@@ -136,4 +124,16 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
 
     repaint();
   }
+
+  /**
+   * Override update so the current mixed fraction isn't manipulated when the reduced or proper mode
+   * is set.
+   */
+  @Override
+  protected void update()
+  {
+    setPanelsAndDraw();
+  }
+  
+  
 }
