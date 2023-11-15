@@ -65,6 +65,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
   {
     JButton button = new JButton(string);
     button.addActionListener(this);
+    button.setActionCommand(string);
     //    button.setActionCommand(string); //TODO figure out why this is not needed
     Font font = new Font(Font.MONOSPACED, Font.BOLD, 15); // Changed the font
     button.setFont(font);

@@ -1,5 +1,7 @@
 package calculating;
 
+import utilities.Algorithms;
+
 /**
  * This class represents the data of the current mixed fraction and provides functionality for
  * manipulating it.
@@ -142,6 +144,23 @@ public class CurrentMixedFraction
       case DENOM -> denom = target;
       default -> whole = 0; // impossible
     }
+  }
+
+  /**
+   * Method for when the user presses the simplify button. Simplifies the CurrentMixedFraction's numerator and denominator.
+   */
+  public void simplify() throws IllegalArgumentException
+  {
+    if(num == null || denom == null ) {
+      throw new IllegalArgumentException("cannot simplify because numerator or denominator is not entered");
+    }
+    int gcf = Algorithms.gcd(num, denom);
+    if (gcf == 1)
+    {
+      return;
+    }
+    num /= gcf;
+    denom /= gcf;
   }
 
   /**

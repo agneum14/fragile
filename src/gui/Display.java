@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *     This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
@@ -38,13 +38,14 @@ public class Display extends JPanel
   private FractionModePublisher fractionModePublisher;
 
   public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
-      FractionModePublisher fractionModePublisher)
+      FractionModePublisher fractionModePublisher, History history)
   {
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
     this.pcw = pcw;
     this.fractionStylePublisher = fractionStylePublisher;
     this.fractionModePublisher = fractionModePublisher;
+    this.history = history;
     eval = new MixedFraction(1, 0, 0, 1);
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
     cep.setBackground(POWDER_BLUE);
@@ -185,6 +186,15 @@ public class Display extends JPanel
       cmf.removeDigit();
       updateCMFP();
     }
+    else if (ac.equals(CalculatorButtons.SIMPLIFY))
+    {
+      try { 
+        cmf.simplify();
+        updateCMFP();
+      } catch(IllegalArgumentException arg) {
+        JOptionPane.showMessageDialog(null, arg.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    }
     else if (ac.equals(CalculatorButtons.SIGN))
     {
       cmf.changeSign();
@@ -206,9 +216,9 @@ public class Display extends JPanel
     {
       clear();
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
-        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
-        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION))
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
+        || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
+        || ac.equals(CalculatorButtons.DIVISION))
     {
       if (cop == Op.EQUAL)
       {

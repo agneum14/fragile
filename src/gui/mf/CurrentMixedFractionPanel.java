@@ -3,6 +3,7 @@ package gui.mf;
 import calculating.CurrentMixedFraction;
 import calculating.FractionStylePublisher.FractionStyle;
 import gui.Display;
+import utilities.Algorithms;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -133,4 +134,6 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   {
     setPanelsAndDraw();
   }
+  
+  
 }

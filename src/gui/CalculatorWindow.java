@@ -42,7 +42,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
     fractionStylePublisher = new FractionStylePublisher();
     history = new History();
     fractionModePublisher = new FractionModePublisher();
-    display = new Display(pcw, fractionStylePublisher, fractionModePublisher); // creation of the display obviously.
+    display = new Display(pcw, fractionStylePublisher, fractionModePublisher, history); // creation of the display obviously.
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
     this.addComponentListener(this); // hold the display to make changes
     this.addWindowListener(this);
@@ -87,6 +87,8 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
     add(display, BorderLayout.CENTER);
   }
 
+  // IMPLEMENTATION FOR THE HISTORY WINDOW TRACING THE MAIN WINDOW.
+  
   
   /**
    * Method changes the history classes position dependent on the position of the window.
