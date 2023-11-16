@@ -13,6 +13,7 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.*;
 
 /**
  * This class is for the main window of the mixed calculator.
@@ -67,9 +68,10 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
     BufferedImage img = null;
     try
     {
-      img = ImageIO.read(new File("res/Fragile_Logo.png"));
+      URL imgURL = this.getClass().getResource("/res/screenshots/Fragile_Logo.png");
+      img = ImageIO.read(imgURL);
     }
-    catch (IOException e)
+    catch (IOException e )
     {
     }
     // Resizing the Fragile logo
