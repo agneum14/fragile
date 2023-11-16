@@ -6,7 +6,6 @@ import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
 import gui.mf.MixedFractionPanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,6 +20,7 @@ import java.awt.event.ActionEvent;
  */
 public class Display extends JPanel
 {
+
   public enum Op
   {
     ADD, SUB, DIV, MULT, EQUAL, MED
@@ -38,6 +38,7 @@ public class Display extends JPanel
   private FractionModePublisher fractionModePublisher;
 
   public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
+
       FractionModePublisher fractionModePublisher, History history)
   {
     setBackground(POWDER_BLUE);
@@ -52,7 +53,7 @@ public class Display extends JPanel
     cmf = new CurrentMixedFraction();
     cmfp = new CurrentMixedFractionPanel(cmf);
     cop = null;
-
+    this.history = history;
     draw();
   }
 
@@ -68,7 +69,6 @@ public class Display extends JPanel
       c.anchor = GridBagConstraints.NORTHWEST;
       add(cep, c);
     }
-
     // float current expression panel west
     {
       c = new GridBagConstraints();
@@ -77,7 +77,6 @@ public class Display extends JPanel
       c.weightx = 1;
       add(Box.createHorizontalStrut(10), c);
     }
-
     // float current expression panel north
     {
       c = new GridBagConstraints();
@@ -86,7 +85,6 @@ public class Display extends JPanel
       c.weighty = 1;
       add(Box.createHorizontalStrut(10), c);
     }
-
     // add current mixed fraction panel
     {
       c = new GridBagConstraints();
@@ -95,7 +93,6 @@ public class Display extends JPanel
       c.anchor = GridBagConstraints.SOUTHEAST;
       add(cmfp, c);
     }
-
     {
       c = new GridBagConstraints();
       c.gridx = 0;
@@ -103,7 +100,6 @@ public class Display extends JPanel
       c.weightx = 1;
       add(Box.createHorizontalStrut(10), c);
     }
-
     revalidate();
     repaint();
   }
@@ -116,8 +112,8 @@ public class Display extends JPanel
       case CalculatorButtons.ADDITION -> Op.ADD;
       case CalculatorButtons.SUBTRACTION -> Op.SUB;
       case CalculatorButtons.MULTIPLICATION -> Op.MULT;
-      case CalculatorButtons.DIVISION -> Op.DIV;
       case CalculatorButtons.MEDIANT -> Op.MED;
+      case CalculatorButtons.DIVISION -> Op.DIV;
       default -> throw new IllegalArgumentException("action command isn't an operator");
     };
   }
@@ -166,7 +162,6 @@ public class Display extends JPanel
   public void handleButton(ActionEvent e)
   {
     final String ac = e.getActionCommand();
-
     Integer digit;
     try
     {
@@ -176,7 +171,6 @@ public class Display extends JPanel
     {
       digit = null;
     }
-
     if (digit != null)
     {
       cmf.addDigit(digit);
@@ -232,11 +226,11 @@ public class Display extends JPanel
           reset();
           addToCEP(createMixedFractionPanel(eval));
           addToCEP(new JLabel(ac));
-
+          history.addMixedFractionPanel(createMixedFractionPanel(eval));
+          history.addLabel(new JLabel(ac));
           return;
         }
       }
-
       MixedFraction mf;
       try
       {
@@ -247,7 +241,6 @@ public class Display extends JPanel
         JOptionPane.showMessageDialog(null, ile.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         return;
       }
-
       if (cop == null)
       {
         eval = mf;
@@ -260,10 +253,6 @@ public class Display extends JPanel
       {
         eval = MixedFraction.sub(eval, mf);
       }
-      else if (cop == Op.MULT)
-      {
-        eval = MixedFraction.mult(eval, mf);
-      }
       else if (cop == Op.MED)
       {
         try
@@ -274,6 +263,11 @@ public class Display extends JPanel
         {
           JOptionPane.showMessageDialog(null, ae.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+      }
+      else if (cop == Op.MULT)
+      {
+        eval = MixedFraction.mult(eval, mf);
       }
       else if (cop == Op.DIV)
       {
@@ -290,22 +284,19 @@ public class Display extends JPanel
       else if (cop == Op.EQUAL)
       {
         eval = mf;
-
         clearCEP();
       }
-
       addToCEP(createMixedFractionPanel(mf));
       addToCEP(new JLabel(ac));
-
+      history.addMixedFractionPanel(createMixedFractionPanel(mf));
+      history.addLabel(new JLabel(ac));
       if (ac.equals(CalculatorButtons.EQUALS))
       {
         pcw.draw(eval);
         addToCEP(createMixedFractionPanel(eval));
-
+        history.addMixedFractionPanel(createMixedFractionPanel(eval));
       }
-
       clear();
-
       acToOp(ac);
     }
   }
@@ -315,4 +306,5 @@ public class Display extends JPanel
     return new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
         fractionModePublisher.getProper(), fractionModePublisher.getReduced());
   }
+
 }

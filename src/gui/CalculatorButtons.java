@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 /**
  * Class for the calculator buttons, which is added to the main window.
@@ -196,7 +197,8 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // The position button with the position picture
     c.gridx = 2;
     c.gridwidth = 1;
-    ImageIcon icon = new ImageIcon("res/position_logo.png");
+    URL positionIcon = this.getClass().getResource("/res/position_logo.png");
+    ImageIcon icon = new ImageIcon(positionIcon);
     JButton button = new JButton();
     button.addActionListener(this);
     button.setActionCommand(POSITION);

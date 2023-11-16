@@ -4,6 +4,7 @@ import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 import calculating.FractionStylePublisher.FractionStyle;
 import utilities.Language;
+import utilities.ResourceCopier;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,7 +15,11 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Locale;
 
 public class Menu extends JMenuBar implements ActionListener
@@ -207,22 +212,30 @@ public class Menu extends JMenuBar implements ActionListener
     }
   }
 
-  // opens up the help page method.
+  // opens up the help page.
   private static void openHelpPage()
   {
     try
     {
-      File fileEnglish = new File("res/help.html");
-      File fileGerman = new File("res/helpGER.html");
-      File fileFrench = new File("res/helpFR.html");
+      String pathString;
+      Path path = ResourceCopier.copyResourcesToTemp("temp", "html");
+      switch(Locale.getDefault().getLanguage())
+      {
+        case "fr" -> pathString = path.toString()+"/helpFR.html";
+        case "de" -> pathString = path.toString()+"/helpGER.html";
+        default -> pathString = path.toString()+"/help.html";
+      }
+      File file = new File(pathString);
+      
+      
       switch (Locale.getDefault().getLanguage())
       {
-        case "fr" -> Desktop.getDesktop().browse(fileFrench.toURI());
-        case "de" -> Desktop.getDesktop().browse(fileGerman.toURI());
-        default -> Desktop.getDesktop().browse(fileEnglish.toURI());
+        case "fr" -> Desktop.getDesktop().browse(file.toURI());
+        case "de" -> Desktop.getDesktop().browse(file.toURI());
+        default -> Desktop.getDesktop().browse(file.toURI());
       }
     }
-    catch (IOException e)
+    catch (IOException | URISyntaxException e)
     {
       e.printStackTrace();
     }

@@ -1,6 +1,8 @@
 package gui;
 
-import java.awt.BorderLayout;
+import javax.swing.*;
+import gui.mf.MixedFractionPanel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,12 +15,10 @@ import javax.swing.Timer;
 
 /**
  * Class for the session history of the calculator
- * 
+ *
  * @author Joshua Hairston, Zachary Buchan
- * 
- * 
  * @version 11/13/2023
- * 
+ *
  *          This Code Complies with the JMU Honor code.
  */
 public class History extends JWindow implements ActionListener
@@ -29,19 +29,20 @@ public class History extends JWindow implements ActionListener
   private int status;
   private JButton button;
   private Timer timer;
-  private ArrayList<JPanel> panels;
+  private JPanel historyPanel;
+  private ArrayList<MixedFractionPanel> mixedFractionPanels; // List to store mixed fraction panels
 
   /**
    * Constructor for the History class
    */
-  public History(final JFrame frame)
+  public History(JFrame frame)
   {
     super(frame);
     this.status = CLOSED; // Tracking the status of the window.
-    this.panels = new ArrayList<>();
     setupLayout();
     setSize(30, 300);
     setVisible(true);
+    mixedFractionPanels = new ArrayList<>();
   }
 
   /**
@@ -54,16 +55,13 @@ public class History extends JWindow implements ActionListener
     button = new JButton(">");
     button.addActionListener(this);
     add(button, BorderLayout.EAST);
-
-    // animation
-    timer = new Timer(10, new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-        animate();
-      }
-    });
+    // Initialize history panel
+    historyPanel = new JPanel();
+    historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
+    JScrollPane scrollPane = new JScrollPane(historyPanel);
+    add(scrollPane, BorderLayout.CENTER);
+    // Animation
+    timer = new Timer(10, e -> animate());
   }
 
   /**
@@ -97,12 +95,10 @@ public class History extends JWindow implements ActionListener
   {
     int targetWidth = (status == OPENED) ? 300 : 30;
     int currentWidth = getWidth();
-
     if (currentWidth != targetWidth)
     {
       int newWidth = (currentWidth < targetWidth) ? currentWidth + 5 : currentWidth - 5;
       setSize(newWidth, 300);
-
       if (currentWidth < targetWidth && newWidth >= targetWidth)
       {
         timer.stop();
@@ -112,6 +108,26 @@ public class History extends JWindow implements ActionListener
         timer.stop();
       }
     }
+  }
+
+  /**
+   * Add a mixed fraction panel to the history.
+   */
+  public void addMixedFractionPanel(MixedFractionPanel mixedFractionPanel)
+  {
+    mixedFractionPanels.add(mixedFractionPanel);
+    updateHistoryDisplay();
+  }
+
+  private void updateHistoryDisplay()
+  {
+    historyPanel.removeAll(); // Clear existing components in the historyPanel
+    // Add all mixed fraction panels to the historyPanel
+    for (MixedFractionPanel mixedFractionPanel : mixedFractionPanels)
+    {
+      historyPanel.add(mixedFractionPanel);
+    }
+
   }
 
   /**
@@ -127,9 +143,12 @@ public class History extends JWindow implements ActionListener
     setLocation(x, y);
   }
 
-  public void addPanel(JPanel panel)
+  /**
+   * Add a label to the history.
+   */
+  public void addLabel(JLabel label)
   {
-    panels.add(panel);
-
+    historyPanel.add(label);
   }
+
 }
