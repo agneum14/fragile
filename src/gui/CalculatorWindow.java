@@ -22,7 +22,7 @@ import java.io.IOException;
  *
  *          This code complies with the JMU Honor Code.
  */
-public class CalculatorWindow extends JFrame implements ComponentListener, WindowListener
+public class CalculatorWindow extends JFrame implements ComponentListener
 {
   private static final long serialVersionUID = 1L;
   private CalculatorButtons buttons;
@@ -41,10 +41,12 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
     fractionStylePublisher = new FractionStylePublisher();
     history = new History(this);
     fractionModePublisher = new FractionModePublisher();
-    display = new Display(pcw, fractionStylePublisher, fractionModePublisher, history); // creation of the display obviously.
+    display = new Display(pcw, fractionStylePublisher, fractionModePublisher, history); // creation
+                                                                                        // of the
+                                                                                        // display
+                                                                                        // obviously.
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
     this.addComponentListener(this); // hold the display to make changes
-    this.addWindowListener(this);
     setupLayout(); // creating the layout of the window.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setPreferredSize(new Dimension(400, 500));
@@ -65,6 +67,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
     // Putting image of Fragile in the window
     JLabel label = new JLabel();
     BufferedImage img = null;
+    
     try
     {
       img = ImageIO.read(new File("res/Fragile_Logo.png"));
@@ -87,8 +90,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
   }
 
   // IMPLEMENTATION FOR THE HISTORY WINDOW TRACING THE MAIN WINDOW.
-  
-  
+
   /**
    * Method changes the history classes position dependent on the position of the window.
    */
@@ -113,56 +115,11 @@ public class CalculatorWindow extends JFrame implements ComponentListener, Windo
     return;
   }
 
-
   @Override
   public void componentResized(ComponentEvent e)
   {
     componentMoved(e);
-    
+
   }
 
-  @Override
-  public void windowOpened(WindowEvent e)
-  {
-   return;
-    
-  }
-
-  @Override
-  public void windowClosing(WindowEvent e)
-  {
-    return;
-  }
-
-  @Override
-  public void windowClosed(WindowEvent e)
-  {
-    return;
-  }
-  /**
-   * closes when the window disappears.
-   */
-  @Override
-  public void windowIconified(WindowEvent e)
-  {
-    history.setVisible(false);
-  }
-  /**
-   * Opens when the window appears.
-   */
-  @Override
-  public void windowDeiconified(WindowEvent e)
-  {
-    history.setVisible(true);
-  }
-
-  @Override
-  public void windowActivated(WindowEvent e)
-  {
-  }
-
-  @Override
-  public void windowDeactivated(WindowEvent e)
-  {
-  }
 }

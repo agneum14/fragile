@@ -238,6 +238,44 @@ public class MixedFraction
   }
 
   /**
+   * Calculate the mediant of two mixed fractions.
+   * 
+   * @param mf1
+   *          the first mixed fraction.
+   * @param mf2
+   *          the second mixed fraction.
+   * @return a new mixed fraction.
+   * @throws IllegalArgumentException
+   *           if the denominator is zero.
+   */
+  public static MixedFraction mediant(final MixedFraction mf1, final MixedFraction mf2)
+      throws IllegalArgumentException
+  {
+    int sign, numerator, denominator;
+    MixedFraction f1, f2;
+    f1 = new MixedFraction(mf1).improper();
+    f2 = new MixedFraction(mf2).improper();
+
+    numerator = f1.getNum() * f1.getSign() + f2.getNum() * f2.getSign();
+    denominator = f1.getDenom() + f2.getDenom();
+    if (denominator == 0)
+    {
+      throw new IllegalArgumentException("Denominator results to zero");
+    }
+    if (numerator < 0)
+    {
+      numerator *= -1;
+      sign = -1;
+    }
+    else
+    {
+      sign = 1;
+    }
+    return new MixedFraction(sign, 0, numerator, denominator);
+
+  }
+
+  /**
    * Fractionalize the MixedFraction, meaning that whole becomes 0 and the numerator is top-heavy.
    *
    * @return The fractionalized MixedFraction

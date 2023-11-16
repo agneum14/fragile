@@ -3,8 +3,11 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.Timer;
 
@@ -26,14 +29,16 @@ public class History extends JWindow implements ActionListener
   private int status;
   private JButton button;
   private Timer timer;
+  private ArrayList<JPanel> panels;
 
   /**
    * Constructor for the History class
    */
-  public History(JFrame frame)
+  public History(final JFrame frame)
   {
     super(frame);
     this.status = CLOSED; // Tracking the status of the window.
+    this.panels = new ArrayList<>();
     setupLayout();
     setSize(30, 300);
     setVisible(true);
@@ -85,11 +90,6 @@ public class History extends JWindow implements ActionListener
     }
   }
 
-  public void draw()
-  {
-
-  }
-
   /**
    * Animates the button.
    */
@@ -114,8 +114,22 @@ public class History extends JWindow implements ActionListener
     }
   }
 
+  /**
+   * Changing the location of the history window to move with the main window.
+   * 
+   * @param x
+   *          the x value given
+   * @param y
+   *          the y value given.
+   */
   public void setHistoryLocation(int x, int y)
   {
     setLocation(x, y);
+  }
+
+  public void addPanel(JPanel panel)
+  {
+    panels.add(panel);
+
   }
 }

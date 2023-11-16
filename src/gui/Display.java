@@ -23,7 +23,7 @@ public class Display extends JPanel
 {
   public enum Op
   {
-    ADD, SUB, DIV, MULT, EQUAL
+    ADD, SUB, DIV, MULT, EQUAL, MED
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
@@ -117,6 +117,7 @@ public class Display extends JPanel
       case CalculatorButtons.SUBTRACTION -> Op.SUB;
       case CalculatorButtons.MULTIPLICATION -> Op.MULT;
       case CalculatorButtons.DIVISION -> Op.DIV;
+      case CalculatorButtons.MEDIANT -> Op.MED;
       default -> throw new IllegalArgumentException("action command isn't an operator");
     };
   }
@@ -188,10 +189,13 @@ public class Display extends JPanel
     }
     else if (ac.equals(CalculatorButtons.SIMPLIFY))
     {
-      try { 
+      try
+      {
         cmf.simplify();
         updateCMFP();
-      } catch(IllegalArgumentException arg) {
+      }
+      catch (IllegalArgumentException arg)
+      {
         JOptionPane.showMessageDialog(null, arg.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
       }
     }
@@ -218,7 +222,7 @@ public class Display extends JPanel
     }
     else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
         || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
-        || ac.equals(CalculatorButtons.DIVISION))
+        || ac.equals(CalculatorButtons.DIVISION) || ac.equals(CalculatorButtons.MEDIANT))
     {
       if (cop == Op.EQUAL)
       {
@@ -260,6 +264,17 @@ public class Display extends JPanel
       {
         eval = MixedFraction.mult(eval, mf);
       }
+      else if (cop == Op.MED)
+      {
+        try
+        {
+          eval = MixedFraction.mediant(eval, mf);
+        }
+        catch (IllegalArgumentException ae)
+        {
+          JOptionPane.showMessageDialog(null, ae.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
       else if (cop == Op.DIV)
       {
         try
@@ -275,18 +290,18 @@ public class Display extends JPanel
       else if (cop == Op.EQUAL)
       {
         eval = mf;
+
         clearCEP();
       }
 
       addToCEP(createMixedFractionPanel(mf));
       addToCEP(new JLabel(ac));
-      history.add(createMixedFractionPanel(mf));
-
 
       if (ac.equals(CalculatorButtons.EQUALS))
       {
         pcw.draw(eval);
         addToCEP(createMixedFractionPanel(eval));
+
       }
 
       clear();
