@@ -24,15 +24,15 @@ public class MixedFraction
    * This constructor sets all member variables explicity, then simplifies the mixed fraction.
    *
    * @param sign
-   *          Indicates whether the number is negative (-1) or positive (1)
+   *     Indicates whether the number is negative (-1) or positive (1)
    * @param whole
-   *          The whole number component of the mixed fraction
+   *     The whole number component of the mixed fraction
    * @param num
-   *          The numerator of the mixed fraction
+   *     The numerator of the mixed fraction
    * @param denom
-   *          The denominator of the mixed fraction
+   *     The denominator of the mixed fraction
    * @throws IllegalArgumentException
-   *           if denom is 0 or sign isn't either 1 or -1
+   *     if denom is 0 or sign isn't either 1 or -1
    */
   public MixedFraction(int sign, Integer whole, Integer num, Integer denom)
       throws IllegalArgumentException
@@ -78,7 +78,7 @@ public class MixedFraction
    * (a deep copy).
    *
    * @param o
-   *          The Mixed Fraction to deep copy
+   *     The Mixed Fraction to deep copy
    */
   public MixedFraction(final MixedFraction o)
   {
@@ -90,7 +90,7 @@ public class MixedFraction
    * CurrentMixedFraction.
    *
    * @param cmf
-   *          The CurrentMixedFraction to convert to a MixedFraction
+   *     The CurrentMixedFraction to convert to a MixedFraction
    */
   public MixedFraction(final CurrentMixedFraction cmf)
   {
@@ -101,9 +101,9 @@ public class MixedFraction
    * Add two MixedFractions.
    *
    * @param mf1
-   *          The first MixedFraction to sum
+   *     The first MixedFraction to sum
    * @param mf2
-   *          The second MixedFraction to sum
+   *     The second MixedFraction to sum
    * @return The sum of the two MixedFractions
    */
   public static MixedFraction add(final MixedFraction mf1, final MixedFraction mf2)
@@ -143,12 +143,12 @@ public class MixedFraction
    * Divide two MixedFractions.
    *
    * @param mf1
-   *          The MixedFraction dividend
+   *     The MixedFraction dividend
    * @param mf2
-   *          The MixedFraction divisor
+   *     The MixedFraction divisor
    * @return The MixedFraction quotient
    * @throws ArithmeticException
-   *           if the divisor is 0
+   *     if the divisor is 0
    */
   public static MixedFraction div(final MixedFraction mf1, final MixedFraction mf2)
       throws ArithmeticException
@@ -175,9 +175,9 @@ public class MixedFraction
    * Multiply two MixedFractions.
    *
    * @param mf1
-   *          The first MixedFraction to multiply
+   *     The first MixedFraction to multiply
    * @param mf2
-   *          The second MixedFraction to multiply
+   *     The second MixedFraction to multiply
    * @return The MixedFraction product
    */
   public static MixedFraction mult(final MixedFraction mf1, final MixedFraction mf2)
@@ -199,9 +199,9 @@ public class MixedFraction
    * Subtract two MixedFractions.
    *
    * @param mf1
-   *          The MixedFraction minuend
+   *     The MixedFraction minuend
    * @param mf2
-   *          The MixedFraction subtrahend
+   *     The MixedFraction subtrahend
    * @return The MixedFraction result of the subtraction operation
    */
   public static MixedFraction sub(final MixedFraction mf1, final MixedFraction mf2)
@@ -239,17 +239,14 @@ public class MixedFraction
 
   /**
    * Calculate the mediant of two mixed fractions.
-   * 
+   *
    * @param mf1
-   *          the first mixed fraction.
+   *     The first mixed fraction
    * @param mf2
-   *          the second mixed fraction.
-   * @return a new mixed fraction.
-   * @throws IllegalArgumentException
-   *           if the denominator is zero.
+   *     The second mixed fraction
+   * @return A new mixed fraction.
    */
   public static MixedFraction mediant(final MixedFraction mf1, final MixedFraction mf2)
-      throws IllegalArgumentException
   {
     int sign, numerator, denominator;
     MixedFraction f1, f2;
@@ -258,10 +255,6 @@ public class MixedFraction
 
     numerator = f1.getNum() * f1.getSign() + f2.getNum() * f2.getSign();
     denominator = f1.getDenom() + f2.getDenom();
-    if (denominator == 0)
-    {
-      throw new IllegalArgumentException("Denominator results to zero");
-    }
     if (numerator < 0)
     {
       numerator *= -1;
@@ -291,7 +284,7 @@ public class MixedFraction
   /**
    * Make this MixedFraction proper, meaning the numerator is less than the denominator with the
    * excess in the whole component.
-   * 
+   *
    * @return The proper MixedFraction
    */
   public MixedFraction proper()
