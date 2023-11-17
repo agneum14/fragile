@@ -27,7 +27,6 @@ public class Menu extends JMenuBar implements ActionListener
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
   private FractionModePublisher fractionModePublisher;
-
   private final JCheckBoxMenuItem properMenuItem;
   private final JCheckBoxMenuItem reducedMenuItem;
 
@@ -37,7 +36,7 @@ public class Menu extends JMenuBar implements ActionListener
    * @return JMenuBar
    */
   public Menu(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
-      FractionModePublisher fractionModePublisher)
+      FractionModePublisher fractionModePublisher, History history)
   {
     this.pcw = pcw;
     this.fractionStylePublisher = fractionStylePublisher;
@@ -106,7 +105,7 @@ public class Menu extends JMenuBar implements ActionListener
 
     // add action listeners
     exitMenuItem.addActionListener(this);
-    printMenuItem.addActionListener(this);
+    printMenuItem.addActionListener(new PrintableWrapper(history));
     aboutMenuItem.addActionListener(this);
     helpMenuItem.addActionListener(this);
     pieChartMenuItem.addActionListener(this);
@@ -207,7 +206,7 @@ public class Menu extends JMenuBar implements ActionListener
       case "Solidus" -> fractionStylePublisher.notifyStyle(FractionStyle.SOLIDUS);
       case "Proper" -> fractionModePublisher.notifyProperMode(properMenuItem.isSelected());
       case "Reduced" -> fractionModePublisher.notifyReducedMode(reducedMenuItem.isSelected());
-      //      case "Print Session" -> ; //TODO Put print session action here
+      // case "Print Session" -> ; //TODO Put print session action here
       default -> System.out.println("unknown menu option");
     }
   }
@@ -219,15 +218,14 @@ public class Menu extends JMenuBar implements ActionListener
     {
       String pathString;
       Path path = ResourceCopier.copyResourcesToTemp("temp", "html");
-      switch(Locale.getDefault().getLanguage())
+      switch (Locale.getDefault().getLanguage())
       {
-        case "fr" -> pathString = path.toString()+"/helpFR.html";
-        case "de" -> pathString = path.toString()+"/helpGER.html";
-        default -> pathString = path.toString()+"/help.html";
+        case "fr" -> pathString = path.toString() + "/helpFR.html";
+        case "de" -> pathString = path.toString() + "/helpGER.html";
+        default -> pathString = path.toString() + "/help.html";
       }
       File file = new File(pathString);
-      
-      
+
       switch (Locale.getDefault().getLanguage())
       {
         case "fr" -> Desktop.getDesktop().browse(file.toURI());

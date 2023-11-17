@@ -62,19 +62,19 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(new Menu(pcw, fractionStylePublisher, fractionModePublisher));
+    setJMenuBar(new Menu(pcw, fractionStylePublisher, fractionModePublisher, history));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window
     JLabel label = new JLabel();
     BufferedImage img = null;
-    
+
     try
     {
       URL imgURL = this.getClass().getResource("/res/screenshots/Fragile_Logo.png");
       img = ImageIO.read(imgURL);
     }
-    catch (IOException e )
+    catch (IOException e)
     {
     }
     // Resizing the Fragile logo
