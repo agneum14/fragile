@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 public class PieChartWindow extends JFrame
 {
   private final JPanel heading;
+  private Display display;
 
   /**
    * Construct the pie chart window, creating the heading panel and calling draw with 0 (as a mixed

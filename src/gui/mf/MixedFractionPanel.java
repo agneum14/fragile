@@ -10,6 +10,10 @@ import gui.JPanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * This class visually represents a MixedFraction with a JPanel. The sign is displayed leftmost,
@@ -27,7 +31,7 @@ import java.awt.*;
  * @version 1.0
  */
 public class MixedFractionPanel extends JPanel
-    implements FractionStyleSubscriber, FractionModeSubscriber
+    implements FractionStyleSubscriber, FractionModeSubscriber, MouseListener, ActionListener
 {
   protected static final int MINUS_SIZE = 10;
   protected JPanel signPanel;
@@ -44,6 +48,10 @@ public class MixedFractionPanel extends JPanel
   private final FractionStyle style;
   private boolean proper;
   private boolean reduced;
+  
+  private JPopupMenu cnp;
+  private JMenuItem cnpItem;
+  
 
   /**
    * This constructor constructs the JPanel from the given MixedFraction, fraction style, proper
@@ -96,6 +104,8 @@ public class MixedFractionPanel extends JPanel
 
     setLayout(new FlowLayout(FlowLayout.LEFT));
     setBackground(Display.POWDER_BLUE);
+    
+    setUpCP();
 
     update();
   }
@@ -368,5 +378,64 @@ public class MixedFractionPanel extends JPanel
   public Integer getWhole()
   {
     return whole;
+  }
+
+  @Override
+  public void mouseClicked(MouseEvent e)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e)
+  {
+    // TODO Auto-generated method stub
+    if(SwingUtilities.isRightMouseButton(e))
+    {
+      cnp.show(this, e.getX(), e.getY());
+    }
+    
+  }
+
+  @Override
+  public void mouseReleased(MouseEvent e)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void mouseEntered(MouseEvent e)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void mouseExited(MouseEvent e)
+  {
+    // TODO Auto-generated method stub
+    
+  }
+  
+  private void setUpCP() {
+    this.cnp = new JPopupMenu();
+    this.cnpItem = new JMenuItem("Copy Operand");
+    cnpItem.addActionListener(this);
+    cnp.add(cnpItem);
+    addMouseListener(this);
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e)
+  {
+    // TODO Auto-generated method stub
+    String ac = e.toString();
+    if(ac.equals("Copy Operand"))
+    {
+      //display.copy(this);
+      //Wanted to have the The display sent in to the constructor so I could copy directly
+    }
   }
 }
