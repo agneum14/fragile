@@ -268,6 +268,37 @@ public class MixedFraction
 
   }
 
+ /**
+   * Calculate a mixed fraction to an Integer Power.
+   * 
+   * @param mf
+   * 			the fraction to calculated.
+   
+   * @return a new mixed fraction.
+   */
+  public static MixedFraction intPower(final MixedFraction mf, int power) {
+		
+	    MixedFraction f = new MixedFraction(mf).improper();
+
+	    if (power == 0) {
+	        return new MixedFraction(1, 0, 1, 1);
+	    }
+
+	    int sign = 1;
+	    int numerator = (int) Math.pow(f.getNum(), Math.abs(power));
+	    int denominator = (int) Math.pow(f.getDenom(), Math.abs(power));
+
+	    if (f.getSign() == -1 && power % 2 == 1) {
+	        sign = -1;
+	    }
+
+	    if (power > 0) {
+	        return new MixedFraction(sign, 0, numerator, denominator);
+	    } else {
+	        return new MixedFraction(sign, 0, denominator, numerator);
+	    }
+	}
+
   /**
    * Fractionalize the MixedFraction, meaning that whole becomes 0 and the numerator is top-heavy.
    *
