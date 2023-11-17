@@ -34,21 +34,21 @@ public class MixedFraction
    * @throws IllegalArgumentException
    *     if denom is 0 or sign isn't either 1 or -1
    */
-  public MixedFraction(final int sign, final Integer whole, final Integer num, final Integer denom)
+  public MixedFraction(final int sign, Integer whole, Integer num, Integer denom)
       throws IllegalArgumentException
   {
     // replace nulls with default values
     if (whole == null)
     {
-      this.whole = 0;
+      whole = 0;
     }
     if (num == null)
     {
-      this.num = 0;
+      num = 0;
     }
     if (denom == null)
     {
-      this.denom = 1;
+      denom = 1;
     }
 
     // throw exceptions for zero denominator or invalid sign
