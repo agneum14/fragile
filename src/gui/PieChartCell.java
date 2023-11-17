@@ -14,10 +14,12 @@ import java.awt.*;
 public class PieChartCell extends JPanel
 {
   public PieChartCell(final FractionStylePublisher fractionStylePublisher,
-      final FractionModePublisher fractionModePublisher, final MixedFraction mf, final String operator)
+      final FractionModePublisher fractionModePublisher, final MixedFraction mf,
+      final String operator)
   {
     setLayout(new GridBagLayout());
     setOpaque(false);
+    setPreferredSize(new Dimension(100, 100));
 
     final MixedFraction reduced = new MixedFraction(mf).reduce();
     final GridBagConstraints g = new GridBagConstraints();
@@ -74,23 +76,5 @@ public class PieChartCell extends JPanel
       pies.add(new PieFraction(reduced));
     }
     add(pies, g);
-  }
-
-  public static void main(final String[] args)
-  {
-    final Frame f = new Frame("test");
-    final FractionStylePublisher fsp = new FractionStylePublisher();
-    final FractionModePublisher fmp = new FractionModePublisher();
-
-    final var gridLayout = new GridLayout(0, 3);
-    gridLayout.setVgap(20);
-    f.setLayout(gridLayout);
-    f.add(new PieChartCell(fsp, fmp, new MixedFraction(1, 4, 2, 3), "+"));
-    f.add(new PieChartCell(fsp, fmp, new MixedFraction(1, 5, 2, 3), "+"));
-    f.add(new PieChartCell(fsp, fmp, new MixedFraction(1, 5, 2, 3), "+"));
-    f.add(new PieChartCell(fsp, fmp, new MixedFraction(1, 0, 5, 6), "="));
-
-    f.pack();
-    f.setVisible(true);
   }
 }

@@ -213,7 +213,7 @@ public class Display extends JPanel
       reset();
       cop = null;
       eval = new MixedFraction(1, 0, 0, 1);
-      pcw.draw(eval);
+      // pcw.draw(eval);
     }
     else if (ac.equals(CalculatorButtons.CLEAR))
     {
@@ -297,12 +297,14 @@ public class Display extends JPanel
       history.addLabel(new JLabel(ac));
       if (ac.equals(CalculatorButtons.EQUALS))
       {
-        pcw.draw(eval);
         addToCEP(createMixedFractionPanel(eval));
         history.addMixedFractionPanel(createMixedFractionPanel(eval));
       }
       clear();
       acToOp(ac);
+
+      // add cell to the pie chart window
+      pcw.addCell(fractionStylePublisher, fractionModePublisher, mf, ac);
     }
   }
 
