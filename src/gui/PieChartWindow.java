@@ -26,6 +26,7 @@ public class PieChartWindow extends JFrame
   private final JPanel heading;
   private final JPanel pies;
 
+
   /**
    * Construct the pie chart window, creating the heading panel and calling draw with 0 (as a mixed
    * fraction).

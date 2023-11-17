@@ -316,5 +316,11 @@ public class Display extends JPanel
     return new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
         fractionModePublisher.getProper(), fractionModePublisher.getReduced());
   }
-
+  
+  public void copy(final JPanel panel)
+  {
+    this.cmfp = (MixedFractionPanel) panel;
+  }
+  
+  
 }
