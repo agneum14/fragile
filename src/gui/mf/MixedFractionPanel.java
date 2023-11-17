@@ -300,6 +300,8 @@ public class MixedFractionPanel extends JPanel
       case SLASH -> styleAsSlash();
       default -> styleAsSolidus();
     }
+
+    draw();
   }
 
   /**
