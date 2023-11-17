@@ -8,12 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.*;
+import java.net.URL;
 
 /**
  * This class is for the main window of the mixed calculator.
@@ -21,7 +18,7 @@ import java.net.*;
  * @author Joshua Hairston
  * @version 10/31/2023
  *
- *          This code complies with the JMU Honor Code.
+ *     This code complies with the JMU Honor Code.
  */
 public class CalculatorWindow extends JFrame implements ComponentListener
 {
@@ -43,9 +40,9 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     history = new History(this);
     fractionModePublisher = new FractionModePublisher();
     display = new Display(pcw, fractionStylePublisher, fractionModePublisher, history); // creation
-                                                                                        // of the
-                                                                                        // display
-                                                                                        // obviously.
+    // of the
+    // display
+    // obviously.
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
     this.addComponentListener(this); // hold the display to make changes
     setupLayout(); // creating the layout of the window.
@@ -101,7 +98,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   {
     int x = this.getX() + this.getWidth() - 8;
     int y = this.getY() + 110;
-    history.setHistoryLocation(x, y);
+    history.setLocation(x, y);
 
   }
 

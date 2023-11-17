@@ -1,36 +1,31 @@
 package gui;
 
-import javax.swing.*;
 import gui.mf.MixedFractionPanel;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JWindow;
-import javax.swing.Timer;
 
 /**
  * Class for the session history of the calculator
  *
+ * This code complies with the JMU Honor Code
+ *
  * @author Joshua Hairston, Zachary Buchan
  * @version 11/13/2023
- *
- *          This Code Complies with the JMU Honor code.
  */
 public class History extends JWindow implements ActionListener
 {
   private static final long serialVersionUID = 1L;
-  private static final int CLOSED = 0;
-  private static final int OPENED = 1;
-  private int status;
+  private static final int HEIGHT = 300;
+  private static final int MAX_WIDTH = 450;
+  private static final int MIN_WIDTH = 30;
+  private boolean opened;
   private JButton button;
   private Timer timer;
   private JPanel historyPanel;
-  private ArrayList<MixedFractionPanel> mixedFractionPanels; // List to store mixed fraction panels
+  private JPanel expression;
 
   /**
    * Constructor for the History class
@@ -38,11 +33,10 @@ public class History extends JWindow implements ActionListener
   public History(JFrame frame)
   {
     super(frame);
-    this.status = CLOSED; // Tracking the status of the window.
+    opened = false; // Tracking the status of the window.
     setupLayout();
-    setSize(30, 300);
+    setSize(MIN_WIDTH, HEIGHT);
     setVisible(true);
-    mixedFractionPanels = new ArrayList<>();
   }
 
   /**
@@ -62,6 +56,26 @@ public class History extends JWindow implements ActionListener
     add(scrollPane, BorderLayout.CENTER);
     // Animation
     timer = new Timer(10, e -> animate());
+
+    expression = new JPanel();
+    historyPanel.add(expression);
+  }
+
+  public void addToExpression(final MixedFractionPanel mfp, String operator)
+  {
+    if (operator != null)
+    {
+      expression.add(new JLabel(operator));
+    }
+    expression.add(mfp);
+    revalidate();
+    repaint();
+  }
+
+  public void nextExpression()
+  {
+    expression = new JPanel();
+    historyPanel.add(expression);
   }
 
   /**
@@ -73,16 +87,16 @@ public class History extends JWindow implements ActionListener
     String ac = e.getActionCommand();
     if (ac.equals(">"))
     {
-      if (status == CLOSED)
+      if (!opened)
       {
-        status = OPENED;
+        opened = true;
         button.setText("<");
         timer.start();
       }
     }
     else
     {
-      status = CLOSED;
+      opened = false;
       button.setText(">");
       timer.start();
     }
@@ -93,12 +107,12 @@ public class History extends JWindow implements ActionListener
    */
   private void animate()
   {
-    int targetWidth = (status == OPENED) ? 300 : 30;
+    int targetWidth = (opened) ? MAX_WIDTH : MIN_WIDTH;
     int currentWidth = getWidth();
     if (currentWidth != targetWidth)
     {
       int newWidth = (currentWidth < targetWidth) ? currentWidth + 5 : currentWidth - 5;
-      setSize(newWidth, 300);
+      setSize(newWidth, HEIGHT);
       if (currentWidth < targetWidth && newWidth >= targetWidth)
       {
         timer.stop();
@@ -109,46 +123,4 @@ public class History extends JWindow implements ActionListener
       }
     }
   }
-
-  /**
-   * Add a mixed fraction panel to the history.
-   */
-  public void addMixedFractionPanel(MixedFractionPanel mixedFractionPanel)
-  {
-    mixedFractionPanels.add(mixedFractionPanel);
-    updateHistoryDisplay();
-  }
-
-  private void updateHistoryDisplay()
-  {
-    historyPanel.removeAll(); // Clear existing components in the historyPanel
-    // Add all mixed fraction panels to the historyPanel
-    for (MixedFractionPanel mixedFractionPanel : mixedFractionPanels)
-    {
-      historyPanel.add(mixedFractionPanel);
-    }
-
-  }
-
-  /**
-   * Changing the location of the history window to move with the main window.
-   * 
-   * @param x
-   *          the x value given
-   * @param y
-   *          the y value given.
-   */
-  public void setHistoryLocation(int x, int y)
-  {
-    setLocation(x, y);
-  }
-
-  /**
-   * Add a label to the history.
-   */
-  public void addLabel(JLabel label)
-  {
-    historyPanel.add(label);
-  }
-
 }
