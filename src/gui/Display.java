@@ -32,6 +32,7 @@ public class Display extends JPanel
   private CurrentMixedFraction cmf;
   private MixedFraction eval;
   private Op cop;
+  private String previousActionCommand;
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
   private History history;
@@ -296,16 +297,17 @@ public class Display extends JPanel
       addToCEP(new JLabel(ac));
       history.addMixedFractionPanel(createMixedFractionPanel(mf));
       history.addLabel(new JLabel(ac));
+      pcw.addCell(fractionStylePublisher, fractionModePublisher, mf, previousActionCommand);
       if (ac.equals(CalculatorButtons.EQUALS))
       {
         addToCEP(createMixedFractionPanel(eval));
         history.addMixedFractionPanel(createMixedFractionPanel(eval));
+        pcw.addCell(fractionStylePublisher, fractionModePublisher, eval, "=");
       }
       clear();
       acToOp(ac);
 
-      // add cell to the pie chart window
-      pcw.addCell(fractionStylePublisher, fractionModePublisher, mf, ac);
+      previousActionCommand = ac;
     }
   }
 
