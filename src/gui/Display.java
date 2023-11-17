@@ -23,7 +23,7 @@ public class Display extends JPanel
 
   public enum Op
   {
-    ADD, SUB, DIV, MULT, EQUAL, MED
+    ADD, SUB, DIV, MULT, EQUAL, MED, INV
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
@@ -192,6 +192,11 @@ public class Display extends JPanel
       {
         JOptionPane.showMessageDialog(null, arg.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
       }
+    }
+    else if (ac.equals(CalculatorButtons.INVERSE))
+    {
+      cmf.invert();
+      updateCMFP();
     }
     else if (ac.equals(CalculatorButtons.SIGN))
     {

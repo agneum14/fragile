@@ -147,20 +147,49 @@ public class CurrentMixedFraction
   }
 
   /**
-   * Method for when the user presses the simplify button. Simplifies the CurrentMixedFraction's numerator and denominator.
+   * Method for when the user presses the simplify button. Simplifies the CurrentMixedFraction's
+   * numerator and denominator.
    */
   public void simplify() throws IllegalArgumentException
   {
-    if(num == null || denom == null ) {
-      throw new IllegalArgumentException("cannot simplify because numerator or denominator is not entered");
+    if (num == null || denom == null)
+    {
+      throw new IllegalArgumentException(
+          "cannot simplify because numerator or denominator is not entered");
     }
     int gcf = Algorithms.gcd(num, denom);
-    if (gcf == 1)
+    if (gcf == 1) // Simplified
     {
       return;
     }
     num /= gcf;
     denom /= gcf;
+  }
+
+  /**
+   * changes the given MixedFraction to the multiplicative inverse of itself.
+   * 
+   * @param mf
+   *          the given MixedFraction.
+   * @return the new MixedFraction
+   */
+  public void invert()
+  {
+    // swapping numerator and denominator.
+    if (whole == null)
+    {
+      int tempNumerator = num;
+      num = denom;
+      denom = tempNumerator;
+    }
+    else
+    {
+      num += whole * denom;
+      int tempNumerator = num;
+      num = denom;
+      denom = tempNumerator;
+      whole = 0;
+    }
   }
 
   /**
