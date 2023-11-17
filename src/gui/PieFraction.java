@@ -41,7 +41,7 @@ public class PieFraction extends Pie
     final int angle = 360 * num / denom * -1; // multiply by -1 to fill clockwise
                                               //
     g.setColor(Color.BLACK);
-    g.fillArc(0, 0, getWidth() - MARGIN, getHeight() - MARGIN, 0, angle);
+    g.fillOval(0, 0, getWidth() - MARGIN, getHeight() - MARGIN);
 
     g.setColor(Color.RED);
     int pos = STROKE / 2;

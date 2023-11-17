@@ -1,8 +1,8 @@
 package gui;
 
-import calculating.FractionStylePublisher.FractionStyle;
+import calculating.FractionModePublisher;
+import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
-import gui.mf.MixedFractionPanel;
 import utilities.Language;
 
 import javax.swing.*;
@@ -24,7 +24,8 @@ import java.awt.event.WindowEvent;
 public class PieChartWindow extends JFrame
 {
   private final JPanel heading;
-  private Display display;
+  private final JPanel pies;
+
 
   /**
    * Construct the pie chart window, creating the heading panel and calling draw with 0 (as a mixed
@@ -33,18 +34,33 @@ public class PieChartWindow extends JFrame
   public PieChartWindow()
   {
     super("Pie Chart");
-    getContentPane().setLayout(new GridBagLayout());
-    setPreferredSize(new Dimension(500, 850));
+    GridBagConstraints g = new GridBagConstraints();
 
+    getContentPane().setLayout(new GridBagLayout());
+    setPreferredSize(new Dimension(750, 400));
+    setMinimumSize(new Dimension(750, 400));
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+    g.gridx = 0;
+    g.gridy = 0;
     heading = new JPanel();
     final JLabel headingLabel = new JLabel(
-        Language.translate("Current Mixed Fraction", "Fraction Mixte Actuelle",
-            "Aktuelle Gemischte Fraktion"));
+        Language.translate("Current Expression", "Expression Actuelle.", "Aktueller Ausdruck."));
     heading.add(headingLabel);
+    add(heading, g);
 
-    draw(new MixedFraction(1, 0, 0, 1));
+    g.gridy = 1;
+    g.weightx = 1;
+    g.fill = GridBagConstraints.BOTH;
+    var gridLayout = new GridLayout(0, 3);
+    gridLayout.setVgap(20);
+    pies = new JPanel(gridLayout);
+    pies.setOpaque(false);
+    add(pies, g);
+
+    g.gridy = 2;
+    g.weighty = 1;
+    add(new JPanel(), g);
 
     addWindowListener(new WindowAdapter()
     {
@@ -56,68 +72,18 @@ public class PieChartWindow extends JFrame
     });
   }
 
-  /**
-   * Update the window to display a new mixed fraction.
-   *
-   * @param mf
-   *     The new mixed fraction
-   */
-  public void draw(final MixedFraction mf)
+  public void addCell(FractionStylePublisher fractionStylePublisher,
+      FractionModePublisher fractionModePublisher, MixedFraction mf, String operator)
   {
-    JPanel pies, pieFrac;
-    int piesNum;
-    GridBagConstraints c;
+    pies.add(new PieChartCell(fractionStylePublisher, fractionModePublisher, mf, operator));
+    pies.revalidate();
+    pies.repaint();
+  }
 
-    // create JPanel for the current mixed fraction
-    JPanel mfp = new MixedFractionPanel(mf, FractionStyle.BAR, false, true);
-
-    // add pies
-    pies = new JPanel(new GridLayout(0, 5));
-    piesNum = 0;
-    if (mf.getWhole() > 49)
-    {
-      pies.add(new PieNumber(mf.getWhole()));
-      piesNum++;
-    }
-    else
-    {
-      for (int i = 0; i < mf.getWhole(); i++)
-      {
-        pies.add(new PieFull());
-        piesNum++;
-      }
-    }
-    if (mf.getNum() != 0)
-    { // don't display a 0 fractional pie
-      pieFrac = new PieFraction(mf);
-      pies.add(pieFrac);
-      piesNum++;
-    }
-
-    // the grid should always have 50 elements so the size of each pie doesn't
-    // change when the mixed fraction evaluation is changed (i.e. this method is
-    // called again)
-    for (; piesNum < 50; piesNum++)
-    {
-      pies.add(new JPanel());
-    }
-
-    getContentPane().removeAll();
-    c = new GridBagConstraints();
-
-    c.weightx = 1;
-    getContentPane().add(heading, c);
-
-    c.gridy = 1;
-    getContentPane().add(mfp, c);
-
-    // consume remaining vertical space with the pie grid
-    c.gridy = 2;
-    c.weighty = 1;
-    c.fill = GridBagConstraints.BOTH;
-    getContentPane().add(pies, c);
-
-    pack();
+  public void reset()
+  {
+    pies.removeAll();
+    revalidate();
     repaint();
   }
 
