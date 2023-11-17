@@ -265,22 +265,25 @@ public class Display extends JPanel
         reset();
         addToCEP(createMixedFractionPanel(eval));
         addToCEP(new JLabel(ac));
+        pcw.addCell(fractionStylePublisher, fractionModePublisher, eval, null);
       }
       else
       {
         MixedFractionPanel mfp = createMixedFractionPanel(mf);
         addToCEP(mfp);
         addToCEP(new JLabel(ac));
+        pcw.addCell(fractionStylePublisher, fractionModePublisher, mf, previousActionCommand);
 
         if (currentOperator == Operator.EQUAL)
         {
           addToCEP(createMixedFractionPanel(eval));
+          pcw.addCell(fractionStylePublisher, fractionModePublisher, eval, ac);
         }
       }
 
       clearCMFP();
       previousOperator = currentOperator;
-
+      previousActionCommand = ac;
     }
   }
 
