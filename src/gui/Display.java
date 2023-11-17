@@ -145,6 +145,7 @@ public class Display extends JPanel
     clearCEP();
     clear();
     draw();
+    pcw.reset();
   }
 
   public void updateCMFP()

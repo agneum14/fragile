@@ -79,6 +79,13 @@ public class PieChartWindow extends JFrame
     pies.repaint();
   }
 
+  public void reset()
+  {
+    pies.removeAll();
+    revalidate();
+    repaint();
+  }
+
   public void toggleVisibility()
   {
     if (isVisible())
