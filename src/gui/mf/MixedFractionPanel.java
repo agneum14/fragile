@@ -48,10 +48,9 @@ public class MixedFractionPanel extends JPanel
   private final FractionStyle style;
   private boolean proper;
   private boolean reduced;
-  
-  private JPopupMenu cnp;
-  private JMenuItem cnpItem;
-  
+
+  JPopupMenu context;
+  private Display display;
 
   /**
    * This constructor constructs the JPanel from the given MixedFraction, fraction style, proper
@@ -67,9 +66,9 @@ public class MixedFractionPanel extends JPanel
    *     The fraction reduced mode
    */
   public MixedFractionPanel(final MixedFraction mf, final FractionStyle style, final boolean proper,
-      final boolean reduced)
+      final boolean reduced, final Display display)
   {
-    this(mf.getSign(), mf.getWhole(), mf.getNum(), mf.getDenom(), style, proper, reduced);
+    this(mf.getSign(), mf.getWhole(), mf.getNum(), mf.getDenom(), style, proper, reduced, display);
   }
 
   /**
@@ -92,7 +91,7 @@ public class MixedFractionPanel extends JPanel
    *     The reduced mode
    */
   protected MixedFractionPanel(final int sign, final Integer whole, final Integer num,
-      final Integer denom, final FractionStyle style, final boolean proper, final boolean reduced)
+      final Integer denom, final FractionStyle style, final boolean proper, final boolean reduced, final Display display)
   {
     this.sign = sign;
     this.whole = whole;
@@ -101,11 +100,17 @@ public class MixedFractionPanel extends JPanel
     this.style = style;
     this.proper = proper;
     this.reduced = reduced;
+    this.display = display;
 
     setLayout(new FlowLayout(FlowLayout.LEFT));
     setBackground(Display.POWDER_BLUE);
     
-    setUpCP();
+    context = new JPopupMenu();
+    JMenuItem copy = new JMenuItem("Copy to Current Mixed Fraction");
+    copy.setActionCommand("copy");
+    copy.addActionListener(this);
+    context.add(copy);
+    addMouseListener(this);
 
     update();
   }
@@ -383,17 +388,16 @@ public class MixedFractionPanel extends JPanel
   @Override
   public void mouseClicked(MouseEvent e)
   {
-    // TODO Auto-generated method stub
+      return;
     
   }
 
   @Override
   public void mousePressed(MouseEvent e)
   {
-    // TODO Auto-generated method stub
     if(SwingUtilities.isRightMouseButton(e))
     {
-      cnp.show(this, e.getX(), e.getY());
+      context.show(this, e.getX(), e.getY());
     }
     
   }
@@ -401,41 +405,27 @@ public class MixedFractionPanel extends JPanel
   @Override
   public void mouseReleased(MouseEvent e)
   {
-    // TODO Auto-generated method stub
-    
+      return;
   }
 
   @Override
   public void mouseEntered(MouseEvent e)
   {
-    // TODO Auto-generated method stub
-    
+      return;
   }
 
   @Override
   public void mouseExited(MouseEvent e)
   {
-    // TODO Auto-generated method stub
-    
+      return;
   }
   
-  private void setUpCP() {
-    this.cnp = new JPopupMenu();
-    this.cnpItem = new JMenuItem("Copy Operand");
-    cnpItem.addActionListener(this);
-    cnp.add(cnpItem);
-    addMouseListener(this);
-  }
-
   @Override
   public void actionPerformed(ActionEvent e)
   {
-    // TODO Auto-generated method stub
-    String ac = e.toString();
-    if(ac.equals("Copy Operand"))
-    {
-      //display.copy(this);
-      //Wanted to have the The display sent in to the constructor so I could copy directly
-    }
+      if (e.getActionCommand() == "copy") {
+          MixedFraction mf = new MixedFraction(sign, whole, num, denom);
+          display.setCMFP(mf);
+      }
   }
 }

@@ -26,7 +26,6 @@ public class PieChartWindow extends JFrame
   private final JPanel heading;
   private final JPanel pies;
 
-
   /**
    * Construct the pie chart window, creating the heading panel and calling draw with 0 (as a mixed
    * fraction).
@@ -73,9 +72,11 @@ public class PieChartWindow extends JFrame
   }
 
   public void addCell(FractionStylePublisher fractionStylePublisher,
-      FractionModePublisher fractionModePublisher, MixedFraction mf, String operator)
+      FractionModePublisher fractionModePublisher, MixedFraction mf, String operator,
+      Display display)
   {
-    pies.add(new PieChartCell(fractionStylePublisher, fractionModePublisher, mf, operator));
+    pies.add(
+        new PieChartCell(fractionStylePublisher, fractionModePublisher, mf, operator, display));
     pies.revalidate();
     pies.repaint();
   }

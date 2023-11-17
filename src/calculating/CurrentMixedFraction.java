@@ -27,6 +27,14 @@ public class CurrentMixedFraction
     clear();
   }
 
+  public CurrentMixedFraction(final MixedFraction mf) {
+      sign = mf.getSign();
+      whole = mf.getWhole();
+      num = mf.getNum();
+      denom = mf.getDenom();
+      pos = Pos.WHOLE;
+  }
+
   /**
    * Add a digit to the either whole, num, or denom (depending on pos).
    *

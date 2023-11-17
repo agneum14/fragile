@@ -15,7 +15,7 @@ public class PieChartCell extends JPanel
 {
   public PieChartCell(final FractionStylePublisher fractionStylePublisher,
       final FractionModePublisher fractionModePublisher, final MixedFraction mf,
-      final String operator)
+      final String operator, Display display)
   {
     setLayout(new GridBagLayout());
     setOpaque(false);
@@ -26,7 +26,7 @@ public class PieChartCell extends JPanel
     final Font font = new Font(getFont().getName(), Font.PLAIN, 18);
     final String operatorText = (operator == null) ? "   " : String.format(" %s ", operator);
     final MixedFractionPanel mfp = new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
-        fractionModePublisher.getProper(), fractionModePublisher.getReduced());
+        fractionModePublisher.getProper(), fractionModePublisher.getReduced(), display);
 
     fractionStylePublisher.addSubscriber(mfp);
     fractionModePublisher.addSubscriber(mfp);
