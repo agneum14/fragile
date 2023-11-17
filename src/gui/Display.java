@@ -6,6 +6,7 @@ import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
 import gui.mf.MixedFractionPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,12 +17,12 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *          This code complies with the JMU Honor Code.
+ *     This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
 
-  public enum Op
+  public enum Operator
   {
     ADD, SUB, DIV, MULT, EQUAL, MED, INV
   }
@@ -31,7 +32,7 @@ public class Display extends JPanel
   private JPanel cmfp;
   private CurrentMixedFraction cmf;
   private MixedFraction eval;
-  private Op cop;
+  private Operator previousOperator;
   private String previousActionCommand;
   private PieChartWindow pcw;
   private FractionStylePublisher fractionStylePublisher;
@@ -53,7 +54,7 @@ public class Display extends JPanel
     cep.setBackground(POWDER_BLUE);
     cmf = new CurrentMixedFraction();
     cmfp = new CurrentMixedFractionPanel(cmf);
-    cop = null;
+    previousOperator = null;
     this.history = history;
     draw();
   }
@@ -105,16 +106,16 @@ public class Display extends JPanel
     repaint();
   }
 
-  private void acToOp(String ac) throws IllegalArgumentException
+  private Operator acToOp(String ac) throws IllegalArgumentException
   {
-    cop = switch (ac)
+    return switch (ac)
     {
-      case CalculatorButtons.EQUALS -> Op.EQUAL;
-      case CalculatorButtons.ADDITION -> Op.ADD;
-      case CalculatorButtons.SUBTRACTION -> Op.SUB;
-      case CalculatorButtons.MULTIPLICATION -> Op.MULT;
-      case CalculatorButtons.MEDIANT -> Op.MED;
-      case CalculatorButtons.DIVISION -> Op.DIV;
+      case CalculatorButtons.EQUALS -> Operator.EQUAL;
+      case CalculatorButtons.ADDITION -> Operator.ADD;
+      case CalculatorButtons.SUBTRACTION -> Operator.SUB;
+      case CalculatorButtons.MULTIPLICATION -> Operator.MULT;
+      case CalculatorButtons.MEDIANT -> Operator.MED;
+      case CalculatorButtons.DIVISION -> Operator.DIV;
       default -> throw new IllegalArgumentException("action command isn't an operator");
     };
   }
@@ -142,9 +143,8 @@ public class Display extends JPanel
 
   public void reset()
   {
-    fractionStylePublisher.removeAllSubscribers();
     clearCEP();
-    clear();
+    clearCMFP();
     draw();
     pcw.reset();
   }
@@ -155,7 +155,7 @@ public class Display extends JPanel
     draw();
   }
 
-  public void clear()
+  public void clearCMFP()
   {
     cmf = new CurrentMixedFraction();
     updateCMFP();
@@ -213,70 +213,40 @@ public class Display extends JPanel
     else if (ac.equals(CalculatorButtons.RESET))
     {
       reset();
-      cop = null;
+      previousOperator = null;
       eval = new MixedFraction(1, 0, 0, 1);
-      // pcw.draw(eval);
     }
     else if (ac.equals(CalculatorButtons.CLEAR))
     {
-      clear();
+      clearCMFP();
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
-        || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
-        || ac.equals(CalculatorButtons.DIVISION) || ac.equals(CalculatorButtons.MEDIANT))
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
+        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
+        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION) || ac.equals(
+        CalculatorButtons.MEDIANT))
     {
-      if (cop == Op.EQUAL)
-      {
-        if (cmf.getWhole() == null && cmf.getNum() == null && cmf.getDenom() == null)
-        {
-          acToOp(ac);
-          reset();
-          addToCEP(createMixedFractionPanel(eval));
-          addToCEP(new JLabel(ac));
-          history.addMixedFractionPanel(createMixedFractionPanel(eval));
-          history.addLabel(new JLabel(ac));
-          return;
-        }
-      }
-      MixedFraction mf;
-      try
-      {
-        mf = new MixedFraction(cmf);
-      }
-      catch (IllegalArgumentException ile)
-      {
-        JOptionPane.showMessageDialog(null, ile.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-      }
-      if (cop == null)
+      MixedFraction mf = new MixedFraction(cmf);
+      if (previousOperator == null)
       {
         eval = mf;
       }
-      else if (cop == Op.ADD)
+      else if (previousOperator == Operator.ADD)
       {
         eval = MixedFraction.add(eval, mf);
       }
-      else if (cop == Op.SUB)
+      else if (previousOperator == Operator.SUB)
       {
         eval = MixedFraction.sub(eval, mf);
       }
-      else if (cop == Op.MED)
+      else if (previousOperator == Operator.MED)
       {
-        try
-        {
-          eval = MixedFraction.mediant(eval, mf);
-        }
-        catch (IllegalArgumentException ae)
-        {
-          JOptionPane.showMessageDialog(null, ae.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
+        eval = MixedFraction.mediant(eval, mf);
       }
-      else if (cop == Op.MULT)
+      else if (previousOperator == Operator.MULT)
       {
         eval = MixedFraction.mult(eval, mf);
       }
-      else if (cop == Op.DIV)
+      else if (previousOperator == Operator.DIV)
       {
         try
         {
@@ -288,26 +258,29 @@ public class Display extends JPanel
           return;
         }
       }
-      else if (cop == Op.EQUAL)
-      {
-        eval = mf;
-        clearCEP();
-      }
-      addToCEP(createMixedFractionPanel(mf));
-      addToCEP(new JLabel(ac));
-      history.addMixedFractionPanel(createMixedFractionPanel(mf));
-      history.addLabel(new JLabel(ac));
-      pcw.addCell(fractionStylePublisher, fractionModePublisher, mf, previousActionCommand);
-      if (ac.equals(CalculatorButtons.EQUALS))
-      {
-        addToCEP(createMixedFractionPanel(eval));
-        history.addMixedFractionPanel(createMixedFractionPanel(eval));
-        pcw.addCell(fractionStylePublisher, fractionModePublisher, eval, "=");
-      }
-      clear();
-      acToOp(ac);
 
-      previousActionCommand = ac;
+      Operator currentOperator = acToOp(ac);
+      if (previousOperator == Operator.EQUAL)
+      {
+        reset();
+        addToCEP(createMixedFractionPanel(eval));
+        addToCEP(new JLabel(ac));
+      }
+      else
+      {
+        MixedFractionPanel mfp = createMixedFractionPanel(mf);
+        addToCEP(mfp);
+        addToCEP(new JLabel(ac));
+
+        if (currentOperator == Operator.EQUAL)
+        {
+          addToCEP(createMixedFractionPanel(eval));
+        }
+      }
+
+      clearCMFP();
+      previousOperator = currentOperator;
+
     }
   }
 
@@ -316,11 +289,10 @@ public class Display extends JPanel
     return new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
         fractionModePublisher.getProper(), fractionModePublisher.getReduced());
   }
-  
+
   public void copy(final JPanel panel)
   {
     this.cmfp = (MixedFractionPanel) panel;
   }
-  
-  
+
 }
