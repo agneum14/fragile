@@ -1,7 +1,5 @@
 package gui;
 
-import calculating.FractionModePublisher;
-import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
 import utilities.Language;
 
@@ -71,12 +69,9 @@ public class PieChartWindow extends JFrame
     });
   }
 
-  public void addCell(FractionStylePublisher fractionStylePublisher,
-      FractionModePublisher fractionModePublisher, MixedFraction mf, String operator,
-      Display display)
+  public void addCell(MixedFraction mf, String operator, Display display)
   {
-    pies.add(
-        new PieChartCell(fractionStylePublisher, fractionModePublisher, mf, operator, display));
+    pies.add(new PieChartCell(mf, operator, display));
     pies.revalidate();
     pies.repaint();
   }

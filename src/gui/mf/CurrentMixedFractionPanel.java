@@ -1,9 +1,9 @@
 package gui.mf;
 
 import calculating.CurrentMixedFraction;
-import calculating.FractionStylePublisher.FractionStyle;
+import calculating.FractionModePublisher;
+import calculating.FractionStylePublisher;
 import gui.Display;
-import utilities.Algorithms;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -39,8 +39,10 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    */
   public CurrentMixedFractionPanel(final CurrentMixedFraction cmf)
   {
-    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom(), FractionStyle.BAR, false,
-        false, null);
+    super(cmf.getSign(), cmf.getWhole(), cmf.getNum(), cmf.getDenom(), null);
+
+    FractionStylePublisher.getInstance().removeSubscriber(this);
+    FractionModePublisher.getInstance().removeSubscriber(this);
 
     // add a border to the component of the current position
     final Border border = BorderFactory.createDashedBorder(Color.BLACK);
@@ -134,6 +136,5 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
   {
     setPanelsAndDraw();
   }
-  
-  
+
 }

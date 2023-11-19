@@ -17,6 +17,8 @@ import java.util.List;
 public class FractionModePublisher
 {
 
+  private static FractionModePublisher instance;
+
   private boolean proper;
   private boolean reduced;
   private final List<FractionModeSubscriber> subscribers;
@@ -25,11 +27,21 @@ public class FractionModePublisher
    * This constructor initializes the proper and reduced modes to false and subscribers to an empty
    * ArrayList.
    */
-  public FractionModePublisher()
+  private FractionModePublisher()
   {
     proper = false;
     reduced = false;
     subscribers = new ArrayList<>();
+  }
+
+  public synchronized static FractionModePublisher getInstance()
+  {
+    if (instance == null)
+    {
+      instance = new FractionModePublisher();
+    }
+
+    return instance;
   }
 
   /**

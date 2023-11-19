@@ -15,8 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -25,8 +23,6 @@ import java.util.Locale;
 public class Menu extends JMenuBar implements ActionListener
 {
   private PieChartWindow pcw;
-  private FractionStylePublisher fractionStylePublisher;
-  private FractionModePublisher fractionModePublisher;
   private final JCheckBoxMenuItem properMenuItem;
   private final JCheckBoxMenuItem reducedMenuItem;
 
@@ -35,12 +31,9 @@ public class Menu extends JMenuBar implements ActionListener
    *
    * @return JMenuBar
    */
-  public Menu(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
-      FractionModePublisher fractionModePublisher, History history)
+  public Menu(PieChartWindow pcw, History history)
   {
     this.pcw = pcw;
-    this.fractionStylePublisher = fractionStylePublisher;
-    this.fractionModePublisher = fractionModePublisher;
 
     // Creating the main menu objects
     JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "Datei"));
@@ -201,11 +194,13 @@ public class Menu extends JMenuBar implements ActionListener
       case "Pie Chart" -> pcw.toggleVisibility();
       case "About" -> displayAboutDialog();
       case "Help" -> openHelpPage();
-      case "Bar" -> fractionStylePublisher.notifyStyle(FractionStyle.BAR);
-      case "Slash" -> fractionStylePublisher.notifyStyle(FractionStyle.SLASH);
-      case "Solidus" -> fractionStylePublisher.notifyStyle(FractionStyle.SOLIDUS);
-      case "Proper" -> fractionModePublisher.notifyProperMode(properMenuItem.isSelected());
-      case "Reduced" -> fractionModePublisher.notifyReducedMode(reducedMenuItem.isSelected());
+      case "Bar" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.BAR);
+      case "Slash" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SLASH);
+      case "Solidus" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SOLIDUS);
+      case "Proper" ->
+          FractionModePublisher.getInstance().notifyProperMode(properMenuItem.isSelected());
+      case "Reduced" ->
+          FractionModePublisher.getInstance().notifyReducedMode(reducedMenuItem.isSelected());
       // case "Print Session" -> ; //TODO Put print session action here
       default -> System.out.println("unknown menu option");
     }

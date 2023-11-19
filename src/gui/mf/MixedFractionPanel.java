@@ -1,9 +1,7 @@
 package gui.mf;
 
-import calculating.FractionModeSubscriber;
+import calculating.*;
 import calculating.FractionStylePublisher.FractionStyle;
-import calculating.FractionStyleSubscriber;
-import calculating.MixedFraction;
 import gui.Display;
 import gui.HorizontalLine;
 import gui.JPanelBuilder;
@@ -65,10 +63,9 @@ public class MixedFractionPanel extends JPanel
    * @param reduced
    *     The fraction reduced mode
    */
-  public MixedFractionPanel(final MixedFraction mf, final FractionStyle style, final boolean proper,
-      final boolean reduced, final Display display)
+  public MixedFractionPanel(final MixedFraction mf, final Display display)
   {
-    this(mf.getSign(), mf.getWhole(), mf.getNum(), mf.getDenom(), style, proper, reduced, display);
+    this(mf.getSign(), mf.getWhole(), mf.getNum(), mf.getDenom(), display);
   }
 
   /**
@@ -91,20 +88,23 @@ public class MixedFractionPanel extends JPanel
    *     The reduced mode
    */
   protected MixedFractionPanel(final int sign, final Integer whole, final Integer num,
-      final Integer denom, final FractionStyle style, final boolean proper, final boolean reduced, final Display display)
+      final Integer denom, final Display display)
   {
     this.sign = sign;
     this.whole = whole;
     this.num = num;
     this.denom = denom;
-    this.style = style;
-    this.proper = proper;
-    this.reduced = reduced;
     this.display = display;
+
+    this.style = FractionStylePublisher.getInstance().getStyle();
+    this.proper = FractionModePublisher.getInstance().getProper();
+    this.reduced = FractionModePublisher.getInstance().getReduced();
+    FractionStylePublisher.getInstance().addSubscriber(this);
+    FractionModePublisher.getInstance().addSubscriber(this);
 
     setLayout(new FlowLayout(FlowLayout.LEFT));
     setBackground(Display.POWDER_BLUE);
-    
+
     context = new JPopupMenu();
     JMenuItem copy = new JMenuItem("Copy to Current Mixed Fraction");
     copy.setActionCommand("copy");
@@ -388,44 +388,45 @@ public class MixedFractionPanel extends JPanel
   @Override
   public void mouseClicked(MouseEvent e)
   {
-      return;
-    
+    return;
+
   }
 
   @Override
   public void mousePressed(MouseEvent e)
   {
-    if(SwingUtilities.isRightMouseButton(e))
+    if (SwingUtilities.isRightMouseButton(e))
     {
       context.show(this, e.getX(), e.getY());
     }
-    
+
   }
 
   @Override
   public void mouseReleased(MouseEvent e)
   {
-      return;
+    return;
   }
 
   @Override
   public void mouseEntered(MouseEvent e)
   {
-      return;
+    return;
   }
 
   @Override
   public void mouseExited(MouseEvent e)
   {
-      return;
+    return;
   }
-  
+
   @Override
   public void actionPerformed(ActionEvent e)
   {
-      if (e.getActionCommand() == "copy") {
-          MixedFraction mf = new MixedFraction(sign, whole, num, denom);
-          display.setCMFP(mf);
-      }
+    if (e.getActionCommand() == "copy")
+    {
+      MixedFraction mf = new MixedFraction(sign, whole, num, denom);
+      display.setCMFP(mf);
+    }
   }
 }

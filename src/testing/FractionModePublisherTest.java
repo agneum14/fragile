@@ -35,7 +35,7 @@ public class FractionModePublisherTest
   @Test
   void notifyProperMode()
   {
-    FractionModePublisher fmp = new FractionModePublisher();
+    FractionModePublisher fmp = FractionModePublisher.getInstance();
 
     fmp.notifyProperMode(true);
 
@@ -45,7 +45,7 @@ public class FractionModePublisherTest
   @Test
   void notifyProperModeWithSubscriber()
   {
-    FractionModePublisher fmp = new FractionModePublisher();
+    FractionModePublisher fmp = FractionModePublisher.getInstance();
     DummySubscriber ds = new DummySubscriber();
 
     fmp.addSubscriber(ds);
@@ -57,7 +57,7 @@ public class FractionModePublisherTest
   @Test
   void notifyReducedMode()
   {
-    FractionModePublisher fmp = new FractionModePublisher();
+    FractionModePublisher fmp = FractionModePublisher.getInstance();
 
     fmp.notifyReducedMode(true);
 
@@ -67,7 +67,7 @@ public class FractionModePublisherTest
   @Test
   void notifyReducedModeWithSubscriber()
   {
-    FractionModePublisher fmp = new FractionModePublisher();
+    FractionModePublisher fmp = FractionModePublisher.getInstance();
     DummySubscriber ds = new DummySubscriber();
 
     fmp.addSubscriber(ds);
@@ -79,7 +79,7 @@ public class FractionModePublisherTest
   @Test
   void removeSubscriber()
   {
-    FractionModePublisher fmp = new FractionModePublisher();
+    FractionModePublisher fmp = FractionModePublisher.getInstance();
     DummySubscriber ds = new DummySubscriber();
 
     fmp.addSubscriber(ds);

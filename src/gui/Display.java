@@ -1,8 +1,6 @@
 package gui;
 
 import calculating.CurrentMixedFraction;
-import calculating.FractionModePublisher;
-import calculating.FractionStylePublisher;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
 import gui.mf.MixedFractionPanel;
@@ -35,19 +33,13 @@ public class Display extends JPanel
   private Operator previousOperator;
   private String previousActionCommand;
   private PieChartWindow pcw;
-  private FractionStylePublisher fractionStylePublisher;
   private History history;
-  private FractionModePublisher fractionModePublisher;
 
-  public Display(PieChartWindow pcw, FractionStylePublisher fractionStylePublisher,
-
-      FractionModePublisher fractionModePublisher, History history)
+  public Display(PieChartWindow pcw, History history)
   {
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
     this.pcw = pcw;
-    this.fractionStylePublisher = fractionStylePublisher;
-    this.fractionModePublisher = fractionModePublisher;
     this.history = history;
     eval = new MixedFraction(1, 0, 0, 1);
     cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -123,8 +115,6 @@ public class Display extends JPanel
   public void addToCEP(MixedFractionPanel p)
   {
     cep.add(p);
-    fractionStylePublisher.addSubscriber(p);
-    fractionModePublisher.addSubscriber(p);
     draw();
   }
 
@@ -274,7 +264,7 @@ public class Display extends JPanel
         reset();
         addToCEP(createMixedFractionPanel(eval));
         addToCEP(new JLabel(ac));
-        pcw.addCell(fractionStylePublisher, fractionModePublisher, eval, null, this);
+        pcw.addCell(eval, null, this);
         history.nextExpression();
         history.addToExpression(createMixedFractionPanel(eval), null);
       }
@@ -284,12 +274,12 @@ public class Display extends JPanel
         addToCEP(mfp);
         addToCEP(new JLabel(ac));
         history.addToExpression(createMixedFractionPanel(mf), previousActionCommand);
-        pcw.addCell(fractionStylePublisher, fractionModePublisher, mf, previousActionCommand, this);
+        pcw.addCell(mf, previousActionCommand, this);
 
         if (currentOperator == Operator.EQUAL)
         {
           addToCEP(createMixedFractionPanel(eval));
-          pcw.addCell(fractionStylePublisher, fractionModePublisher, eval, ac, this);
+          pcw.addCell(eval, ac, this);
           history.addToExpression(createMixedFractionPanel(eval), ac);
         }
       }
@@ -302,11 +292,7 @@ public class Display extends JPanel
 
   public MixedFractionPanel createMixedFractionPanel(final MixedFraction mf)
   {
-    MixedFractionPanel mfp = new MixedFractionPanel(mf, fractionStylePublisher.getStyle(),
-        fractionModePublisher.getProper(), fractionModePublisher.getReduced(), this);
-    fractionStylePublisher.addSubscriber(mfp);
-    fractionModePublisher.addSubscriber(mfp);
-
+    MixedFractionPanel mfp = new MixedFractionPanel(mf, this);
     return mfp;
   }
 

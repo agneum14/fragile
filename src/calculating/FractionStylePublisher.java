@@ -24,16 +24,28 @@ public class FractionStylePublisher
     BAR, SOLIDUS, SLASH
   }
 
+  private static FractionStylePublisher instance;
+
   private final List<FractionStyleSubscriber> subscribers;
   private FractionStyle style;
 
   /**
    * This constructor initializes subscribers to an empty ArrayList and sets style to BAR.
    */
-  public FractionStylePublisher()
+  private FractionStylePublisher()
   {
     subscribers = new ArrayList<>();
     style = FractionStyle.BAR;
+  }
+
+  public synchronized static FractionStylePublisher getInstance()
+  {
+    if (instance == null)
+    {
+      instance = new FractionStylePublisher();
+    }
+
+    return instance;
   }
 
   /**
@@ -61,8 +73,9 @@ public class FractionStylePublisher
   /**
    * Remove all FractionModeSubscribers.
    */
-  public void removeAllSubscribers() {
-      subscribers.removeAll(subscribers);
+  public void removeAllSubscribers()
+  {
+    subscribers.removeAll(subscribers);
   }
 
   /**
