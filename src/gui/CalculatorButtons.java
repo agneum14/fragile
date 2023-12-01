@@ -15,7 +15,7 @@ import java.net.URL;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *     This Code Complies with the JMU Honor Code.
+ * This Code Complies with the JMU Honor Code.
  */
 public class CalculatorButtons extends JPanel implements ActionListener
 {
@@ -45,8 +45,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
   /**
    * Constructor which takes in the class ButtonActions which is an ActionListener.
    *
-   * @param display
-   *     the main window's display.
+   * @param display the main window's display.
    */
   public CalculatorButtons(final Display display)
   {
@@ -58,8 +57,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
   /**
    * Private helper method for making buttons.
    *
-   * @param string
-   *     the button's text
+   * @param string the button's text
    * @return JButton a new JButton
    */
   private JButton setButton(final String string)
@@ -82,10 +80,8 @@ public class CalculatorButtons extends JPanel implements ActionListener
   /**
    * Helper function to create a calculator button.
    *
-   * @param string
-   *     The button text
-   * @param textColor
-   *     The button text color
+   * @param string    The button text
+   * @param textColor The button text color
    * @return The JButton
    */
   private JButton setButton(final String string, final Color textColor)
