@@ -24,15 +24,15 @@ public class MixedFraction
    * This constructor sets all member variables explicity, then simplifies the mixed fraction.
    *
    * @param sign
-   *     Indicates whether the number is negative (-1) or positive (1)
+   *          Indicates whether the number is negative (-1) or positive (1)
    * @param whole
-   *     The whole number component of the mixed fraction
+   *          The whole number component of the mixed fraction
    * @param num
-   *     The numerator of the mixed fraction
+   *          The numerator of the mixed fraction
    * @param denom
-   *     The denominator of the mixed fraction
+   *          The denominator of the mixed fraction
    * @throws IllegalArgumentException
-   *     if denom is 0 or sign isn't either 1 or -1
+   *           if denom is 0 or sign isn't either 1 or -1
    */
   public MixedFraction(final int sign, Integer whole, Integer num, Integer denom)
       throws IllegalArgumentException
@@ -78,7 +78,7 @@ public class MixedFraction
    * (a deep copy).
    *
    * @param o
-   *     The Mixed Fraction to deep copy
+   *          The Mixed Fraction to deep copy
    */
   public MixedFraction(final MixedFraction o)
   {
@@ -90,7 +90,7 @@ public class MixedFraction
    * CurrentMixedFraction.
    *
    * @param cmf
-   *     The CurrentMixedFraction to convert to a MixedFraction
+   *          The CurrentMixedFraction to convert to a MixedFraction
    */
   public MixedFraction(final CurrentMixedFraction cmf)
   {
@@ -101,9 +101,9 @@ public class MixedFraction
    * Add two MixedFractions.
    *
    * @param mf1
-   *     The first MixedFraction to sum
+   *          The first MixedFraction to sum
    * @param mf2
-   *     The second MixedFraction to sum
+   *          The second MixedFraction to sum
    * @return The sum of the two MixedFractions
    */
   public static MixedFraction add(final MixedFraction mf1, final MixedFraction mf2)
@@ -143,12 +143,12 @@ public class MixedFraction
    * Divide two MixedFractions.
    *
    * @param mf1
-   *     The MixedFraction dividend
+   *          The MixedFraction dividend
    * @param mf2
-   *     The MixedFraction divisor
+   *          The MixedFraction divisor
    * @return The MixedFraction quotient
    * @throws ArithmeticException
-   *     if the divisor is 0
+   *           if the divisor is 0
    */
   public static MixedFraction div(final MixedFraction mf1, final MixedFraction mf2)
       throws ArithmeticException
@@ -175,9 +175,9 @@ public class MixedFraction
    * Multiply two MixedFractions.
    *
    * @param mf1
-   *     The first MixedFraction to multiply
+   *          The first MixedFraction to multiply
    * @param mf2
-   *     The second MixedFraction to multiply
+   *          The second MixedFraction to multiply
    * @return The MixedFraction product
    */
   public static MixedFraction mult(final MixedFraction mf1, final MixedFraction mf2)
@@ -199,9 +199,9 @@ public class MixedFraction
    * Subtract two MixedFractions.
    *
    * @param mf1
-   *     The MixedFraction minuend
+   *          The MixedFraction minuend
    * @param mf2
-   *     The MixedFraction subtrahend
+   *          The MixedFraction subtrahend
    * @return The MixedFraction result of the subtraction operation
    */
   public static MixedFraction sub(final MixedFraction mf1, final MixedFraction mf2)
@@ -241,9 +241,9 @@ public class MixedFraction
    * Calculate the mediant of two mixed fractions.
    *
    * @param mf1
-   *     The first mixed fraction
+   *          The first mixed fraction
    * @param mf2
-   *     The second mixed fraction
+   *          The second mixed fraction
    * @return A new mixed fraction.
    */
   public static MixedFraction mediant(final MixedFraction mf1, final MixedFraction mf2)
@@ -268,36 +268,70 @@ public class MixedFraction
 
   }
 
- /**
+  /**
    * Calculate a mixed fraction to an Integer Power.
    * 
    * @param mf
-   * 			the fraction to calculated.
-   
+   *          the fraction to calculated.
+   * 
    * @return a new mixed fraction.
    */
-  public static MixedFraction intPower(final MixedFraction mf, int power) {
-		
-	    MixedFraction f = new MixedFraction(mf).improper();
+  public static MixedFraction intPower(final MixedFraction mf, int power)
+  {
 
-	    if (power == 0) {
-	        return new MixedFraction(1, 0, 1, 1);
-	    }
+    MixedFraction f = new MixedFraction(mf).improper();
 
-	    int sign = 1;
-	    int numerator = (int) Math.pow(f.getNum(), Math.abs(power));
-	    int denominator = (int) Math.pow(f.getDenom(), Math.abs(power));
+    if (power == 0)
+    {
+      return new MixedFraction(1, 0, 1, 1);
+    }
 
-	    if (f.getSign() == -1 && power % 2 == 1) {
-	        sign = -1;
-	    }
+    int sign = 1;
+    int numerator = (int) Math.pow(f.getNum(), Math.abs(power));
+    int denominator = (int) Math.pow(f.getDenom(), Math.abs(power));
 
-	    if (power > 0) {
-	        return new MixedFraction(sign, 0, numerator, denominator);
-	    } else {
-	        return new MixedFraction(sign, 0, denominator, numerator);
-	    }
-	}
+    if (f.getSign() == -1 && power % 2 == 1)
+    {
+      sign = -1;
+    }
+
+    if (power > 0)
+    {
+      return new MixedFraction(sign, 0, numerator, denominator);
+    }
+    else
+    {
+      return new MixedFraction(sign, 0, denominator, numerator);
+    }
+  }
+
+  /**
+   * Method for the less than operator.
+   * 
+   * @param mf1
+   *          the mixed fraction that should be greater than.
+   * @param mf2
+   *          the mixed fraction that should be less than.
+   * @return true or false depending on if mf1 is greater than mf2.
+   */
+  public static boolean GreaterThan(final MixedFraction mf1, final MixedFraction mf2)
+  {
+    MixedFraction frac = MixedFraction.sub(mf1, mf2);
+    return frac.sign == 1 ? true : false;
+  }
+
+  public static boolean LessThan(final MixedFraction mf1, final MixedFraction mf2)
+  {
+    MixedFraction frac = MixedFraction.sub(mf1, mf2);
+    return frac.sign == -1 ? true : false;
+  }
+
+  public static boolean EqualTo(final MixedFraction mf1, final MixedFraction mf2)
+  {
+
+    return (mf1.whole == mf2.whole && mf1.num == mf2.num && mf1.denom == mf2.denom
+        && mf1.sign == mf2.sign) ? true : false;
+  }
 
   /**
    * Fractionalize the MixedFraction, meaning that whole becomes 0 and the numerator is top-heavy.

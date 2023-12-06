@@ -33,6 +33,10 @@ public class CalculatorButtons extends JPanel implements ActionListener
   public static final String EXPONENT = "X\u207F";
   public static final String INVERSE = "inv";
   public static final String SIMPLIFY = "\u21A1";
+  public static final String GREATER_THAN = ">";
+  public static final String LESS_THAN = "<";
+  public static final String EQUAL_TO = "\u225D";
+  
 
   private static final long serialVersionUID = 1L;
 
@@ -164,7 +168,11 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // the multiplication button
     c.gridx = 3;
     add(setButton(MULTIPLICATION, AQUA), c);
-
+    
+    // the greater than button
+    c.gridx = 4;
+    add(setButton(GREATER_THAN, AQUA), c);
+    
     // Simplify button
     c.gridx = 5;
     add(setButton(SIMPLIFY, PURPLE), c);
@@ -183,6 +191,10 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // Division button
     c.gridx = 3;
     add(setButton(DIVISION, AQUA), c);
+    
+    //Less-than button
+    c.gridx = 4;
+    add(setButton(LESS_THAN, AQUA), c);
 
     // button for the number zero
     c.gridx = 0;
@@ -193,7 +205,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // The position button with the position picture
     c.gridx = 2;
     c.gridwidth = 1;
-    URL positionIcon = this.getClass().getResource("/res/position_logo.png");
+    URL positionIcon = this.getClass().getResource("/html/position_logo.png");
     ImageIcon icon = new ImageIcon(positionIcon);
     JButton button = new JButton();
     button.addActionListener(this);
@@ -206,7 +218,10 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // The equals button
     c.gridx = 3;
     add(setButton(EQUALS, AQUA), c);
-
+    
+    //the equal to by definition button
+    c.gridx = 4;
+    add(setButton(EQUAL_TO, AQUA), c);
   }
 
   /**

@@ -3,8 +3,8 @@ package gui;
 import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 import calculating.FractionStylePublisher.FractionStyle;
+import html.ResourceCopier;
 import utilities.Language;
-import utilities.ResourceCopier;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,14 +25,16 @@ public class Menu extends JMenuBar implements ActionListener
   private PieChartWindow pcw;
   private final JCheckBoxMenuItem properMenuItem;
   private final JCheckBoxMenuItem reducedMenuItem;
+  private CalculatorWindow window; //TODO get rid of this coupling somehow.
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
    *
    * @return JMenuBar
    */
-  public Menu(PieChartWindow pcw, History history)
+  public Menu(PieChartWindow pcw, History history, CalculatorWindow window)
   {
+    this.window = window;
     this.pcw = pcw;
 
     // Creating the main menu objects
@@ -46,19 +48,28 @@ public class Menu extends JMenuBar implements ActionListener
     String englishText = "Exit";
     JMenuItem exitMenuItem = new JMenuItem(Language.translate(englishText, "Sortie", "Ausgang"));
     exitMenuItem.setActionCommand(englishText);
+
     englishText = "About";
     JMenuItem aboutMenuItem = new JMenuItem(Language.translate(englishText, "À Propos", "Über"));
     aboutMenuItem.setActionCommand(englishText);
+
     englishText = "Help";
     JMenuItem helpMenuItem = new JMenuItem(Language.translate(englishText, "Aide", "Hilfe"));
     helpMenuItem.setActionCommand(englishText);
+
     englishText = "Pie Chart";
     JCheckBoxMenuItem pieChartMenuItem = new JCheckBoxMenuItem(
         Language.translate(englishText, "Diagramme Circulaire", "Kreisdiagramm"));
     pieChartMenuItem.setActionCommand(englishText);
+
     englishText = "Print Session";
     JMenuItem printMenuItem = new JMenuItem(
         Language.translate(englishText, "Session d'impression", "Sitzung drucken"));
+    printMenuItem.setActionCommand(englishText);
+
+    englishText = "New Calculator";
+    JMenuItem newCalcMenuItem = new JMenuItem(
+        Language.translate(englishText, "Nouveau calculateur", "Neuer Taschenrechner"));
     printMenuItem.setActionCommand(englishText);
 
     // style menu items
@@ -84,6 +95,7 @@ public class Menu extends JMenuBar implements ActionListener
 
     // Adding sub menu objects to menu
     fileDropDown.add(printMenuItem);
+    fileDropDown.add(newCalcMenuItem);
     fileDropDown.add(exitMenuItem);
     viewDropDown.add(pieChartMenuItem);
     helpDropDown.add(aboutMenuItem);
@@ -97,8 +109,9 @@ public class Menu extends JMenuBar implements ActionListener
     add(helpDropDown);
 
     // add action listeners
-    exitMenuItem.addActionListener(this);
+    newCalcMenuItem.addActionListener(this);
     printMenuItem.addActionListener(new PrintableWrapper(history));
+    exitMenuItem.addActionListener(this);
     aboutMenuItem.addActionListener(this);
     helpMenuItem.addActionListener(this);
     pieChartMenuItem.addActionListener(this);
@@ -190,17 +203,18 @@ public class Menu extends JMenuBar implements ActionListener
   {
     switch (e.getActionCommand())
     {
-      case "Exit" -> System.exit(0);
+      case "Exit" -> window.dispose();
+      case "New Calculator" -> new CalculatorWindow();
       case "Pie Chart" -> pcw.toggleVisibility();
       case "About" -> displayAboutDialog();
       case "Help" -> openHelpPage();
       case "Bar" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.BAR);
       case "Slash" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SLASH);
       case "Solidus" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SOLIDUS);
-      case "Proper" ->
-          FractionModePublisher.getInstance().notifyProperMode(properMenuItem.isSelected());
-      case "Reduced" ->
-          FractionModePublisher.getInstance().notifyReducedMode(reducedMenuItem.isSelected());
+      case "Proper" -> FractionModePublisher.getInstance()
+          .notifyProperMode(properMenuItem.isSelected());
+      case "Reduced" -> FractionModePublisher.getInstance()
+          .notifyReducedMode(reducedMenuItem.isSelected());
       // case "Print Session" -> ; //TODO Put print session action here
       default -> System.out.println("unknown menu option");
     }
@@ -212,7 +226,7 @@ public class Menu extends JMenuBar implements ActionListener
     try
     {
       String pathString;
-      Path path = ResourceCopier.copyResourcesToTemp("temp", "html");
+      Path path = ResourceCopier.copyResourcesToTemp("temp", "");
       switch (Locale.getDefault().getLanguage())
       {
         case "fr" -> pathString = path.toString() + "/helpFR.html";

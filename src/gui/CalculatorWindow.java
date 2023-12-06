@@ -3,6 +3,8 @@ package gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
@@ -15,7 +17,7 @@ import java.net.URL;
  * @author Joshua Hairston
  * @version 10/31/2023
  *
- *     This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
 public class CalculatorWindow extends JFrame implements ComponentListener
 {
@@ -39,7 +41,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
     this.addComponentListener(this); // hold the display to make changes
     setupLayout(); // creating the layout of the window.
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setPreferredSize(new Dimension(400, 500));
     pack(); // sets the size of the window to the components preferred size.
     setVisible(true);
@@ -52,7 +54,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(new Menu(pcw, history));
+    setJMenuBar(new Menu(pcw, history, this));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window
@@ -61,7 +63,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
 
     try
     {
-      URL imgURL = this.getClass().getResource("/res/screenshots/Fragile_Logo.png");
+      URL imgURL = this.getClass().getResource("/html/Fragile_Logo.png");
       img = ImageIO.read(imgURL);
     }
     catch (IOException e)
@@ -113,5 +115,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     componentMoved(e);
 
   }
+
+
 
 }

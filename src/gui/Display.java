@@ -15,14 +15,14 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *     This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
 
   public enum Operator
   {
-    ADD, SUB, DIV, MULT, EQUAL, MED, INV
+    ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
@@ -34,6 +34,7 @@ public class Display extends JPanel
   private String previousActionCommand;
   private PieChartWindow pcw;
   private History history;
+  private boolean relation;
 
   public Display(PieChartWindow pcw, History history)
   {
@@ -108,6 +109,9 @@ public class Display extends JPanel
       case CalculatorButtons.MULTIPLICATION -> Operator.MULT;
       case CalculatorButtons.MEDIANT -> Operator.MED;
       case CalculatorButtons.DIVISION -> Operator.DIV;
+      case CalculatorButtons.GREATER_THAN -> Operator.GREATER;
+      case CalculatorButtons.LESS_THAN -> Operator.LESS;
+      case CalculatorButtons.EQUAL_TO -> Operator.EQUAL_TO;
       default -> throw new IllegalArgumentException("action command isn't an operator");
     };
   }
@@ -219,10 +223,11 @@ public class Display extends JPanel
     {
       clearCMFP();
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
-        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
-        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION) || ac.equals(
-        CalculatorButtons.MEDIANT))
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
+        || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
+        || ac.equals(CalculatorButtons.DIVISION) || ac.equals(CalculatorButtons.MEDIANT)
+        || ac.equals(CalculatorButtons.GREATER_THAN) || ac.equals(CalculatorButtons.LESS_THAN)
+        || ac.equals(CalculatorButtons.EQUAL_TO))
     {
       MixedFraction mf = new MixedFraction(cmf);
       if (previousOperator == null)
@@ -244,6 +249,21 @@ public class Display extends JPanel
       else if (previousOperator == Operator.MULT)
       {
         eval = MixedFraction.mult(eval, mf);
+      }
+      else if (previousOperator == Operator.GREATER)
+      {
+        relation = MixedFraction.GreaterThan(eval, mf);
+        JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
+      }
+      else if (previousOperator == Operator.LESS)
+      {
+        relation = MixedFraction.LessThan(eval, mf);
+        JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
+      }
+      else if (previousOperator == Operator.EQUAL_TO)
+      {
+        relation = MixedFraction.EqualTo(eval, mf);
+        JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
       }
       else if (previousOperator == Operator.DIV)
       {
@@ -270,17 +290,38 @@ public class Display extends JPanel
       }
       else
       {
-        MixedFractionPanel mfp = createMixedFractionPanel(mf);
-        addToCEP(mfp);
-        addToCEP(new JLabel(ac));
-        history.addToExpression(createMixedFractionPanel(mf), previousActionCommand);
-        pcw.addCell(mf, previousActionCommand, this);
+        if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS
+            || previousOperator == Operator.EQUAL_TO)
+        {
+          MixedFractionPanel mfp = createMixedFractionPanel(mf);
+          addToCEP(mfp);
+          addToCEP(new JLabel(ac));
+        }
+        else
+        {
+          MixedFractionPanel mfp = createMixedFractionPanel(mf);
+          addToCEP(mfp);
+          addToCEP(new JLabel(ac));
+          history.addToExpression(createMixedFractionPanel(mf), previousActionCommand); // TODO fix
+                                                                                        // this
+                                                                                        // issue
+          pcw.addCell(mf, previousActionCommand, this);
+        }
 
         if (currentOperator == Operator.EQUAL)
         {
-          addToCEP(createMixedFractionPanel(eval));
-          pcw.addCell(eval, ac, this);
-          history.addToExpression(createMixedFractionPanel(eval), ac);
+          if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS
+              || previousOperator == Operator.EQUAL_TO)
+          {
+            reset();
+          }
+          else
+          {
+            addToCEP(createMixedFractionPanel(eval));
+            pcw.addCell(eval, ac, this);
+            history.addToExpression(createMixedFractionPanel(eval), ac);
+          }
+
         }
       }
 

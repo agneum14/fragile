@@ -1,4 +1,4 @@
-package utilities;
+package html;
 
 import java.io.IOException;
 import java.net.URI;
