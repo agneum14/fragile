@@ -15,14 +15,14 @@ import java.awt.event.ActionEvent;
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- *          This code complies with the JMU Honor Code.
+ *     This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
 
   public enum Operator
   {
-    ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO
+    ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN, CLOSE_PAREN
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
@@ -223,11 +223,11 @@ public class Display extends JPanel
     {
       clearCMFP();
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(CalculatorButtons.ADDITION)
-        || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(CalculatorButtons.MULTIPLICATION)
-        || ac.equals(CalculatorButtons.DIVISION) || ac.equals(CalculatorButtons.MEDIANT)
-        || ac.equals(CalculatorButtons.GREATER_THAN) || ac.equals(CalculatorButtons.LESS_THAN)
-        || ac.equals(CalculatorButtons.EQUAL_TO))
+    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
+        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
+        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION) || ac.equals(
+        CalculatorButtons.MEDIANT) || ac.equals(CalculatorButtons.GREATER_THAN) || ac.equals(
+        CalculatorButtons.LESS_THAN) || ac.equals(CalculatorButtons.EQUAL_TO))
     {
       MixedFraction mf = new MixedFraction(cmf);
       if (previousOperator == null)
@@ -290,8 +290,7 @@ public class Display extends JPanel
       }
       else
       {
-        if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS
-            || previousOperator == Operator.EQUAL_TO)
+        if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS || previousOperator == Operator.EQUAL_TO)
         {
           MixedFractionPanel mfp = createMixedFractionPanel(mf);
           addToCEP(mfp);
@@ -303,15 +302,14 @@ public class Display extends JPanel
           addToCEP(mfp);
           addToCEP(new JLabel(ac));
           history.addToExpression(createMixedFractionPanel(mf), previousActionCommand); // TODO fix
-                                                                                        // this
-                                                                                        // issue
+          // this
+          // issue
           pcw.addCell(mf, previousActionCommand, this);
         }
 
         if (currentOperator == Operator.EQUAL)
         {
-          if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS
-              || previousOperator == Operator.EQUAL_TO)
+          if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS || previousOperator == Operator.EQUAL_TO)
           {
             reset();
           }
