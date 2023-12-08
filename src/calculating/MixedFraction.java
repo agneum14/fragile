@@ -293,35 +293,6 @@ public class MixedFraction implements Comparable<MixedFraction>, ExpressionEleme
   }
 
   /**
-   * Method for the less than operator.
-   *
-   * @param mf1
-   *     the mixed fraction that should be greater than.
-   * @param mf2
-   *     the mixed fraction that should be less than.
-   * @return true or false depending on if mf1 is greater than mf2.
-   */
-  public static boolean greaterThan(final MixedFraction mf1, final MixedFraction mf2)
-  {
-    final MixedFraction frac = MixedFraction.sub(mf1, mf2);
-    return frac.sign == 1 ? true : false;
-  }
-
-  public static boolean lessThan(final MixedFraction mf1, final MixedFraction mf2)
-  {
-    final MixedFraction frac = MixedFraction.sub(mf1, mf2);
-    return frac.sign == -1 ? true : false;
-  }
-
-  public static boolean equalTo(final MixedFraction mf1, final MixedFraction mf2)
-  {
-
-    return (mf1.whole == mf2.whole && mf1.num == mf2.num && mf1.denom == mf2.denom && mf1.sign == mf2.sign) ?
-        true :
-        false;
-  }
-
-  /**
    * Fractionalize the MixedFraction, meaning that whole becomes 0 and the numerator is top-heavy.
    *
    * @return The fractionalized MixedFraction
