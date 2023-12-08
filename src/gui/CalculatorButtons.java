@@ -37,6 +37,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
   public static final String EQUAL_TO = "\u225D";
   public static final String OPEN_PAREN = "(";
   public static final String CLOSE_PAREN = ")";
+  public static final String SEND = "\u2191";
   
 
   private static final long serialVersionUID = 1L;
@@ -219,9 +220,12 @@ public class CalculatorButtons extends JPanel implements ActionListener
     ActionMap actionMap = this.getActionMap();
     actionMap.put(POSITION, new PressAction(button));
     add(button, c);
+   
+    c.gridx = 3;
+    add(setButton(SEND, AQUA), c);
 
     // The equals button
-    c.gridx = 3;
+    c.gridx = 4;
     add(setButton(EQUALS, AQUA), c);
 
     c.gridx = 5;
