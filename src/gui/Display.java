@@ -1,9 +1,6 @@
 package gui;
 
-import calculating.CurrentMixedFraction;
-import calculating.ExpressionElement;
-import calculating.ExpressionEvaluator;
-import calculating.MixedFraction;
+import calculating.*;
 import gui.mf.CurrentMixedFractionPanel;
 import gui.mf.MixedFractionPanel;
 import utilities.Language;
@@ -15,31 +12,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class which represents the display of the calculator window.
+ * Class which represents the display of the calculator window. It also orchestrates the evaluation
+ * of expressions and updates history and the pie chart window.
+ *
+ * This code complies with the JMU Honor Code.
  *
  * @author Joshua Hairston
  * @version 11/2/2023
- *
- *     This code complies with the JMU Honor Code.
  */
 public class Display extends JPanel
 {
 
+  /**
+   * All possible operators. These correspond directly to calculator buttons
+   */
   public enum Operator implements ExpressionElement
   {
     ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN, CLOSE_PAREN
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
-  private List<ExpressionElement> currentExpression;
+  private static final String ERROR_TITLE = "Error";
+
+  private final List<ExpressionElement> currentExpression;
   private JPanel currentExpressionPanel;
   private JPanel currentMixedFractionPanel;
   private CurrentMixedFraction currentMixedFraction;
-  private PieChartWindow pieChartWindow;
-  private History history;
-  private List<List<ExpressionElement>> steps;
+  private final PieChartWindow pieChartWindow;
+  private final History history;
+  private final List<List<ExpressionElement>> steps;
 
-  public Display(PieChartWindow pieChartWindow, History history)
+  /**
+   * Instantiate necessary objects and set up the layout.
+   *
+   * @param pieChartWindow
+   *     The infamous pie chart window
+   * @param history
+   *     The history
+   */
+  public Display(final PieChartWindow pieChartWindow, final History history)
   {
     this.currentExpression = new ArrayList<>();
     this.pieChartWindow = pieChartWindow;
@@ -55,56 +66,65 @@ public class Display extends JPanel
     draw();
   }
 
+  /**
+   * Redraw the display to match the current state. This method is called whenever one of the visual
+   * components updates.
+   */
   private void draw()
   {
     GridBagConstraints c;
     removeAll();
     // add current expression panel
-    {
-      c = new GridBagConstraints();
-      c.gridx = 0;
-      c.gridy = 0;
-      c.anchor = GridBagConstraints.NORTHWEST;
-      add(currentExpressionPanel, c);
-    }
+    c = new GridBagConstraints();
+    c.gridx = 0;
+    c.gridy = 0;
+    c.anchor = GridBagConstraints.NORTHWEST;
+    add(currentExpressionPanel, c);
+
     // float current expression panel west
-    {
-      c = new GridBagConstraints();
-      c.gridx = 1;
-      c.gridy = 0;
-      c.weightx = 1;
-      add(Box.createHorizontalStrut(10), c);
-    }
+    c = new GridBagConstraints();
+    c.gridx = 1;
+    c.gridy = 0;
+    c.weightx = 1;
+    add(Box.createHorizontalStrut(10), c);
+
     // float current expression panel north
-    {
-      c = new GridBagConstraints();
-      c.gridx = 0;
-      c.gridy = 1;
-      c.weighty = 1;
-      add(Box.createHorizontalStrut(10), c);
-    }
+    c = new GridBagConstraints();
+    c.gridx = 0;
+    c.gridy = 1;
+    c.weighty = 1;
+    add(Box.createHorizontalStrut(10), c);
+
     // add current mixed fraction panel
-    {
-      c = new GridBagConstraints();
-      c.gridx = 1;
-      c.gridy = 2;
-      c.anchor = GridBagConstraints.SOUTHEAST;
-      add(currentMixedFractionPanel, c);
-    }
-    {
-      c = new GridBagConstraints();
-      c.gridx = 0;
-      c.gridy = 2;
-      c.weightx = 1;
-      add(Box.createHorizontalStrut(10), c);
-    }
+    c = new GridBagConstraints();
+    c.gridx = 1;
+    c.gridy = 2;
+    c.anchor = GridBagConstraints.SOUTHEAST;
+    add(currentMixedFractionPanel, c);
+
+    c = new GridBagConstraints();
+    c.gridx = 0;
+    c.gridy = 2;
+    c.weightx = 1;
+    add(Box.createHorizontalStrut(10), c);
+
     revalidate();
     repaint();
   }
 
-  private Operator operatorFromActionCommand(String ac) throws IllegalArgumentException
+  /**
+   * A utility method to convert an action command to an operator.
+   *
+   * @param actionCommand
+   *     The action command
+   * @return The corresponding operator
+   * @throws IllegalArgumentException
+   *     If the action command isn't a valid operator
+   */
+  private Operator operatorFromActionCommand(final String actionCommand)
+      throws IllegalArgumentException
   {
-    return switch (ac)
+    return switch (actionCommand)
     {
       case CalculatorButtons.EQUALS -> Operator.EQUAL;
       case CalculatorButtons.ADDITION -> Operator.ADD;
@@ -121,19 +141,35 @@ public class Display extends JPanel
     };
   }
 
-  public void addToCurrentExpressionPanel(MixedFractionPanel p)
+  /**
+   * Add a mixed fraction panel to the current expression panel and redraw the display.
+   *
+   * @param p
+   *     The mixed fraction panel to add
+   */
+  public void addToCurrentExpressionPanel(final MixedFractionPanel p)
   {
     currentExpressionPanel.add(p);
     draw();
   }
 
-  public void addToCurrentExpressionPanel(String actionCommand)
+  /**
+   * Add an action command (which is just a String, so really any String) to the current expression
+   * panel as a JLabel.
+   *
+   * @param actionCommand
+   *     The action command to add
+   */
+  public void addToCurrentExpressionPanel(final String actionCommand)
   {
-    JLabel operatorLabel = new JLabel(actionCommand);
+    final JLabel operatorLabel = new JLabel(actionCommand);
     currentExpressionPanel.add(operatorLabel);
     draw();
   }
 
+  /**
+   * Clear the current expression panel by assigning it to a new JPanel and updating the display.
+   */
   public void clearCurrentExpressionPanel()
   {
     currentExpressionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -141,42 +177,72 @@ public class Display extends JPanel
     draw();
   }
 
+  /**
+   * Reset the state of display. The current expression panel, current mixed fraction panel, current
+   * expression are cleared, and the pie chart window are cleared. History continues to the next
+   * expression.
+   */
   public void reset()
   {
     clearCurrentExpressionPanel();
     clearCurrentMixedFractionPanel();
+    currentExpression.removeAll(currentExpression);
     draw();
     pieChartWindow.reset();
     history.nextExpression();
   }
 
+  /**
+   * Update the current mixed fraction panel to reflect the current mixed fraction and update the
+   * display.
+   */
   public void updateCurrentMixedFractionPanel()
   {
     currentMixedFractionPanel = new CurrentMixedFractionPanel(currentMixedFraction);
     draw();
   }
 
+  /**
+   * Clear the current mixed fraction and panel, then update the display.
+   */
   public void clearCurrentMixedFractionPanel()
   {
     currentMixedFraction = new CurrentMixedFraction();
     updateCurrentMixedFractionPanel();
   }
 
-  public void setCurrentMixedFractionPanel(MixedFraction mf)
+  /**
+   * Set the current mixed fraction and panel to the given mixed fraction and update the display.
+   * This is used for copy and paste functionality in MixedFractionPanel.
+   *
+   * @param mixedFraction
+   *     The MixedFraction to paste
+   */
+  public void setCurrentMixedFractionPanel(final MixedFraction mixedFraction)
   {
-    currentMixedFraction = new CurrentMixedFraction(mf);
+    currentMixedFraction = new CurrentMixedFraction(mixedFraction);
     updateCurrentMixedFractionPanel();
   }
 
-  public void handleButton(ActionEvent ae)
+  /**
+   * This method drives the core functionality of the program, handling every calculator button
+   * press and responding accordingly. The basic overview is certain buttons modify the current
+   * mixed fraction while others add operators to the current expression. The equals button is
+   * particularly important, since it evaluates the expression and updates the pie chart window and
+   * history.
+   *
+   * @param actionEvent
+   *     The action event to respond to
+   */
+  public void handleButton(final ActionEvent actionEvent)
   {
-    final String actionCommand = ae.getActionCommand();
+    final String actionCommand = actionEvent.getActionCommand();
     Integer digit;
     try
     {
       digit = Integer.parseInt(actionCommand);
     }
-    catch (NumberFormatException nfe)
+    catch (final NumberFormatException nfe)
     {
       digit = null;
     }
@@ -197,9 +263,10 @@ public class Display extends JPanel
         currentMixedFraction.simplify();
         updateCurrentMixedFractionPanel();
       }
-      catch (IllegalArgumentException arg)
+      catch (final IllegalArgumentException arg)
       {
-        JOptionPane.showMessageDialog(null, arg.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, arg.getMessage(), ERROR_TITLE,
+            JOptionPane.ERROR_MESSAGE);
       }
     }
     else if (actionCommand.equals(CalculatorButtons.INVERSE))
@@ -224,8 +291,6 @@ public class Display extends JPanel
     else if (actionCommand.equals(CalculatorButtons.CLEAR))
     {
       clearCurrentMixedFractionPanel();
-      // ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN,
-      // CLOSE_PAREN
     }
     else if (actionCommand.equals(CalculatorButtons.ADDITION) || actionCommand.equals(
         CalculatorButtons.SUBTRACTION) || actionCommand.equals(
@@ -236,64 +301,88 @@ public class Display extends JPanel
         CalculatorButtons.EQUAL_TO) || actionCommand.equals(
         CalculatorButtons.OPEN_PAREN) || actionCommand.equals(CalculatorButtons.CLOSE_PAREN))
     {
-      Operator operator = operatorFromActionCommand(actionCommand);
+      final Operator operator = operatorFromActionCommand(actionCommand);
       addToCurrentExpressionPanel(actionCommand);
       currentExpression.add(operator);
     }
     else if (actionCommand.equals(CalculatorButtons.SEND))
     {
-      MixedFraction mf = new MixedFraction(currentMixedFraction);
+      final MixedFraction mf = new MixedFraction(currentMixedFraction);
       addToCurrentExpressionPanel(new MixedFractionPanel(mf, this));
       currentExpression.add(mf);
       clearCurrentMixedFractionPanel();
     }
     else if (actionCommand.equals(CalculatorButtons.EQUALS))
     {
-      MixedFraction result = null;
-      try
+      // determine if the expression is conditional
+      if (currentExpression.contains(Operator.LESS) || currentExpression.contains(
+          Operator.GREATER) || currentExpression.contains(Operator.EQUAL_TO))
       {
-        ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(currentExpression, steps);
-        result = expressionEvaluator.evaluate();
-      }
-      catch (IllegalArgumentException e)
-      {
-        if (e.getMessage() == "expression can't be empty")
-        {
-          String error = Language.translate("Expression can't be empty",
-              "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
-          JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        else
-        {
-          throw e;
-        }
-      }
-      catch (IllegalStateException e)
-      {
-        String error = Language.translate("The expression is malformed",
-            "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
-        JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
-      }
+        Boolean result = null;
 
-      if (result != null)
+        try
+        {
+          result = ConditionalExpressionEvaluator.evaluate(currentExpression);
+        }
+        catch (final IllegalArgumentException e)
+        {
+          final String error = Language.translate("The conditional expression is malformed",
+              "L'expression conditionnelle est mal formée",
+              "Die bedingte Ausdruck ist fehlerhaft.");
+          JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (result != null)
+        {
+          String res;
+          if (result)
+          {
+            res = Language.translate("True", "Vrai", "Wahr");
+          }
+          else
+          {
+            res = Language.translate("False", "Faux", "Falsch");
+          }
+          JOptionPane.showMessageDialog(null, res, "Info", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+      else
       {
-        addToCurrentExpressionPanel("=");
-        addToCurrentExpressionPanel(new MixedFractionPanel(result, this));
-        currentExpression.add(Operator.EQUAL);
-        currentExpression.add(result);
+        MixedFraction result = null;
+        try
+        {
+          final ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(currentExpression,
+              steps);
+          result = expressionEvaluator.evaluate();
+        }
+        catch (final IllegalArgumentException e)
+        {
+          if (e.getMessage().equals("expression can't be empty"))
+          {
+            final String error = Language.translate("Expression can't be empty",
+                "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
+            JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+          }
+          else
+          {
+            throw e;
+          }
+        }
+        catch (final IllegalStateException e)
+        {
+          final String error = Language.translate("The expression is malformed",
+              "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
+          JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (result != null)
+        {
+          addToCurrentExpressionPanel("=");
+          addToCurrentExpressionPanel(new MixedFractionPanel(result, this));
+          currentExpression.add(Operator.EQUAL);
+          currentExpression.add(result);
+        }
       }
     }
   }
-
-  public MixedFractionPanel createMixedFractionPanel(final MixedFraction mf)
-  {
-    MixedFractionPanel mfp = new MixedFractionPanel(mf, this);
-    return mfp;
-  }
-
-  public void copy(final JPanel panel)
-  {
-    this.currentMixedFractionPanel = (MixedFractionPanel) panel;
-  }
-
 }
