@@ -21,6 +21,7 @@ public class MapFormatter
     {
       map.put(s.next(), s.next());
     }
+    s.close();
     return map;
   }
 
