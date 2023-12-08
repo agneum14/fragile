@@ -2,13 +2,17 @@ package gui;
 
 import calculating.CurrentMixedFraction;
 import calculating.ExpressionElement;
+import calculating.ExpressionEvaluator;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
 import gui.mf.MixedFractionPanel;
+import utilities.Language;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class which represents the display of the calculator window.
@@ -27,29 +31,27 @@ public class Display extends JPanel
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
-  private JPanel cep;
-  private JPanel cmfp;
-  private CurrentMixedFraction cmf;
-  private MixedFraction eval;
-  private Operator previousOperator;
-  private String previousActionCommand;
-  private PieChartWindow pcw;
+  private List<ExpressionElement> currentExpression;
+  private JPanel currentExpressionPanel;
+  private JPanel currentMixedFractionPanel;
+  private CurrentMixedFraction currentMixedFraction;
+  private PieChartWindow pieChartWindow;
   private History history;
-  private boolean relation;
+  private List<List<ExpressionElement>> steps;
 
-  public Display(PieChartWindow pcw, History history)
+  public Display(PieChartWindow pieChartWindow, History history)
   {
+    this.currentExpression = new ArrayList<>();
+    this.pieChartWindow = pieChartWindow;
+    this.history = history;
+    currentExpressionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    currentExpressionPanel.setBackground(POWDER_BLUE);
+    currentMixedFraction = new CurrentMixedFraction();
+    currentMixedFractionPanel = new CurrentMixedFractionPanel(currentMixedFraction);
+    steps = new ArrayList<>();
+
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
-    this.pcw = pcw;
-    this.history = history;
-    eval = new MixedFraction(1, 0, 0, 1);
-    cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    cep.setBackground(POWDER_BLUE);
-    cmf = new CurrentMixedFraction();
-    cmfp = new CurrentMixedFractionPanel(cmf);
-    previousOperator = null;
-    this.history = history;
     draw();
   }
 
@@ -63,7 +65,7 @@ public class Display extends JPanel
       c.gridx = 0;
       c.gridy = 0;
       c.anchor = GridBagConstraints.NORTHWEST;
-      add(cep, c);
+      add(currentExpressionPanel, c);
     }
     // float current expression panel west
     {
@@ -87,7 +89,7 @@ public class Display extends JPanel
       c.gridx = 1;
       c.gridy = 2;
       c.anchor = GridBagConstraints.SOUTHEAST;
-      add(cmfp, c);
+      add(currentMixedFractionPanel, c);
     }
     {
       c = new GridBagConstraints();
@@ -100,7 +102,7 @@ public class Display extends JPanel
     repaint();
   }
 
-  private Operator acToOp(String ac) throws IllegalArgumentException
+  private Operator operatorFromActionCommand(String ac) throws IllegalArgumentException
   {
     return switch (ac)
     {
@@ -113,65 +115,66 @@ public class Display extends JPanel
       case CalculatorButtons.GREATER_THAN -> Operator.GREATER;
       case CalculatorButtons.LESS_THAN -> Operator.LESS;
       case CalculatorButtons.EQUAL_TO -> Operator.EQUAL_TO;
+      case CalculatorButtons.OPEN_PAREN -> Operator.OPEN_PAREN;
+      case CalculatorButtons.CLOSE_PAREN -> Operator.CLOSE_PAREN;
       default -> throw new IllegalArgumentException("action command isn't an operator");
     };
   }
 
-  public void addToCEP(MixedFractionPanel p)
+  public void addToCurrentExpressionPanel(MixedFractionPanel p)
   {
-    cep.add(p);
+    currentExpressionPanel.add(p);
     draw();
   }
 
-  public void addToCEP(JLabel l)
+  public void addToCurrentExpressionPanel(String actionCommand)
   {
-    cep.add(l);
+    JLabel operatorLabel = new JLabel(actionCommand);
+    currentExpressionPanel.add(operatorLabel);
     draw();
   }
 
-  public void clearCEP()
+  public void clearCurrentExpressionPanel()
   {
-    cep = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    cep.setBackground(POWDER_BLUE);
+    currentExpressionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    currentExpressionPanel.setBackground(POWDER_BLUE);
     draw();
   }
 
   public void reset()
   {
-    clearCEP();
-    clearCMFP();
+    clearCurrentExpressionPanel();
+    clearCurrentMixedFractionPanel();
     draw();
-    previousActionCommand = null;
-    previousOperator = null;
-    pcw.reset();
+    pieChartWindow.reset();
     history.nextExpression();
   }
 
-  public void updateCMFP()
+  public void updateCurrentMixedFractionPanel()
   {
-    cmfp = new CurrentMixedFractionPanel(cmf);
+    currentMixedFractionPanel = new CurrentMixedFractionPanel(currentMixedFraction);
     draw();
   }
 
-  public void clearCMFP()
+  public void clearCurrentMixedFractionPanel()
   {
-    cmf = new CurrentMixedFraction();
-    updateCMFP();
+    currentMixedFraction = new CurrentMixedFraction();
+    updateCurrentMixedFractionPanel();
   }
 
-  public void setCMFP(MixedFraction mf)
+  public void setCurrentMixedFractionPanel(MixedFraction mf)
   {
-    cmf = new CurrentMixedFraction(mf);
-    updateCMFP();
+    currentMixedFraction = new CurrentMixedFraction(mf);
+    updateCurrentMixedFractionPanel();
   }
 
-  public void handleButton(ActionEvent e)
+  public void handleButton(ActionEvent ae)
   {
-    final String ac = e.getActionCommand();
+    final String actionCommand = ae.getActionCommand();
     Integer digit;
     try
     {
-      digit = Integer.parseInt(ac);
+      digit = Integer.parseInt(actionCommand);
     }
     catch (NumberFormatException nfe)
     {
@@ -179,154 +182,106 @@ public class Display extends JPanel
     }
     if (digit != null)
     {
-      cmf.addDigit(digit);
-      updateCMFP();
+      currentMixedFraction.addDigit(digit);
+      updateCurrentMixedFractionPanel();
     }
-    else if (ac.equals(CalculatorButtons.BACK_SPACE))
+    else if (actionCommand.equals(CalculatorButtons.BACK_SPACE))
     {
-      cmf.removeDigit();
-      updateCMFP();
+      currentMixedFraction.removeDigit();
+      updateCurrentMixedFractionPanel();
     }
-    else if (ac.equals(CalculatorButtons.SIMPLIFY))
+    else if (actionCommand.equals(CalculatorButtons.SIMPLIFY))
     {
       try
       {
-        cmf.simplify();
-        updateCMFP();
+        currentMixedFraction.simplify();
+        updateCurrentMixedFractionPanel();
       }
       catch (IllegalArgumentException arg)
       {
         JOptionPane.showMessageDialog(null, arg.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
       }
     }
-    else if (ac.equals(CalculatorButtons.INVERSE))
+    else if (actionCommand.equals(CalculatorButtons.INVERSE))
     {
-      cmf.invert();
-      updateCMFP();
+      currentMixedFraction.invert();
+      updateCurrentMixedFractionPanel();
     }
-    else if (ac.equals(CalculatorButtons.SIGN))
+    else if (actionCommand.equals(CalculatorButtons.SIGN))
     {
-      cmf.changeSign();
-      updateCMFP();
+      currentMixedFraction.changeSign();
+      updateCurrentMixedFractionPanel();
     }
-    else if (ac.equals(CalculatorButtons.POSITION))
+    else if (actionCommand.equals(CalculatorButtons.POSITION))
     {
-      cmf.nextPos();
-      updateCMFP();
+      currentMixedFraction.nextPos();
+      updateCurrentMixedFractionPanel();
     }
-    else if (ac.equals(CalculatorButtons.RESET))
+    else if (actionCommand.equals(CalculatorButtons.RESET))
     {
       reset();
-      previousOperator = null;
-      eval = new MixedFraction(1, 0, 0, 1);
     }
-    else if (ac.equals(CalculatorButtons.CLEAR))
+    else if (actionCommand.equals(CalculatorButtons.CLEAR))
     {
-      clearCMFP();
+      clearCurrentMixedFractionPanel();
+      // ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN,
+      // CLOSE_PAREN
     }
-    else if (ac.equals(CalculatorButtons.EQUALS) || ac.equals(
-        CalculatorButtons.ADDITION) || ac.equals(CalculatorButtons.SUBTRACTION) || ac.equals(
-        CalculatorButtons.MULTIPLICATION) || ac.equals(CalculatorButtons.DIVISION) || ac.equals(
-        CalculatorButtons.MEDIANT) || ac.equals(CalculatorButtons.GREATER_THAN) || ac.equals(
-        CalculatorButtons.LESS_THAN) || ac.equals(CalculatorButtons.EQUAL_TO))
+    else if (actionCommand.equals(CalculatorButtons.ADDITION) || actionCommand.equals(
+        CalculatorButtons.SUBTRACTION) || actionCommand.equals(
+        CalculatorButtons.MULTIPLICATION) || actionCommand.equals(
+        CalculatorButtons.DIVISION) || actionCommand.equals(
+        CalculatorButtons.GREATER_THAN) || actionCommand.equals(
+        CalculatorButtons.LESS_THAN) || actionCommand.equals(
+        CalculatorButtons.EQUAL_TO) || actionCommand.equals(
+        CalculatorButtons.OPEN_PAREN) || actionCommand.equals(CalculatorButtons.CLOSE_PAREN))
     {
-      MixedFraction mf = new MixedFraction(cmf);
-      if (previousOperator == null)
+      Operator operator = operatorFromActionCommand(actionCommand);
+      addToCurrentExpressionPanel(actionCommand);
+      currentExpression.add(operator);
+    }
+    else if (actionCommand.equals(CalculatorButtons.SEND))
+    {
+      MixedFraction mf = new MixedFraction(currentMixedFraction);
+      addToCurrentExpressionPanel(new MixedFractionPanel(mf, this));
+      currentExpression.add(mf);
+      clearCurrentMixedFractionPanel();
+    }
+    else if (actionCommand.equals(CalculatorButtons.EQUALS))
+    {
+      MixedFraction result = null;
+      try
       {
-        eval = mf;
+        ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(currentExpression, steps);
+        result = expressionEvaluator.evaluate();
       }
-      else if (previousOperator == Operator.ADD)
+      catch (IllegalArgumentException e)
       {
-        eval = MixedFraction.add(eval, mf);
-      }
-      else if (previousOperator == Operator.SUB)
-      {
-        eval = MixedFraction.sub(eval, mf);
-      }
-      else if (previousOperator == Operator.MED)
-      {
-        eval = MixedFraction.mediant(eval, mf);
-      }
-      else if (previousOperator == Operator.MULT)
-      {
-        eval = MixedFraction.mult(eval, mf);
-      }
-      else if (previousOperator == Operator.GREATER)
-      {
-        relation = MixedFraction.greaterThan(eval, mf);
-        JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
-      }
-      else if (previousOperator == Operator.LESS)
-      {
-        relation = MixedFraction.lessThan(eval, mf);
-        JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
-      }
-      else if (previousOperator == Operator.EQUAL_TO)
-      {
-        relation = MixedFraction.equalTo(eval, mf);
-        JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
-      }
-      else if (previousOperator == Operator.DIV)
-      {
-        try
+        if (e.getMessage() == "expression can't be empty")
         {
-          eval = MixedFraction.div(eval, mf);
-        }
-        catch (ArithmeticException ae)
-        {
-          JOptionPane.showMessageDialog(null, ae.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-          return;
-        }
-      }
-
-      Operator currentOperator = acToOp(ac);
-      if (previousOperator == Operator.EQUAL)
-      {
-        reset();
-        addToCEP(createMixedFractionPanel(eval));
-        addToCEP(new JLabel(ac));
-        pcw.addCell(eval, null, this);
-        history.nextExpression();
-        history.addToExpression(createMixedFractionPanel(eval), null);
-      }
-      else
-      {
-        if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS || previousOperator == Operator.EQUAL_TO)
-        {
-          MixedFractionPanel mfp = createMixedFractionPanel(mf);
-          addToCEP(mfp);
-          addToCEP(new JLabel(ac));
+          String error = Language.translate("Expression can't be empty",
+              "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
+          JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
         }
         else
         {
-          MixedFractionPanel mfp = createMixedFractionPanel(mf);
-          addToCEP(mfp);
-          addToCEP(new JLabel(ac));
-          history.addToExpression(createMixedFractionPanel(mf), previousActionCommand); // TODO fix
-          // this
-          // issue
-          pcw.addCell(mf, previousActionCommand, this);
-        }
-
-        if (currentOperator == Operator.EQUAL)
-        {
-          if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS || previousOperator == Operator.EQUAL_TO)
-          {
-            reset();
-          }
-          else
-          {
-            addToCEP(createMixedFractionPanel(eval));
-            pcw.addCell(eval, ac, this);
-            history.addToExpression(createMixedFractionPanel(eval), ac);
-          }
-
+          throw e;
         }
       }
+      catch (IllegalStateException e)
+      {
+        String error = Language.translate("The expression is malformed",
+            "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
+        JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
+      }
 
-      clearCMFP();
-      previousOperator = currentOperator;
-      previousActionCommand = ac;
+      if (result != null)
+      {
+        addToCurrentExpressionPanel("=");
+        addToCurrentExpressionPanel(new MixedFractionPanel(result, this));
+        currentExpression.add(Operator.EQUAL);
+        currentExpression.add(result);
+      }
     }
   }
 
@@ -338,7 +293,7 @@ public class Display extends JPanel
 
   public void copy(final JPanel panel)
   {
-    this.cmfp = (MixedFractionPanel) panel;
+    this.currentMixedFractionPanel = (MixedFractionPanel) panel;
   }
 
 }
