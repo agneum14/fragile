@@ -52,7 +52,6 @@ public class ExpressionEvaluatorTest
     ArrayList<ExpressionElement> expression = new ArrayList<>();
     expression.add(new MixedFraction(1, 1, 0, 1));
     MixedFraction res = new ExpressionEvaluator(expression, steps).evaluate();
-    System.out.println(res);
 
     assertEquals(0, res.compareTo(new MixedFraction(1, 1, 0, 1)));
   }
