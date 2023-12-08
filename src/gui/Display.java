@@ -253,17 +253,17 @@ public class Display extends JPanel
       }
       else if (previousOperator == Operator.GREATER)
       {
-        relation = MixedFraction.GreaterThan(eval, mf);
+        relation = MixedFraction.greaterThan(eval, mf);
         JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
       }
       else if (previousOperator == Operator.LESS)
       {
-        relation = MixedFraction.LessThan(eval, mf);
+        relation = MixedFraction.lessThan(eval, mf);
         JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
       }
       else if (previousOperator == Operator.EQUAL_TO)
       {
-        relation = MixedFraction.EqualTo(eval, mf);
+        relation = MixedFraction.equalTo(eval, mf);
         JOptionPane.showMessageDialog(null, relation, "Result", JOptionPane.INFORMATION_MESSAGE);
       }
       else if (previousOperator == Operator.DIV)
