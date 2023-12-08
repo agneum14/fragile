@@ -34,40 +34,26 @@ public class MixedFraction implements Comparable<MixedFraction>, ExpressionEleme
    * @throws IllegalArgumentException
    *     if denom is 0 or sign isn't either 1 or -1
    */
-  public MixedFraction(final int sign, Integer whole, Integer num, Integer denom)
+  public MixedFraction(final int sign, final Integer whole, final Integer num, final Integer denom)
       throws IllegalArgumentException
   {
-    // replace nulls with default values
-    if (whole == null)
-    {
-      whole = 0;
-    }
-    if (num == null)
-    {
-      num = 0;
-    }
-    if (denom == null)
-    {
-      denom = 1;
-    }
+    this.sign = sign;
+    this.whole = (whole == null) ? 0 : whole;
+    this.num = (num == null) ? 0 : num;
+    this.denom = (denom == null) ? 1 : denom;
 
     // throw exceptions for zero denominator or invalid sign
-    if (denom == 0)
+    if (this.denom == 0)
     {
       throw new IllegalArgumentException("denominator can't be 0");
     }
-    if (sign != -1 && sign != 1)
+    if (this.sign != -1 && this.sign != 1)
     {
       throw new IllegalArgumentException("sign must be 1 or -1");
     }
 
-    this.denom = denom;
-    this.num = num;
-    this.sign = sign;
-    this.whole = whole;
-
     // make -0 unrepresentable
-    if (whole == 0 && num == 0)
+    if (this.whole == 0 && this.num == 0)
     {
       this.sign = 1;
     }
@@ -315,19 +301,19 @@ public class MixedFraction implements Comparable<MixedFraction>, ExpressionEleme
    *     the mixed fraction that should be less than.
    * @return true or false depending on if mf1 is greater than mf2.
    */
-  public static boolean GreaterThan(final MixedFraction mf1, final MixedFraction mf2)
+  public static boolean greaterThan(final MixedFraction mf1, final MixedFraction mf2)
   {
     final MixedFraction frac = MixedFraction.sub(mf1, mf2);
     return frac.sign == 1 ? true : false;
   }
 
-  public static boolean LessThan(final MixedFraction mf1, final MixedFraction mf2)
+  public static boolean lessThan(final MixedFraction mf1, final MixedFraction mf2)
   {
     final MixedFraction frac = MixedFraction.sub(mf1, mf2);
     return frac.sign == -1 ? true : false;
   }
 
-  public static boolean EqualTo(final MixedFraction mf1, final MixedFraction mf2)
+  public static boolean equalTo(final MixedFraction mf1, final MixedFraction mf2)
   {
 
     return (mf1.whole == mf2.whole && mf1.num == mf2.num && mf1.denom == mf2.denom && mf1.sign == mf2.sign) ?
