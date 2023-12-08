@@ -1,6 +1,7 @@
 package gui;
 
 import calculating.CurrentMixedFraction;
+import calculating.ExpressionElement;
 import calculating.MixedFraction;
 import gui.mf.CurrentMixedFractionPanel;
 import gui.mf.MixedFractionPanel;
@@ -20,7 +21,7 @@ import java.awt.event.ActionEvent;
 public class Display extends JPanel
 {
 
-  public enum Operator
+  public enum Operator implements ExpressionElement
   {
     ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN, CLOSE_PAREN
   }

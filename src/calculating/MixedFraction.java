@@ -13,7 +13,7 @@ import utilities.Algorithms;
  * @author Andrew G. Neumann
  * @version 1.0
  */
-public class MixedFraction implements Comparable<MixedFraction>
+public class MixedFraction implements Comparable<MixedFraction>, ExpressionElement
 {
   private int denom;
   private int num;
