@@ -290,23 +290,12 @@ public class Display extends JPanel
       }
       else
       {
-        if (previousOperator == Operator.GREATER || previousOperator == Operator.LESS
-            || previousOperator == Operator.EQUAL_TO)
-        {
+          //TODO fix the history showing for the relational operator stuff.
           MixedFractionPanel mfp = createMixedFractionPanel(mf);
           addToCEP(mfp);
           addToCEP(new JLabel(ac));
-        }
-        else
-        {
-          MixedFractionPanel mfp = createMixedFractionPanel(mf);
-          addToCEP(mfp);
-          addToCEP(new JLabel(ac));
-          history.addToExpression(createMixedFractionPanel(mf), previousActionCommand); // TODO fix
-                                                                                        // this
-                                                                                        // issue
-          pcw.addCell(mf, previousActionCommand, this);
-        }
+          history.addToExpression(createMixedFractionPanel(mf), previousActionCommand); 
+          pcw.addCell(mf, previousActionCommand, this);    
 
         if (currentOperator == Operator.EQUAL)
         {
