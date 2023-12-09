@@ -381,6 +381,7 @@ public class Display extends JPanel
           addToCurrentExpressionPanel(new MixedFractionPanel(result, this));
           currentExpression.add(Operator.EQUAL);
           currentExpression.add(result);
+          pieChartWindow.update(currentExpression);
         }
       }
     }
