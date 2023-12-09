@@ -13,7 +13,7 @@ import utilities.Algorithms;
  * @author Andrew G. Neumann
  * @version 1.0
  */
-public class MixedFraction
+public class MixedFraction implements Comparable<MixedFraction>, ExpressionElement
 {
   private int denom;
   private int num;
@@ -24,53 +24,39 @@ public class MixedFraction
    * This constructor sets all member variables explicity, then simplifies the mixed fraction.
    *
    * @param sign
-   *          Indicates whether the number is negative (-1) or positive (1)
+   *     Indicates whether the number is negative (-1) or positive (1)
    * @param whole
-   *          The whole number component of the mixed fraction
+   *     The whole number component of the mixed fraction
    * @param num
-   *          The numerator of the mixed fraction
+   *     The numerator of the mixed fraction
    * @param denom
-   *          The denominator of the mixed fraction
+   *     The denominator of the mixed fraction
    * @throws IllegalArgumentException
-   *           if denom is 0 or sign isn't either 1 or -1
+   *     if denom is 0 or sign isn't either 1 or -1
    */
-  public MixedFraction(final int sign, Integer whole, Integer num, Integer denom)
+  public MixedFraction(final int sign, final Integer whole, final Integer num, final Integer denom)
       throws IllegalArgumentException
   {
-    // replace nulls with default values
-    if (whole == null)
-    {
-      whole = 0;
-    }
-    if (num == null)
-    {
-      num = 0;
-    }
-    if (denom == null)
-    {
-      denom = 1;
-    }
+    this.sign = sign;
+    this.whole = (whole == null) ? 0 : whole;
+    this.num = (num == null) ? 0 : num;
+    this.denom = (denom == null) ? 1 : denom;
 
     // throw exceptions for zero denominator or invalid sign
-    if (denom == 0)
+    if (this.denom == 0)
     {
       throw new IllegalArgumentException("denominator can't be 0");
     }
-    if (sign != -1 && sign != 1)
+    if (this.sign != -1 && this.sign != 1)
     {
       throw new IllegalArgumentException("sign must be 1 or -1");
     }
 
     // make -0 unrepresentable
-    if (whole == 0 && num == 0)
+    if (this.whole == 0 && this.num == 0)
     {
       this.sign = 1;
     }
-
-    this.denom = denom;
-    this.num = num;
-    this.sign = sign;
-    this.whole = whole;
   }
 
   /**
@@ -78,7 +64,7 @@ public class MixedFraction
    * (a deep copy).
    *
    * @param o
-   *          The Mixed Fraction to deep copy
+   *     The Mixed Fraction to deep copy
    */
   public MixedFraction(final MixedFraction o)
   {
@@ -90,7 +76,7 @@ public class MixedFraction
    * CurrentMixedFraction.
    *
    * @param cmf
-   *          The CurrentMixedFraction to convert to a MixedFraction
+   *     The CurrentMixedFraction to convert to a MixedFraction
    */
   public MixedFraction(final CurrentMixedFraction cmf)
   {
@@ -101,9 +87,9 @@ public class MixedFraction
    * Add two MixedFractions.
    *
    * @param mf1
-   *          The first MixedFraction to sum
+   *     The first MixedFraction to sum
    * @param mf2
-   *          The second MixedFraction to sum
+   *     The second MixedFraction to sum
    * @return The sum of the two MixedFractions
    */
   public static MixedFraction add(final MixedFraction mf1, final MixedFraction mf2)
@@ -143,12 +129,12 @@ public class MixedFraction
    * Divide two MixedFractions.
    *
    * @param mf1
-   *          The MixedFraction dividend
+   *     The MixedFraction dividend
    * @param mf2
-   *          The MixedFraction divisor
+   *     The MixedFraction divisor
    * @return The MixedFraction quotient
    * @throws ArithmeticException
-   *           if the divisor is 0
+   *     if the divisor is 0
    */
   public static MixedFraction div(final MixedFraction mf1, final MixedFraction mf2)
       throws ArithmeticException
@@ -175,9 +161,9 @@ public class MixedFraction
    * Multiply two MixedFractions.
    *
    * @param mf1
-   *          The first MixedFraction to multiply
+   *     The first MixedFraction to multiply
    * @param mf2
-   *          The second MixedFraction to multiply
+   *     The second MixedFraction to multiply
    * @return The MixedFraction product
    */
   public static MixedFraction mult(final MixedFraction mf1, final MixedFraction mf2)
@@ -199,9 +185,9 @@ public class MixedFraction
    * Subtract two MixedFractions.
    *
    * @param mf1
-   *          The MixedFraction minuend
+   *     The MixedFraction minuend
    * @param mf2
-   *          The MixedFraction subtrahend
+   *     The MixedFraction subtrahend
    * @return The MixedFraction result of the subtraction operation
    */
   public static MixedFraction sub(final MixedFraction mf1, final MixedFraction mf2)
@@ -241,9 +227,9 @@ public class MixedFraction
    * Calculate the mediant of two mixed fractions.
    *
    * @param mf1
-   *          The first mixed fraction
+   *     The first mixed fraction
    * @param mf2
-   *          The second mixed fraction
+   *     The second mixed fraction
    * @return A new mixed fraction.
    */
   public static MixedFraction mediant(final MixedFraction mf1, final MixedFraction mf2)
@@ -270,16 +256,17 @@ public class MixedFraction
 
   /**
    * Calculate a mixed fraction to an Integer Power.
-   * 
+   *
    * @param mf
-   *          the fraction to calculated.
-   * 
-   * @return a new mixed fraction.
+   *     the fraction to calculated.
+   * @param power
+   *     The power to put the mixed fraction to
+   * @return a new mixed fraction
    */
-  public static MixedFraction intPower(final MixedFraction mf, int power)
+  public static MixedFraction intPower(final MixedFraction mf, final int power)
   {
 
-    MixedFraction f = new MixedFraction(mf).improper();
+    final MixedFraction f = new MixedFraction(mf).improper();
 
     if (power == 0)
     {
@@ -287,8 +274,8 @@ public class MixedFraction
     }
 
     int sign = 1;
-    int numerator = (int) Math.pow(f.getNum(), Math.abs(power));
-    int denominator = (int) Math.pow(f.getDenom(), Math.abs(power));
+    final int numerator = (int) Math.pow(f.getNum(), Math.abs(power));
+    final int denominator = (int) Math.pow(f.getDenom(), Math.abs(power));
 
     if (f.getSign() == -1 && power % 2 == 1)
     {
@@ -303,34 +290,6 @@ public class MixedFraction
     {
       return new MixedFraction(sign, 0, denominator, numerator);
     }
-  }
-
-  /**
-   * Method for the less than operator.
-   * 
-   * @param mf1
-   *          the mixed fraction that should be greater than.
-   * @param mf2
-   *          the mixed fraction that should be less than.
-   * @return true or false depending on if mf1 is greater than mf2.
-   */
-  public static boolean GreaterThan(final MixedFraction mf1, final MixedFraction mf2)
-  {
-    MixedFraction frac = MixedFraction.sub(mf1, mf2);
-    return frac.sign == 1 ? true : false;
-  }
-
-  public static boolean LessThan(final MixedFraction mf1, final MixedFraction mf2)
-  {
-    MixedFraction frac = MixedFraction.sub(mf1, mf2);
-    return frac.sign == -1 ? true : false;
-  }
-
-  public static boolean EqualTo(final MixedFraction mf1, final MixedFraction mf2)
-  {
-
-    return (mf1.whole == mf2.whole && mf1.num == mf2.num && mf1.denom == mf2.denom
-        && mf1.sign == mf2.sign) ? true : false;
   }
 
   /**
@@ -435,5 +394,33 @@ public class MixedFraction
     s = String.format("sign: %s, whole: %s, num: %s, denom: %s", sign, whole, num, denom);
 
     return s;
+  }
+
+  /**
+   * Implement Comparable to compare mixed fractions.
+   *
+   * @param other
+   *     The MixedFraction to compare to
+   * @return -1 if this MixedFraction is less than other, 0 if equal, and 1 if greater than
+   */
+  @Override
+  public int compareTo(final MixedFraction other)
+  {
+    final MixedFraction f1 = new MixedFraction(this);
+    final MixedFraction f2 = new MixedFraction(other);
+
+    final MixedFraction res = MixedFraction.sub(f1, f2);
+    if (res.getSign() == -1)
+    {
+      return -1;
+    }
+    else if (res.getWhole() == 0 && res.getNum() == 0)
+    {
+      return 0;
+    }
+    else
+    {
+      return 1;
+    }
   }
 }

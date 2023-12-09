@@ -426,7 +426,7 @@ public class MixedFractionPanel extends JPanel
     if (e.getActionCommand() == "copy")
     {
       MixedFraction mf = new MixedFraction(sign, whole, num, denom);
-      display.setCMFP(mf);
+      display.setCurrentMixedFractionPanel(mf);
     }
   }
 }

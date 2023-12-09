@@ -30,12 +30,14 @@ public class CalculatorButtons extends JPanel implements ActionListener
   public static final String BACK_SPACE = "\u2190";
   public static final String POSITION = "P";
   public static final String MEDIANT = "\u21F9";
-  public static final String EXPONENT = "X\u207F";
   public static final String INVERSE = "inv";
   public static final String SIMPLIFY = "\u21A1";
   public static final String GREATER_THAN = ">";
   public static final String LESS_THAN = "<";
   public static final String EQUAL_TO = "\u225D";
+  public static final String OPEN_PAREN = "(";
+  public static final String CLOSE_PAREN = ")";
+  public static final String SEND = "\u2191";
   
 
   private static final long serialVersionUID = 1L;
@@ -145,10 +147,10 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // Subtraction button
     c.gridx = 3;
     add(setButton(SUBTRACTION, AQUA), c);
-
-    // Exponent button
+    
+    // the greater than button
     c.gridx = 4;
-    add(setButton(EXPONENT, AQUA), c);
+    add(setButton(GREATER_THAN, AQUA), c);
 
     // Inverse button
     c.gridx = 5;
@@ -169,9 +171,9 @@ public class CalculatorButtons extends JPanel implements ActionListener
     c.gridx = 3;
     add(setButton(MULTIPLICATION, AQUA), c);
     
-    // the greater than button
+    //Less-than button
     c.gridx = 4;
-    add(setButton(GREATER_THAN, AQUA), c);
+    add(setButton(LESS_THAN, AQUA), c);
     
     // Simplify button
     c.gridx = 5;
@@ -191,10 +193,14 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // Division button
     c.gridx = 3;
     add(setButton(DIVISION, AQUA), c);
-    
-    //Less-than button
+
+    //the equal to by definition button
     c.gridx = 4;
-    add(setButton(LESS_THAN, AQUA), c);
+    add(setButton(EQUAL_TO, AQUA), c);
+
+    c.gridx = 5;
+    add(setButton(OPEN_PAREN, Color.RED), c);
+
 
     // button for the number zero
     c.gridx = 0;
@@ -214,14 +220,16 @@ public class CalculatorButtons extends JPanel implements ActionListener
     ActionMap actionMap = this.getActionMap();
     actionMap.put(POSITION, new PressAction(button));
     add(button, c);
+   
+    c.gridx = 3;
+    add(setButton(SEND, AQUA), c);
 
     // The equals button
-    c.gridx = 3;
-    add(setButton(EQUALS, AQUA), c);
-    
-    //the equal to by definition button
     c.gridx = 4;
-    add(setButton(EQUAL_TO, AQUA), c);
+    add(setButton(EQUALS, AQUA), c);
+
+    c.gridx = 5;
+    add(setButton(CLOSE_PAREN, Color.RED), c);
   }
 
   /**
