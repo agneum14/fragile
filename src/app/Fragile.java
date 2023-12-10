@@ -4,30 +4,25 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import gui.CalculatorWindow;
 import gui.Menu;
 
-public class Fragile implements Runnable
-{
-    public static void main(String[] args) throws InterruptedException, InvocationTargetException
-    {
+public class Fragile implements Runnable {
+    public static void main(String[] args) throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(new Fragile());
     }
 
     @Override
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        }
-        catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                | UnsupportedLookAndFeelException e)
-        {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
 
@@ -37,41 +32,57 @@ public class Fragile implements Runnable
         // Show the calculator window
         calculatorWindow.setVisible(true);
 
-        // Create a file picker dialog after the calculator is shown
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
+        // Read letters from file
+        String filePath = "calculator_last_saved.txt"; 
 
-        // Check if a file is selected
-        if (result == JFileChooser.APPROVE_OPTION)
-        {
-            // Get the selected file
-            String selectedFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+        if (fileExists(filePath)) {
+            String[] lettersArray = readLettersFromFile(filePath);
 
-            // Read the content of the file and store each character in a separate string in an array
-            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFilePath)))
-            {
-                List<String> charList = new ArrayList<>();
-                int charValue;
-                while ((charValue = reader.read()) != -1)
-                {
-                    charList.add(String.valueOf((char) charValue));
-                }
+            if (lettersArray != null) {
+                Menu.checkBoxes(lettersArray);
 
-                // Convert the list to an array
-                String[] charArray = charList.toArray(new String[0]);
-                Menu.checkBoxes(charArray);
-
-               
+              
             }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+        } else {
+            System.out.println("File not found: " + filePath);
         }
-        else
-        {
-            // Handle the case where no file is selected
-            System.out.println("No file selected. Exiting...");
+    }
+
+    /**
+     * Checks if the file exists.
+     * 
+     * @param filePath
+     * @return true if the file exists, false otherwise
+     */
+    private boolean fileExists(String filePath) {
+        Path path = Paths.get(filePath);
+        return Files.exists(path);
+    }
+
+    /**
+     * Reads the letters from the file.
+     * 
+     * @param filePath
+     * @return
+     */
+    private String[] readLettersFromFile(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            StringBuilder contentBuilder = new StringBuilder();
+            int character;
+
+            while ((character = reader.read()) != -1) {
+                char letter = (char) character;
+                // only letters in array
+                if (Character.isLetter(letter)) {
+                    contentBuilder.append(letter);
+                }
+            }
+
+            String content = contentBuilder.toString();
+            return content.split(""); // Splitting the content into an array of letters
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // Handle the exception 
         }
     }
 }
