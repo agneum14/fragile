@@ -1,10 +1,13 @@
 package gui;
 
 import utilities.MapFormatter;
+import utilities.ResourceManager;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +51,15 @@ public class GuiConfig
   private void loadDefault()
   {
     map = new HashMap<String, String>();
-    map.put("logo", "/html/Fragile_Logo.png");
+    try
+    {
+      ResourceManager rm = ResourceManager.newInstance();
+      Path logoPath = Paths.get(rm.getResourcePath().toString(), "Fragile_Logo.png");
+      map.put("logo", logoPath.toString());
+    } catch (Exception e)
+    {
+      map.put("logo", "/html/Fragile_Logo.png");
+    }
     map.put("red", "210");
     map.put("green", "237");
     map.put("blue", "255");

@@ -386,8 +386,8 @@ public class Menu extends JMenuBar implements ActionListener
     try
     {
       String pathString;
-      ResourceManager.copyFiles();
-      Path path = ResourceManager.getResourcePath();
+      ResourceManager rm = ResourceManager.newInstance();
+      Path path = rm.getResourcePath();
       switch (Locale.getDefault().getLanguage())
       {
         case "fr" -> pathString = path.toString() + "/helpFR.html";

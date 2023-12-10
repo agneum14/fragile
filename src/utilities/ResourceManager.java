@@ -6,23 +6,25 @@ import java.nio.file.Path;
 
 public class ResourceManager
 {
-  private static boolean hasCopied = false;
-  private static Path resourcePath;
+  private static boolean exists = false;
+  private static ResourceManager instance;
+  private Path resourcePath;
 
-
-  public static boolean copyFiles() throws IOException, URISyntaxException
+  private ResourceManager() throws IOException, URISyntaxException
   {
-    if (!hasCopied)
-    {
-      hasCopied = true;
-      Path path = ResourceCopier.copyResourcesToTemp("temp", "../html");
-      resourcePath = path;
-      return true;
-    }
-    return false;
+    this.resourcePath = ResourceCopier.copyResourcesToTemp("temp", "../html");
   }
 
-  public static Path getResourcePath()
+  public static ResourceManager newInstance() throws IOException, URISyntaxException
+  {
+    if (!exists)
+    {
+      instance = new ResourceManager();
+    }
+    return instance;
+  }
+
+  public Path getResourcePath()
   {
     return resourcePath;
   }
