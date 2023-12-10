@@ -13,22 +13,33 @@ import java.util.Map;
  */
 public class GuiConfig
 {
-
+  private static boolean exists = false;
+  private static GuiConfig instance;
   private Map<String, String> map;
 
   /**
    * Constructor for the GUI's config.
    */
-  public GuiConfig()
+  private GuiConfig()
   {
     try
     {
-      map = MapFormatter.read("/html/config.txt");
+      map = MapFormatter.read("config.txt");
     } catch (FileNotFoundException e)
     {
       loadDefault();
     }
   }
+
+  public static GuiConfig newInstance()
+  {
+    if (!exists)
+    {
+      instance = new GuiConfig();
+    }
+    return instance;
+  }
+
 
   /**
    * Loads default fragile if the config isn't present.
@@ -42,7 +53,7 @@ public class GuiConfig
     map.put("blue", "255");
     try
     {
-      MapFormatter.write(map, "/html/config.txt");
+      MapFormatter.write(map, "config.txt");
     } catch (IOException e)
     {
       throw new RuntimeException(e);
