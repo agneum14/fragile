@@ -15,7 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
 import utilities.MapFormatter;
-
+/**
+ * The ShortcutChooser class 
+ */
 public class ShortcutChooser extends JFrame implements ActionListener
 {
   private JComboBox<String> comboBox;
@@ -23,7 +25,7 @@ public class ShortcutChooser extends JFrame implements ActionListener
   private TextFieldHint text;
   private JButton set;
   private JButton save;
-  private Map<String, String> keybinds;
+  private Map<String, Character> keybinds;
 
   public ShortcutChooser()
   {
@@ -32,6 +34,7 @@ public class ShortcutChooser extends JFrame implements ActionListener
     this.setTitle("Shortcut Helper");
     this.setSize(300, 300);
     this.setResizable(false);
+  this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     this.setVisible(true);
   }
 
@@ -58,9 +61,8 @@ public class ShortcutChooser extends JFrame implements ActionListener
 
   }
 
-  public static void setKeybind(String menuItem, String character)
+  public static void setKeybind(String menuItem, char c)
   {
-    char c = character.charAt(0);
     switch (menuItem)
     {
       case "Exit" -> Menu.exitMenuItem
@@ -98,7 +100,7 @@ public class ShortcutChooser extends JFrame implements ActionListener
     {
       System.out.println(comboBox.getSelectedItem());
       String menuItemText = comboBox.getSelectedItem().toString();
-      String character = text.getText().toUpperCase();
+      char character = text.getText().toUpperCase().charAt(0);
       setKeybind(menuItemText, character);
       keybinds.put(menuItemText,character);
     }

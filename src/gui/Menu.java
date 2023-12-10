@@ -11,12 +11,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
 
-import actions.PressAction;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,20 +31,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
+/**
+ * 
+ */
 public class Menu extends JMenuBar implements ActionListener
 {
-  private PieChartWindow pcw;
-  public static JCheckBoxMenuItem properMenuItem;
-  public static JCheckBoxMenuItem reducedMenuItem;
-  private CalculatorWindow window; // TODO get rid of this coupling somehow.
-  public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
-      shortcutsMenuItem;
+  private static final long serialVersionUID = 1L;
   public static JCheckBoxMenuItem pieChartMenuItem;
-
   public static JRadioButtonMenuItem barMenuItem;
   public static JRadioButtonMenuItem slashMenuItem;
   public static JRadioButtonMenuItem solidusMenuItem;
+  public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
+      shortcutsMenuItem;
+  public static JCheckBoxMenuItem properMenuItem;
+  public static JCheckBoxMenuItem reducedMenuItem;
+  private PieChartWindow pcw;
+  private CalculatorWindow window; // TODO get rid of this coupling somehow.
   private History history;
 
   /**
@@ -55,7 +54,7 @@ public class Menu extends JMenuBar implements ActionListener
    *
    * @return JMenuBar
    */
-  public Menu(PieChartWindow pcw, History history, CalculatorWindow window)
+  public Menu(final PieChartWindow pcw,final History history, final CalculatorWindow window)
   {
     this.window = window;
     this.pcw = pcw;
@@ -385,8 +384,9 @@ public class Menu extends JMenuBar implements ActionListener
     try
     {
       Map<String, String> shortcuts = new HashMap<>(MapFormatter.read("shortcuts.txt"));
-      for(String menuItems: shortcuts.keySet()) {
-        ShortcutChooser.setKeybind(menuItems, shortcuts.get(menuItems));
+      for (String menuItems : shortcuts.keySet())
+      {
+        ShortcutChooser.setKeybind(menuItems, shortcuts.get(menuItems).charAt(0));
       }
     }
     catch (FileNotFoundException e)
@@ -430,7 +430,7 @@ public class Menu extends JMenuBar implements ActionListener
    * @param charArray
    *          string of encoded letters that are linked to a button.
    */
-  public static void checkBoxes(String[] charArray)
+  public static void checkBoxes(final String[] charArray)
   {
 
     for (String character : charArray)
