@@ -8,7 +8,7 @@ import java.util.Map;
 import utilities.MapFormatter;
 
 /**
- * 
+ * Config Class for Fragile.
  */
 public class GuiConfig
 {
