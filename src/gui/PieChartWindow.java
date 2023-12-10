@@ -94,21 +94,7 @@ public class PieChartWindow extends JFrame
       else
       {
         final Operator operator = (Operator) ee;
-        final String operatorString = switch (operator)
-        {
-          case EQUAL -> CalculatorButtons.EQUALS;
-          case ADD -> CalculatorButtons.ADDITION;
-          case SUB -> CalculatorButtons.SUBTRACTION;
-          case MULT -> CalculatorButtons.MULTIPLICATION;
-          case MED -> CalculatorButtons.MEDIANT;
-          case DIV -> CalculatorButtons.DIVISION;
-          case GREATER -> CalculatorButtons.GREATER_THAN;
-          case LESS -> CalculatorButtons.LESS_THAN;
-          case EQUAL_TO -> CalculatorButtons.EQUAL_TO;
-          case OPEN_PAREN -> CalculatorButtons.OPEN_PAREN;
-          default -> CalculatorButtons.CLOSE_PAREN;
-        };
-        addOperator(operatorString);
+        addOperator(operator.toString());
       }
     }
 

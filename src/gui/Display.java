@@ -28,7 +28,30 @@ public class Display extends JPanel
    */
   public enum Operator implements ExpressionElement
   {
-    ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN, CLOSE_PAREN
+    ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN, CLOSE_PAREN;
+
+    /**
+     * Override toString to get the CalculatorButtons String.
+     */
+    @Override
+    public String toString()
+    {
+      return switch (this)
+      {
+        case ADD -> CalculatorButtons.ADDITION;
+        case SUB -> CalculatorButtons.SUBTRACTION;
+        case DIV -> CalculatorButtons.DIVISION;
+        case MULT -> CalculatorButtons.MULTIPLICATION;
+        case EQUAL -> CalculatorButtons.EQUALS;
+        case MED -> CalculatorButtons.MEDIANT;
+        case INV -> CalculatorButtons.INVERSE;
+        case GREATER -> CalculatorButtons.GREATER_THAN;
+        case LESS -> CalculatorButtons.LESS_THAN;
+        case EQUAL_TO -> CalculatorButtons.EQUAL_TO;
+        case OPEN_PAREN -> CalculatorButtons.OPEN_PAREN;
+        case CLOSE_PAREN -> CalculatorButtons.CLOSE_PAREN;
+      };
+    }
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
@@ -189,7 +212,6 @@ public class Display extends JPanel
     currentExpression.removeAll(currentExpression);
     draw();
     pieChartWindow.reset();
-    history.nextExpression();
   }
 
   /**
@@ -382,6 +404,7 @@ public class Display extends JPanel
           currentExpression.add(Operator.EQUAL);
           currentExpression.add(result);
           pieChartWindow.update(currentExpression);
+          history.update(currentExpression, this);
         }
       }
     }
