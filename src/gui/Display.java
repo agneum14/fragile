@@ -28,7 +28,30 @@ public class Display extends JPanel
    */
   public enum Operator implements ExpressionElement
   {
-    ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN, CLOSE_PAREN
+    ADD, SUB, DIV, MULT, EQUAL, MED, INV, GREATER, LESS, EQUAL_TO, OPEN_PAREN, CLOSE_PAREN;
+
+    /**
+     * Override toString to get the CalculatorButtons String.
+     */
+    @Override
+    public String toString()
+    {
+      return switch (this)
+      {
+        case ADD -> CalculatorButtons.ADDITION;
+        case SUB -> CalculatorButtons.SUBTRACTION;
+        case DIV -> CalculatorButtons.DIVISION;
+        case MULT -> CalculatorButtons.MULTIPLICATION;
+        case EQUAL -> CalculatorButtons.EQUALS;
+        case MED -> CalculatorButtons.MEDIANT;
+        case INV -> CalculatorButtons.INVERSE;
+        case GREATER -> CalculatorButtons.GREATER_THAN;
+        case LESS -> CalculatorButtons.LESS_THAN;
+        case EQUAL_TO -> CalculatorButtons.EQUAL_TO;
+        case OPEN_PAREN -> CalculatorButtons.OPEN_PAREN;
+        case CLOSE_PAREN -> CalculatorButtons.CLOSE_PAREN;
+      };
+    }
   }
 
   public static final Color POWDER_BLUE = new Color(210, 237, 255);
@@ -41,6 +64,10 @@ public class Display extends JPanel
   private final PieChartWindow pieChartWindow;
   private final History history;
   private final List<List<ExpressionElement>> steps;
+  private final List<MixedFractionPanel> mfps;
+  private Operator previousOperator;
+  private MixedFraction eval;
+  private boolean condExecuted;
 
   /**
    * Instantiate necessary objects and set up the layout.
@@ -60,6 +87,10 @@ public class Display extends JPanel
     currentMixedFraction = new CurrentMixedFraction();
     currentMixedFractionPanel = new CurrentMixedFractionPanel(currentMixedFraction);
     steps = new ArrayList<>();
+    mfps = new ArrayList<>();
+    previousOperator = null;
+    eval = null;
+    condExecuted = false;
 
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
@@ -150,6 +181,7 @@ public class Display extends JPanel
   public void addToCurrentExpressionPanel(final MixedFractionPanel p)
   {
     currentExpressionPanel.add(p);
+    mfps.add(p);
     draw();
   }
 
@@ -174,6 +206,11 @@ public class Display extends JPanel
   {
     currentExpressionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     currentExpressionPanel.setBackground(POWDER_BLUE);
+    for (MixedFractionPanel mfp : mfps)
+    {
+      FractionModePublisher.getInstance().removeSubscriber(mfp);
+      FractionStylePublisher.getInstance().removeSubscriber(mfp);
+    }
     draw();
   }
 
@@ -189,7 +226,6 @@ public class Display extends JPanel
     currentExpression.removeAll(currentExpression);
     draw();
     pieChartWindow.reset();
-    history.nextExpression();
   }
 
   /**
@@ -238,6 +274,14 @@ public class Display extends JPanel
   {
     final String actionCommand = actionEvent.getActionCommand();
     Integer digit;
+    Operator operator = null;
+
+    if (condExecuted)
+    {
+      condExecuted = false;
+      reset();
+    }
+
     try
     {
       digit = Integer.parseInt(actionCommand);
@@ -292,6 +336,7 @@ public class Display extends JPanel
     {
       clearCurrentMixedFractionPanel();
     }
+
     else if (actionCommand.equals(CalculatorButtons.ADDITION)
         || actionCommand.equals(CalculatorButtons.SUBTRACTION)
         || actionCommand.equals(CalculatorButtons.MULTIPLICATION)
@@ -300,90 +345,117 @@ public class Display extends JPanel
         || actionCommand.equals(CalculatorButtons.LESS_THAN)
         || actionCommand.equals(CalculatorButtons.EQUAL_TO)
         || actionCommand.equals(CalculatorButtons.OPEN_PAREN)
-        || actionCommand.equals(CalculatorButtons.CLOSE_PAREN))
+        || actionCommand.equals(CalculatorButtons.CLOSE_PAREN)
+        || actionCommand.equals(CalculatorButtons.EQUALS))
     {
-      final Operator operator = operatorFromActionCommand(actionCommand);
-      addToCurrentExpressionPanel(actionCommand);
-      currentExpression.add(operator);
-    }
-    else if (actionCommand.equals(CalculatorButtons.SEND))
-    {
-      final MixedFraction mf = new MixedFraction(currentMixedFraction);
-      addToCurrentExpressionPanel(new MixedFractionPanel(mf, this));
-      currentExpression.add(mf);
-      clearCurrentMixedFractionPanel();
-    }
-    else if (actionCommand.equals(CalculatorButtons.EQUALS))
-    {
-      // determine if the expression is conditional
-      if (currentExpression.contains(Operator.LESS) || currentExpression.contains(Operator.GREATER)
-          || currentExpression.contains(Operator.EQUAL_TO))
+
+      operator = operatorFromActionCommand(actionCommand);
+
+      if (previousOperator != Operator.CLOSE_PAREN && operator != Operator.OPEN_PAREN)
       {
-        Boolean result = null;
-
-        try
+        // MixedFraction mf = (eval != null) ? eval : new MixedFraction(currentMixedFraction);
+        MixedFraction mf;
+        if (eval != null)
         {
-          result = ConditionalExpressionEvaluator.evaluate(currentExpression);
+          mf = eval;
+          eval = null;
+          reset();
         }
-        catch (final IllegalArgumentException e)
+        else
         {
-
-          final String error = Language.translate("The conditional expression is malformed",
-              "L'expression conditionnelle est mal formée",
-              "Die bedingte Ausdruck ist fehlerhaft.");
-          JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+          mf = new MixedFraction(currentMixedFraction);
         }
+        addToCurrentExpressionPanel(new MixedFractionPanel(mf, this));
+        currentExpression.add(mf);
+        clearCurrentMixedFractionPanel();
+      }
 
-        if (result != null)
-        {
-          String res;
-          if (result)
-          {
-            res = Language.translate("True", "Vrai", "Wahr");
-          }
-          else
-          {
-            res = Language.translate("False", "Faux", "Falsch");
-          }
-          JOptionPane.showMessageDialog(null, res, "Info", JOptionPane.ERROR_MESSAGE);
-        }
+      addToCurrentExpressionPanel(actionCommand);
+      if (operator != Operator.EQUAL)
+      {
+        currentExpression.add(operator);
+
       }
       else
       {
-        MixedFraction result = null;
-        try
+        // determine if the expression is conditional
+        if (currentExpression.contains(Operator.LESS)
+            || currentExpression.contains(Operator.GREATER)
+            || currentExpression.contains(Operator.EQUAL_TO))
         {
-          final ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(currentExpression,
-              steps);
-          result = expressionEvaluator.evaluate();
-        }
-        catch (final IllegalArgumentException e)
-        {
-          if (e.getMessage().equals("expression can't be empty"))
+          Boolean result = null;
+          condExecuted = true;
+
+          try
           {
-            final String error = Language.translate("Expression can't be empty",
-                "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
+            result = ConditionalExpressionEvaluator.evaluate(currentExpression);
+          }
+          catch (final IllegalArgumentException e)
+          {
+            final String error = Language.translate("The conditional expression is malformed",
+                "L'expression conditionnelle est mal formée",
+                "Die bedingte Ausdruck ist fehlerhaft.");
             JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
           }
-          else
+
+          if (result != null)
           {
-            throw e;
+            String res;
+            if (result)
+            {
+              res = Language.translate("True", "Vrai", "Wahr");
+            }
+            else
+            {
+              res = Language.translate("False", "Faux", "Falsch");
+            }
+            JOptionPane.showMessageDialog(null, res, "Info", JOptionPane.ERROR_MESSAGE);
           }
         }
-        catch (final IllegalStateException e)
+        else
         {
-          final String error = Language.translate("The expression is malformed",
-              "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
-          JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
-        }
+          MixedFraction result = null;
+          try
+          {
+            final ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(
+                currentExpression, steps);
+            result = expressionEvaluator.evaluate();
+          }
+          catch (final IllegalArgumentException e)
+          {
+            if (e.getMessage().equals("expression can't be empty"))
+            {
+              final String error = Language.translate("Expression can't be empty",
+                  "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
+              JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+              throw e;
+            }
+          }
+          catch (final IllegalStateException e)
+          {
+            final String error = Language.translate("The expression is malformed",
+                "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
+            JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+          }
 
-        if (result != null)
-        {
-          addToCurrentExpressionPanel("=");
-          addToCurrentExpressionPanel(new MixedFractionPanel(result, this));
-          currentExpression.add(Operator.EQUAL);
-          currentExpression.add(result);
+          if (result != null)
+          {
+            addToCurrentExpressionPanel(new MixedFractionPanel(result, this));
+            currentExpression.add(Operator.EQUAL);
+            currentExpression.add(result);
+            pieChartWindow.update(currentExpression);
+            history.update(currentExpression, this);
+            eval = result;
+          }
         }
+      }
+
+      if (operator != null)
+      {
+        previousOperator = operator;
       }
     }
   }

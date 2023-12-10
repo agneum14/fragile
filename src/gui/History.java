@@ -1,5 +1,8 @@
 package gui;
 
+import calculating.ExpressionElement;
+import calculating.MixedFraction;
+import gui.Display.Operator;
 import gui.mf.MixedFractionPanel;
 
 import javax.swing.*;
@@ -10,9 +13,11 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.List;
+
 
 /**
- * Class for the session history of the calculator
+ * Class for the session history of the calculator.
  *
  * This code complies with the JMU Honor Code
  *
@@ -25,16 +30,18 @@ public class History extends JWindow implements ActionListener, Printable
   private static final int HEIGHT = 300;
   private static final int MAX_WIDTH = 450;
   private static final int MIN_WIDTH = 30;
+  private static final String GREATER = ">";
   private boolean opened;
   private JButton button;
   private Timer timer;
   private JPanel historyPanel;
-  private JPanel expression;
 
   /**
-   * Constructor for the History class
+   * Constructor for the History class.
+   *
+   * @param frame The parent frame to attach the history to.
    */
-  public History(JFrame frame)
+  public History(final JFrame frame)
   {
     super(frame);
     opened = false; // Tracking the status of the window.
@@ -50,46 +57,59 @@ public class History extends JWindow implements ActionListener, Printable
   {
     getContentPane().setBackground(Display.POWDER_BLUE);
     setLayout(new BorderLayout());
-    button = new JButton(">");
+    button = new JButton(GREATER);
     button.addActionListener(this);
     add(button, BorderLayout.EAST);
     // Initialize history panel
     historyPanel = new JPanel();
     historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
-    JScrollPane scrollPane = new JScrollPane(historyPanel);
+    final JScrollPane scrollPane = new JScrollPane(historyPanel);
     add(scrollPane, BorderLayout.CENTER);
     // Animation
     timer = new Timer(10, e -> animate());
-
-    expression = new JPanel();
-    historyPanel.add(expression);
   }
 
-  public void addToExpression(final MixedFractionPanel mfp, String operator)
+  /**
+   * Add a new expression to the history and repaint.
+   *
+   * @param expressionList
+   *     The expression (as a list of mixed fractions and operators) to add
+   * @param display
+   *     The display. This needs to be passed to create new mixed fraction panels
+   */
+  public void update(final List<ExpressionElement> expressionList, final Display display)
   {
-    if (operator != null)
+    final JPanel expression = new JPanel();
+
+    for (final ExpressionElement ee : expressionList)
     {
-      expression.add(new JLabel(operator));
+      if (ee instanceof MixedFraction)
+      {
+        final MixedFraction mf = (MixedFraction) ee;
+        final MixedFractionPanel mfp = new MixedFractionPanel(mf, display);
+        expression.add(mfp);
+      }
+      else if (ee instanceof Operator)
+      {
+        final Operator operator = (Operator) ee;
+        final JLabel operatorLabel = new JLabel(operator.toString());
+        expression.add(operatorLabel);
+      }
     }
-    expression.add(mfp);
-    revalidate();
-    repaint();
-  }
 
-  public void nextExpression()
-  {
-    expression = new JPanel();
     historyPanel.add(expression);
+    historyPanel.revalidate();
+    historyPanel.repaint();
   }
 
   /**
    * Method for checking to see if the window is either closed or open.
    */
   @Override
-  public void actionPerformed(ActionEvent e)
+  public void actionPerformed(final ActionEvent e)
   {
-    String ac = e.getActionCommand();
-    if (ac.equals(">"))
+    final String ac = e.getActionCommand();
+    if (ac.equals(GREATER))
     {
       if (!opened)
       {
@@ -101,7 +121,7 @@ public class History extends JWindow implements ActionListener, Printable
     else
     {
       opened = false;
-      button.setText(">");
+      button.setText(GREATER);
       timer.start();
     }
   }
@@ -111,11 +131,11 @@ public class History extends JWindow implements ActionListener, Printable
    */
   private void animate()
   {
-    int targetWidth = (opened) ? MAX_WIDTH : MIN_WIDTH;
-    int currentWidth = getWidth();
+    final int targetWidth = (opened) ? MAX_WIDTH : MIN_WIDTH;
+    final int currentWidth = getWidth();
     if (currentWidth != targetWidth)
     {
-      int newWidth = (currentWidth < targetWidth) ? currentWidth + 5 : currentWidth - 5;
+      final int newWidth = (currentWidth < targetWidth) ? currentWidth + 5 : currentWidth - 5;
       setSize(newWidth, HEIGHT);
       if (currentWidth < targetWidth && newWidth >= targetWidth)
       {
