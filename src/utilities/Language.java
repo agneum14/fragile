@@ -8,6 +8,7 @@ import java.util.Locale;
  * translation.
  *
  * This code complies with the JMU Honor Code
+ *
  * @author Andrew G. Neumann
  * @version 1.0
  */
@@ -28,9 +29,12 @@ public class Language
    * Return either the English, French, or German string depending on the language from the user's
    * default locale. English is the default if the language isn't supported.
    *
-   * @param english The English String
-   * @param french The French String
-   * @param japanese The Japanese String
+   * @param english
+   *     The English String
+   * @param french
+   *     The French String
+   * @param german
+   *     The German String
    * @return The String of the corresponding language
    */
   public static String translate(final String english, final String french, final String german)
@@ -41,6 +45,30 @@ public class Language
       case GERMAN -> german;
       default -> english;
     };
+  }
+
+  /**
+   * Get a thousands separated String representation of a number, with the correct separator for the
+   * current locale.
+   *
+   * @param n
+   *     The number in question
+   * @return The thousands separated String
+   */
+  public static String separate(final Integer n)
+  {
+    String separator = switch (LANGUAGE)
+    {
+      case FRENCH -> " ";
+      case GERMAN -> ".";
+      default -> ",";
+    };
+
+    String nStr = String.valueOf(n);
+    String rev = new StringBuilder(nStr).reverse().toString();
+    rev = rev.replaceAll("(.{3})", "$1".concat(separator));
+
+    return new StringBuilder(rev).reverse().toString();
   }
 
   /**

@@ -27,23 +27,30 @@ public class CurrentMixedFraction
     clear();
   }
 
-  public CurrentMixedFraction(final MixedFraction mf) {
-      sign = mf.getSign();
-      whole = mf.getWhole();
-      num = mf.getNum();
-      denom = mf.getDenom();
-      pos = Pos.WHOLE;
+  /**
+   * Construct the current mixed fraction from the components of a mixed fraction.
+   *
+   * @param mf
+   *     The mixed fraction
+   */
+  public CurrentMixedFraction(final MixedFraction mf)
+  {
+    sign = mf.getSign();
+    whole = mf.getWhole();
+    num = mf.getNum();
+    denom = mf.getDenom();
+    pos = Pos.WHOLE;
   }
 
   /**
    * Add a digit to the either whole, num, or denom (depending on pos).
    *
    * @param d
-   *          The digit to add
+   *     The digit to add
    * @throws IllegalArgumentException
-   *           if d is greater than 9 or less than 0
+   *     if d is greater than 9 or less than 0
    */
-  public void addDigit(int d) throws IllegalArgumentException
+  public void addDigit(final int d) throws IllegalArgumentException
   {
     Integer target;
 
@@ -56,12 +63,12 @@ public class CurrentMixedFraction
       throw new IllegalArgumentException("d can't be less than 0");
     }
 
-    target = switch (pos)
-    {
-      case WHOLE -> whole;
-      case NUM -> num;
-      case DENOM -> denom;
-    };
+    if (pos == Pos.WHOLE)
+      target = whole;
+    else if (pos == Pos.NUM)
+      target = num;
+    else
+      target = denom;
 
     if (target == null)
     {
@@ -73,13 +80,13 @@ public class CurrentMixedFraction
       target += d;
     }
 
-    // using two switch statements because Java lacks pointers
-    switch (pos)
-    {
-      case WHOLE -> whole = target;
-      case NUM -> num = target;
-      case DENOM -> denom = target;
-    }
+    // using two of these if blocks because Java lacks pointers
+    if (pos == Pos.WHOLE)
+      whole = target;
+    else if (pos == Pos.NUM)
+      num = target;
+    else
+      denom = target;
   }
 
   /**
@@ -104,13 +111,16 @@ public class CurrentMixedFraction
   }
 
   /**
-   * Advance pos, going from WHOLE to NUM, NUM to DENOM, and DENOM back to WHOLE.
+   * Advance the current position, going from WHOLE to NUM, NUM to DENOM, and DENOM back to WHOLE.
    */
   public void nextPos()
   {
     pos = pos.next();
   }
 
+  /**
+   * Return to the previous position, from DENOM to NUM, NUM to WHOLE, and WHOLE back to DENOM.
+   */
   public void prevPos()
   {
     pos = pos.prev();
@@ -123,13 +133,12 @@ public class CurrentMixedFraction
   {
     Integer target;
 
-    target = switch (pos)
-    {
-      case WHOLE -> whole;
-      case NUM -> num;
-      case DENOM -> denom;
-      default -> 0; // impossible
-    };
+    if (pos == Pos.WHOLE)
+      target = whole;
+    else if (pos == Pos.NUM)
+      target = num;
+    else
+      target = denom;
 
     if (target == null)
     { // no digits
@@ -145,13 +154,12 @@ public class CurrentMixedFraction
       target /= 10;
     }
 
-    switch (pos)
-    {
-      case WHOLE -> whole = target;
-      case NUM -> num = target;
-      case DENOM -> denom = target;
-      default -> whole = 0; // impossible
-    }
+    if (pos == Pos.WHOLE)
+      whole = target;
+    else if (pos == Pos.NUM)
+      num = target;
+    else
+      denom = target;
   }
 
   /**
@@ -165,7 +173,7 @@ public class CurrentMixedFraction
       throw new IllegalArgumentException(
           "cannot simplify because numerator or denominator is not entered");
     }
-    int gcf = Algorithms.gcd(num, denom);
+    final int gcf = Algorithms.gcd(num, denom);
     if (gcf == 1) // Simplified
     {
       return;
@@ -175,25 +183,22 @@ public class CurrentMixedFraction
   }
 
   /**
-   * changes the given MixedFraction to the multiplicative inverse of itself.
-   * 
-   * @param mf
-   *          the given MixedFraction.
-   * @return the new MixedFraction
+   * Invert the current mixed fraction (e.g. fractionalize then swap the numerator and
+   * denominator).
    */
   public void invert()
   {
     // swapping numerator and denominator.
     if (whole == null)
     {
-      int tempNumerator = num;
+      final int tempNumerator = num;
       num = denom;
       denom = tempNumerator;
     }
     else
     {
       num += whole * denom;
-      int tempNumerator = num;
+      final int tempNumerator = num;
       num = denom;
       denom = tempNumerator;
       whole = 0;
@@ -250,30 +255,52 @@ public class CurrentMixedFraction
     return pos;
   }
 
+  /**
+   * The current position of the current mixed fraction.
+   */
   public enum Pos
   {
     WHOLE
-    {
-      @Override
-      public Pos prev()
+        {
+          /**
+           * Override prev for WHOLE to return the last position.
+           *
+           * @return The last position (DENOM)
+           */
+          @Override
+          public Pos prev()
+          {
+            return values()[2];
+          }
+        }, NUM, DENOM
       {
-        return values()[2];
-      }
-    },
-    NUM, DENOM
-    {
-      @Override
-      public Pos next()
-      {
-        return values()[0];
-      }
-    };
+        /**
+         * Override next for DENOM to return the first position.
+         *
+         * @return The first position (WHOLE)
+         */
+        @Override
+        public Pos next()
+        {
+          return values()[0];
+        }
+      };
 
+    /**
+     * Find the next position.
+     *
+     * @return The next position
+     */
     public Pos next()
     {
       return values()[ordinal() + 1];
     }
 
+    /**
+     * Find the previous position.
+     *
+     * @return The previous position
+     */
     public Pos prev()
     {
       return values()[ordinal() - 1];

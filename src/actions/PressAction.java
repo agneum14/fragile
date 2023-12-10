@@ -4,8 +4,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-
-import gui.Display;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 
 /**
  * Class for keyboard actions
@@ -14,25 +17,58 @@ import gui.Display;
  * 
  * @version 11/12/2023
  *
- * This Code Compiles with the JMU Honor Code.
+ *          This Code Compiles with the JMU Honor Code.
  */
 public class PressAction extends AbstractAction
 {
 
   private static final long serialVersionUID = 1L;
-  private JButton button;
+  private JComponent comp;
 
-  public PressAction(JButton button)
+  /**
+   * @param comp
+   */
+  public PressAction(JComponent comp)
   {
     super();
-    this.button = button;
+    this.comp = comp;
   }
 
+  /**
+   * method performing the button pressing action.
+   */
   @Override
   public void actionPerformed(ActionEvent e)
   {
-    button.grabFocus();
-    button.doClick();
+    if (comp instanceof JButton)
+    {
+      JButton p = (JButton) comp;
+      p.grabFocus();
+      p.doClick();
+    }
+    else if (comp instanceof JMenuItem)
+    {
+      JMenuItem p = (JMenuItem) comp;
+      p.grabFocus();
+      p.doClick();
+    }
+    else if (comp instanceof JRadioButton)
+    {
+      JRadioButton p = (JRadioButton) comp;
+      p.grabFocus();
+      p.doClick();
+    }
+    else if (comp instanceof JCheckBoxMenuItem)
+    {
+      JCheckBoxMenuItem p = (JCheckBoxMenuItem) comp;
+      p.grabFocus();
+      p.doClick();
+    }
+    else
+    {
+      JOptionPane.showMessageDialog(null, "Unknown shortcut", "Error", JOptionPane.ERROR_MESSAGE);
+
+    }
   }
 
 }

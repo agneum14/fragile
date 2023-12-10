@@ -1,16 +1,19 @@
 package gui;
 
+import calculating.ExpressionElement;
 import calculating.MixedFraction;
+import gui.Display.Operator;
 import utilities.Language;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 /**
  * This class implements the pie chart window, which visualizes the current mixed fraction
- * evaluation as pies. The whole number is represented by multiple full pies, and the fractional
+ * evaluation as pies. The whole number is represented by multiple full pies,and the fractional
  * number by a fractional pie. If the whole number exceeds 49, a numbered pie instead of the full
  * pies.
  *
@@ -22,16 +25,15 @@ import java.awt.event.WindowEvent;
 public class PieChartWindow extends JFrame
 {
   private final JPanel heading;
-  private final JPanel pies;
+  private final JPanel expression;
 
   /**
-   * Construct the pie chart window, creating the heading panel and calling draw with 0 (as a mixed
-   * fraction).
+   * Construct the pie chart window.
    */
   public PieChartWindow()
   {
     super("Pie Chart");
-    GridBagConstraints g = new GridBagConstraints();
+    final GridBagConstraints g = new GridBagConstraints();
 
     getContentPane().setLayout(new GridBagLayout());
     setPreferredSize(new Dimension(750, 400));
@@ -49,11 +51,11 @@ public class PieChartWindow extends JFrame
     g.gridy = 1;
     g.weightx = 1;
     g.fill = GridBagConstraints.BOTH;
-    var gridLayout = new GridLayout(0, 3);
+    final var gridLayout = new GridLayout(0, 3);
     gridLayout.setVgap(20);
-    pies = new JPanel(gridLayout);
-    pies.setOpaque(false);
-    add(pies, g);
+    expression = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    expression.setOpaque(false);
+    add(expression, g);
 
     g.gridy = 2;
     g.weighty = 1;
@@ -61,37 +63,107 @@ public class PieChartWindow extends JFrame
 
     addWindowListener(new WindowAdapter()
     {
+      /**
+       * Toggle visibility instead of closing the window.
+       */
       @Override
-      public void windowClosed(WindowEvent e)
+      public void windowClosed(final WindowEvent e)
       {
         toggleVisibility();
       }
     });
   }
 
-  public void addCell(MixedFraction mf, String operator, Display display)
+  /**
+   * Update the pie chart window to reflect the current expression.
+   *
+   * @param currentExpression
+   *     The current expression
+   */
+  public void update(final List<ExpressionElement> currentExpression)
   {
-    pies.add(new PieChartCell(mf, operator, display));
-    pies.revalidate();
-    pies.repaint();
-  }
+    expression.removeAll();
 
-  public void reset()
-  {
-    pies.removeAll();
+    for (final ExpressionElement ee : currentExpression)
+    {
+      if (ee instanceof MixedFraction)
+      {
+        final MixedFraction mf = (MixedFraction) ee;
+        addOperand(mf);
+      }
+      else
+      {
+        final Operator operator = (Operator) ee;
+        addOperator(operator.toString());
+      }
+    }
+
     revalidate();
     repaint();
   }
 
-  public void toggleVisibility()
+  /**
+   * Add a JLabel with the operator to the expression.
+   *
+   * @param operator
+   *     The operator to add
+   */
+  private void addOperator(final String operator)
   {
-    if (isVisible())
+    final JLabel operatorLabel = new JLabel(operator);
+    final Font font = new Font("SansSerif", Font.PLAIN, 24);
+    operatorLabel.setFont(font);
+    expression.add(operatorLabel);
+  }
+
+  /**
+   * Add a mixed fraction (an operand) to the expression.
+   *
+   * @param mf
+   *     The mixed fraction to add
+   */
+  private void addOperand(final MixedFraction mf)
+  {
+    final MixedFraction reduced = new MixedFraction(mf).reduce();
+    final int numExists = (reduced.getNum() == 0) ? 0 : 1;
+    final JPanel pies = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    pies.setOpaque(false);
+
+    if (reduced.getWhole() + numExists <= 5)
     {
-      setVisible(false);
+      for (int i = 0; i < reduced.getWhole(); i++)
+      {
+        pies.add(new PieFull());
+      }
     }
     else
     {
-      setVisible(true);
+      pies.add(new PieNumber(reduced.getWhole()));
     }
+
+    if (numExists == 1)
+    {
+      pies.add(new PieFraction(reduced));
+    }
+    expression.add(pies);
+
+  }
+
+  /**
+   * Clear the expression and repaint.
+   */
+  public void reset()
+  {
+    expression.removeAll();
+    revalidate();
+    repaint();
+  }
+
+  /**
+   * Toggle the visibility.
+   */
+  public void toggleVisibility()
+  {
+    setVisible(!isVisible());
   }
 }
