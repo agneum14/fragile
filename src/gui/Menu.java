@@ -22,6 +22,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
@@ -353,7 +354,9 @@ public class Menu extends JMenuBar implements ActionListener
   {
     switch (e.getActionCommand())
     {
-      case "Exit" -> window.dispose();
+      case "Exit" -> {
+        Menu.saveEncodingToFile();
+        window.dispose();}
       case "New Calculator" -> new CalculatorWindow();
       case "Pie Chart" -> pcw.toggleVisibility();
       case "Print Session" -> history.actionPerformed();
@@ -494,6 +497,60 @@ public class Menu extends JMenuBar implements ActionListener
       }
     }
   }
+  
+  /**
+   * Gets the encoding for preferece.
+   * 
+   * @return a string for the encoding
+   */
+  public static String getEncoding() {
+    String encoding = "";
+
+    if (properMenuItem.isSelected())
+    {
+      encoding += "a";
+    }
+
+    if (reducedMenuItem.isSelected())
+    {
+      encoding += "b";
+    }
+
+    if (pieChartMenuItem.isSelected())
+    {
+      encoding += "c";
+    }
+
+    if (barMenuItem.isSelected())
+    {
+      encoding += "d";
+    }
+
+    if (slashMenuItem.isSelected())
+    {
+      encoding += "e";
+    }
+
+    if (solidusMenuItem.isSelected())
+    {
+      encoding += "f";
+    }
+    
+    return encoding;
+    
+  }
+  
+  
+  /**
+   * creates the save file when exited.
+   */
+  public static void saveEncodingToFile() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("calculator_last_saved.txt"))) {
+        writer.write(Menu.getEncoding());
+    } catch (IOException e) {
+        e.printStackTrace(); // Handle the exception 
+    }
+}
 
   
 }

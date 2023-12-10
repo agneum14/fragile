@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +44,22 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
     this.addComponentListener(this); // hold the display to make changes
     setupLayout(); // creating the layout of the window.
+    
+    
+    // has the save action 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    addWindowListener((WindowListener) new WindowAdapter() {
+      @Override
+      public void windowClosed(WindowEvent e) {
+        
+        Menu.saveEncodingToFile();
+        
+          
+      }
+  });
+    
+    
+    
     setPreferredSize(new Dimension(400, 500));
     pack(); // sets the size of the window to the components preferred size.
     setVisible(true);
