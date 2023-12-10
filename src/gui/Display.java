@@ -73,9 +73,9 @@ public class Display extends JPanel
    * Instantiate necessary objects and set up the layout.
    *
    * @param pieChartWindow
-   *     The infamous pie chart window
+   *          The infamous pie chart window
    * @param history
-   *     The history
+   *          The history
    */
   public Display(final PieChartWindow pieChartWindow, final History history)
   {
@@ -147,10 +147,10 @@ public class Display extends JPanel
    * A utility method to convert an action command to an operator.
    *
    * @param actionCommand
-   *     The action command
+   *          The action command
    * @return The corresponding operator
    * @throws IllegalArgumentException
-   *     If the action command isn't a valid operator
+   *           If the action command isn't a valid operator
    */
   private Operator operatorFromActionCommand(final String actionCommand)
       throws IllegalArgumentException
@@ -176,7 +176,7 @@ public class Display extends JPanel
    * Add a mixed fraction panel to the current expression panel and redraw the display.
    *
    * @param p
-   *     The mixed fraction panel to add
+   *          The mixed fraction panel to add
    */
   public void addToCurrentExpressionPanel(final MixedFractionPanel p)
   {
@@ -190,7 +190,7 @@ public class Display extends JPanel
    * panel as a JLabel.
    *
    * @param actionCommand
-   *     The action command to add
+   *          The action command to add
    */
   public void addToCurrentExpressionPanel(final String actionCommand)
   {
@@ -252,7 +252,7 @@ public class Display extends JPanel
    * This is used for copy and paste functionality in MixedFractionPanel.
    *
    * @param mixedFraction
-   *     The MixedFraction to paste
+   *          The MixedFraction to paste
    */
   public void setCurrentMixedFractionPanel(final MixedFraction mixedFraction)
   {
@@ -268,7 +268,7 @@ public class Display extends JPanel
    * history.
    *
    * @param actionEvent
-   *     The action event to respond to
+   *          The action event to respond to
    */
   public void handleButton(final ActionEvent actionEvent)
   {
@@ -336,15 +336,17 @@ public class Display extends JPanel
     {
       clearCurrentMixedFractionPanel();
     }
-    else if (actionCommand.equals(CalculatorButtons.ADDITION) || actionCommand.equals(
-        CalculatorButtons.SUBTRACTION) || actionCommand.equals(
-        CalculatorButtons.MULTIPLICATION) || actionCommand.equals(
-        CalculatorButtons.DIVISION) || actionCommand.equals(
-        CalculatorButtons.GREATER_THAN) || actionCommand.equals(
-        CalculatorButtons.LESS_THAN) || actionCommand.equals(
-        CalculatorButtons.EQUAL_TO) || actionCommand.equals(
-        CalculatorButtons.OPEN_PAREN) || actionCommand.equals(
-        CalculatorButtons.CLOSE_PAREN) || actionCommand.equals(CalculatorButtons.EQUALS))
+
+    else if (actionCommand.equals(CalculatorButtons.ADDITION)
+        || actionCommand.equals(CalculatorButtons.SUBTRACTION)
+        || actionCommand.equals(CalculatorButtons.MULTIPLICATION)
+        || actionCommand.equals(CalculatorButtons.DIVISION)
+        || actionCommand.equals(CalculatorButtons.GREATER_THAN)
+        || actionCommand.equals(CalculatorButtons.LESS_THAN)
+        || actionCommand.equals(CalculatorButtons.EQUAL_TO)
+        || actionCommand.equals(CalculatorButtons.OPEN_PAREN)
+        || actionCommand.equals(CalculatorButtons.CLOSE_PAREN)
+        || actionCommand.equals(CalculatorButtons.EQUALS))
     {
 
       operator = operatorFromActionCommand(actionCommand);
@@ -372,12 +374,14 @@ public class Display extends JPanel
       if (operator != Operator.EQUAL)
       {
         currentExpression.add(operator);
+
       }
       else
       {
         // determine if the expression is conditional
-        if (currentExpression.contains(Operator.LESS) || currentExpression.contains(
-            Operator.GREATER) || currentExpression.contains(Operator.EQUAL_TO))
+        if (currentExpression.contains(Operator.LESS)
+            || currentExpression.contains(Operator.GREATER)
+            || currentExpression.contains(Operator.EQUAL_TO))
         {
           Boolean result = null;
           condExecuted = true;

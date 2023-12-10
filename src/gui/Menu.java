@@ -9,10 +9,15 @@ import utilities.Language;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
+
+import actions.PressAction;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,7 +30,11 @@ public class Menu extends JMenuBar implements ActionListener
   private PieChartWindow pcw;
   private final JCheckBoxMenuItem properMenuItem;
   private final JCheckBoxMenuItem reducedMenuItem;
-  private CalculatorWindow window; //TODO get rid of this coupling somehow.
+  private CalculatorWindow window; // TODO get rid of this coupling somehow.
+  private JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, pieChartMenuItem, printMenuItem,
+      newCalcMenuItem;
+  private JRadioButton barMenuItem, slashMenuItem, solidusMenuItem;
+  private History history;
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
@@ -36,7 +45,7 @@ public class Menu extends JMenuBar implements ActionListener
   {
     this.window = window;
     this.pcw = pcw;
-
+    this.history = history;
     // Creating the main menu objects
     JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "Datei"));
     JMenu modeDropDown = new JMenu("Mode");
@@ -46,37 +55,37 @@ public class Menu extends JMenuBar implements ActionListener
 
     // Creating sub menu objects
     String englishText = "Exit";
-    JMenuItem exitMenuItem = new JMenuItem(Language.translate(englishText, "Sortie", "Ausgang"));
+    exitMenuItem = new JMenuItem(Language.translate(englishText, "Sortie", "Ausgang"));
     exitMenuItem.setActionCommand(englishText);
 
     englishText = "About";
-    JMenuItem aboutMenuItem = new JMenuItem(Language.translate(englishText, "À Propos", "Über"));
+    aboutMenuItem = new JMenuItem(Language.translate(englishText, "À Propos", "Über"));
     aboutMenuItem.setActionCommand(englishText);
 
     englishText = "Help";
-    JMenuItem helpMenuItem = new JMenuItem(Language.translate(englishText, "Aide", "Hilfe"));
+    helpMenuItem = new JMenuItem(Language.translate(englishText, "Aide", "Hilfe"));
     helpMenuItem.setActionCommand(englishText);
 
     englishText = "Pie Chart";
-    JCheckBoxMenuItem pieChartMenuItem = new JCheckBoxMenuItem(
+    pieChartMenuItem = new JCheckBoxMenuItem(
         Language.translate(englishText, "Diagramme Circulaire", "Kreisdiagramm"));
     pieChartMenuItem.setActionCommand(englishText);
 
     englishText = "Print Session";
-    JMenuItem printMenuItem = new JMenuItem(
+    printMenuItem = new JMenuItem(
         Language.translate(englishText, "Session d'impression", "Sitzung drucken"));
-    printMenuItem.setActionCommand(englishText);
+    printMenuItem.setActionCommand("Print Session");
 
     englishText = "New Calculator";
-    JMenuItem newCalcMenuItem = new JMenuItem(
+    newCalcMenuItem = new JMenuItem(
         Language.translate(englishText, "Nouveau calculateur", "Neuer Taschenrechner"));
-    printMenuItem.setActionCommand(englishText);
+    newCalcMenuItem.setActionCommand("New Calculator");
 
     // style menu items
-    JRadioButton barMenuItem = new JRadioButton(Language.translate("Bar", "Bar", "Bar"));
+    barMenuItem = new JRadioButton(Language.translate("Bar", "Bar", "Bar"));
     barMenuItem.setSelected(true);
-    JRadioButton slashMenuItem = new JRadioButton("Slash");
-    JRadioButton solidusMenuItem = new JRadioButton("Solidus");
+    slashMenuItem = new JRadioButton("Slash");
+    solidusMenuItem = new JRadioButton("Solidus");
     ButtonGroup styleGroup = new ButtonGroup();
     styleGroup.add(barMenuItem);
     styleGroup.add(slashMenuItem);
@@ -110,7 +119,7 @@ public class Menu extends JMenuBar implements ActionListener
 
     // add action listeners
     newCalcMenuItem.addActionListener(this);
-    printMenuItem.addActionListener(new PrintableWrapper(history));
+    printMenuItem.addActionListener(this);
     exitMenuItem.addActionListener(this);
     aboutMenuItem.addActionListener(this);
     helpMenuItem.addActionListener(this);
@@ -120,6 +129,8 @@ public class Menu extends JMenuBar implements ActionListener
     solidusMenuItem.addActionListener(this);
     properMenuItem.addActionListener(this);
     reducedMenuItem.addActionListener(this);
+    // Adding Keyboard shortcuts
+    MenuShortcuts();
   }
 
   /**
@@ -206,6 +217,7 @@ public class Menu extends JMenuBar implements ActionListener
       case "Exit" -> window.dispose();
       case "New Calculator" -> new CalculatorWindow();
       case "Pie Chart" -> pcw.toggleVisibility();
+      case "Print Session" -> history.actionPerformed();
       case "About" -> displayAboutDialog();
       case "Help" -> openHelpPage();
       case "Bar" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.BAR);
@@ -215,9 +227,53 @@ public class Menu extends JMenuBar implements ActionListener
           .notifyProperMode(properMenuItem.isSelected());
       case "Reduced" -> FractionModePublisher.getInstance()
           .notifyReducedMode(reducedMenuItem.isSelected());
-      // case "Print Session" -> ; //TODO Put print session action here
       default -> System.out.println("unknown menu option");
     }
+  }
+
+  /**
+   * private method for making keyboard shortcuts for the Menu.
+   */
+  private void MenuShortcuts()
+  {
+    //input map checking for keyboard inputs
+    InputMap input = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK),
+        helpMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK),
+        printMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK),
+        newCalcMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK),
+        aboutMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK),
+        exitMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK),
+        pieChartMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.SHIFT_DOWN_MASK),
+        properMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK),
+        reducedMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK),
+        barMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK),
+        slashMenuItem.getActionCommand());
+    input.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK),
+        solidusMenuItem.getActionCommand());
+    
+    //Action map checking for the action command and the associated action
+    ActionMap actions = this.getActionMap();
+    actions.put(helpMenuItem.getActionCommand(), new PressAction(helpMenuItem));
+    actions.put(printMenuItem.getActionCommand(), new PressAction(printMenuItem));
+    actions.put(newCalcMenuItem.getActionCommand(), new PressAction(newCalcMenuItem));
+    actions.put(aboutMenuItem.getActionCommand(), new PressAction(aboutMenuItem));
+    actions.put(exitMenuItem.getActionCommand(), new PressAction(exitMenuItem));
+    actions.put(pieChartMenuItem.getActionCommand(), new PressAction(pieChartMenuItem));
+    actions.put(properMenuItem.getActionCommand(), new PressAction(properMenuItem));
+    actions.put(reducedMenuItem.getActionCommand(), new PressAction(reducedMenuItem));
+    actions.put(barMenuItem.getActionCommand(), new PressAction(barMenuItem));
+    actions.put(slashMenuItem.getActionCommand(), new PressAction(slashMenuItem));
+    actions.put(solidusMenuItem.getActionCommand(), new PressAction(solidusMenuItem));
   }
 
   // opens up the help page.
@@ -247,4 +303,6 @@ public class Menu extends JMenuBar implements ActionListener
       e.printStackTrace();
     }
   }
+
+  
 }
