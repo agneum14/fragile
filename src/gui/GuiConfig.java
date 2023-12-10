@@ -36,6 +36,7 @@ public class GuiConfig
     if (!exists)
     {
       instance = new GuiConfig();
+      exists = true;
     }
     return instance;
   }
