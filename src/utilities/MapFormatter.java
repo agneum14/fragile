@@ -13,13 +13,21 @@ public class MapFormatter
   public static Map<String, String> read(String path) throws FileNotFoundException
   {
     File f = new File(path);
+    if (!f.exists())
+    {
+      throw new FileNotFoundException();
+    }
     Scanner s = new Scanner(f);
     HashMap<String, String> map = new HashMap<>();
 
-    s.useDelimiter(":\\\\s*");
+    s.useDelimiter("[:\\n]");
     while (s.hasNext())
     {
-      map.put(s.next(), s.next());
+      String key = s.next();
+      System.out.println("Key: " + key);
+      String val = s.next();
+      System.out.println("Val: " + key);
+      map.put(key, val);
     }
     s.close();
     return map;
