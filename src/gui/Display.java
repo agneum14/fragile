@@ -64,6 +64,7 @@ public class Display extends JPanel
   private final PieChartWindow pieChartWindow;
   private final History history;
   private final List<List<ExpressionElement>> steps;
+  private final List<MixedFractionPanel> mfps;
 
   /**
    * Instantiate necessary objects and set up the layout.
@@ -83,6 +84,7 @@ public class Display extends JPanel
     currentMixedFraction = new CurrentMixedFraction();
     currentMixedFractionPanel = new CurrentMixedFractionPanel(currentMixedFraction);
     steps = new ArrayList<>();
+    mfps = new ArrayList<>();
 
     setBackground(POWDER_BLUE);
     setLayout(new GridBagLayout());
@@ -173,6 +175,7 @@ public class Display extends JPanel
   public void addToCurrentExpressionPanel(final MixedFractionPanel p)
   {
     currentExpressionPanel.add(p);
+    mfps.add(p);
     draw();
   }
 
@@ -197,6 +200,11 @@ public class Display extends JPanel
   {
     currentExpressionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     currentExpressionPanel.setBackground(POWDER_BLUE);
+    for (MixedFractionPanel mfp : mfps)
+    {
+      FractionModePublisher.getInstance().removeSubscriber(mfp);
+      FractionStylePublisher.getInstance().removeSubscriber(mfp);
+    }
     draw();
   }
 
