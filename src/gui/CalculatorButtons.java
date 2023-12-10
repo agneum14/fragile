@@ -254,7 +254,6 @@ public class CalculatorButtons extends JPanel implements ActionListener
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), BACK_SPACE);
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), CLEAR);
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), RESET);
-    // TODO talk to group about what they want the other keys to be for the other operators.
   }
 
   @Override
