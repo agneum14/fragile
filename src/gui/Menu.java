@@ -17,14 +17,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class Menu extends JMenuBar implements ActionListener
@@ -112,6 +115,43 @@ public class Menu extends JMenuBar implements ActionListener
     this.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
     
+    
+    
+    
+    
+    
+    JButton load = new JButton("Load");
+    load.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create a file picker dialog after the calculator is shown
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(null);
+
+            // Check if a file is selected
+            if (result == JFileChooser.APPROVE_OPTION) {
+                // Get the selected file
+                File selectedFile = fileChooser.getSelectedFile();
+                String selectedFilePath = selectedFile.getAbsolutePath();
+
+                // Read the content of the file and store each character in a separate string in an array
+                try (BufferedReader reader = new BufferedReader(new FileReader(selectedFilePath))) {
+                    ArrayList<String> charList = new ArrayList<>();
+                    int charValue;
+                    while ((charValue = reader.read()) != -1) {
+                        charList.add(String.valueOf((char) charValue));
+                    }
+
+                    // Convert the list to an array
+                    String[] charArray = charList.toArray(new String[0]);
+                    Menu.checkBoxes(charArray);
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    });
     
     
     JButton save = new JButton("Save");
@@ -204,6 +244,7 @@ public class Menu extends JMenuBar implements ActionListener
     helpDropDown.add(helpMenuItem);
     
  // Adding save button to sub menu preference
+    loadPrefDown.add(load);
     loadPrefDown.add(save);
 
     // Adding main menu objects to menu
