@@ -33,16 +33,14 @@ public class Menu extends JMenuBar implements ActionListener
   private static JCheckBoxMenuItem properMenuItem;
   private static JCheckBoxMenuItem reducedMenuItem;
   private CalculatorWindow window; // TODO get rid of this coupling somehow.
-  private JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem,  printMenuItem,
-      newCalcMenuItem;
-  private static JCheckBoxMenuItem pieChartMenuItem;
+  public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
+      shortcutsMenuItem;
+  public static JCheckBoxMenuItem pieChartMenuItem;
 
-  private static JRadioButton barMenuItem;
-  private static JRadioButton slashMenuItem;
-  private static JRadioButton solidusMenuItem;
+  public static JRadioButton barMenuItem;
+  public static JRadioButton slashMenuItem;
+  public static JRadioButton solidusMenuItem;
   private History history;
-  
-  
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
@@ -60,8 +58,8 @@ public class Menu extends JMenuBar implements ActionListener
     JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "Ansehen"));
     JMenu styleDropDown = new JMenu(Language.translate("Style", "Modèle", "Stil"));
     JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "Hilfe"));
+    JMenu shortcuts = new JMenu(Language.translate("Shortcuts", "", ""));
     JMenu loadPrefDown = new JMenu(Language.translate("Preference", "Präferenz", "préférence"));
-
 
     // Creating sub menu objects
     String englishText = "Exit";
@@ -90,7 +88,9 @@ public class Menu extends JMenuBar implements ActionListener
     newCalcMenuItem = new JMenuItem(
         Language.translate(englishText, "Nouveau calculateur", "Neuer Taschenrechner"));
     newCalcMenuItem.setActionCommand("New Calculator");
-
+    englishText = "Shortcuts";
+    shortcutsMenuItem = new JMenuItem(Language.translate(englishText, "", ""));
+    shortcutsMenuItem.setActionCommand(englishText);
     // style menu items
     barMenuItem = new JRadioButton(Language.translate("Bar", "Bar", "Bar"));
     barMenuItem.setSelected(true);
@@ -111,9 +111,7 @@ public class Menu extends JMenuBar implements ActionListener
     JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
     this.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
-    
-    
-    
+
     JButton save = new JButton("Save");
     save.addActionListener(new ActionListener()
     {
@@ -138,8 +136,6 @@ public class Menu extends JMenuBar implements ActionListener
           {
             selectedFile = new File(selectedFile.getAbsolutePath() + ".txt");
           }
-
-         
 
           if (properMenuItem.isSelected())
           {
@@ -190,20 +186,17 @@ public class Menu extends JMenuBar implements ActionListener
         }
       }
     });
-    
 
     // Adding sub menu objects to menu
     viewDropDown.add(pieChartMenuItem);
 
-    
     fileDropDown.add(printMenuItem);
     fileDropDown.add(newCalcMenuItem);
     fileDropDown.add(exitMenuItem);
     viewDropDown.add(pieChartMenuItem);
     helpDropDown.add(aboutMenuItem);
     helpDropDown.add(helpMenuItem);
-    
- // Adding save button to sub menu preference
+    shortcuts.add(shortcutsMenuItem);
     loadPrefDown.add(save);
 
     // Adding main menu objects to menu
@@ -212,8 +205,8 @@ public class Menu extends JMenuBar implements ActionListener
     add(viewDropDown);
     add(styleDropDown);
     add(helpDropDown);
+    add(shortcuts);
     add(loadPrefDown);
-
 
     // add action listeners
     newCalcMenuItem.addActionListener(this);
@@ -225,6 +218,7 @@ public class Menu extends JMenuBar implements ActionListener
     barMenuItem.addActionListener(this);
     slashMenuItem.addActionListener(this);
     solidusMenuItem.addActionListener(this);
+    shortcutsMenuItem.addActionListener(this);
     properMenuItem.addActionListener(this);
     reducedMenuItem.addActionListener(this);
     // Adding Keyboard shortcuts
@@ -317,6 +311,7 @@ public class Menu extends JMenuBar implements ActionListener
       case "Pie Chart" -> pcw.toggleVisibility();
       case "Print Session" -> history.actionPerformed();
       case "About" -> displayAboutDialog();
+      case "Shortcuts" -> new ShortcutChooser();
       case "Help" -> openHelpPage();
       case "Bar" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.BAR);
       case "Slash" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SLASH);
@@ -334,7 +329,7 @@ public class Menu extends JMenuBar implements ActionListener
    */
   private void MenuShortcuts()
   {
-    //input map checking for keyboard inputs
+    // input map checking for keyboard inputs
     InputMap input = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     input.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK),
         helpMenuItem.getActionCommand());
@@ -358,8 +353,8 @@ public class Menu extends JMenuBar implements ActionListener
         slashMenuItem.getActionCommand());
     input.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.SHIFT_DOWN_MASK),
         solidusMenuItem.getActionCommand());
-    
-    //Action map checking for the action command and the associated action
+
+    // Action map checking for the action command and the associated action
     ActionMap actions = this.getActionMap();
     actions.put(helpMenuItem.getActionCommand(), new PressAction(helpMenuItem));
     actions.put(printMenuItem.getActionCommand(), new PressAction(printMenuItem));
@@ -401,11 +396,12 @@ public class Menu extends JMenuBar implements ActionListener
       e.printStackTrace();
     }
   }
-  
+
   /**
    * See what preferences need to be pressed.
    * 
-   * @param charArray string of encoded letters that are linked to a button.
+   * @param charArray
+   *          string of encoded letters that are linked to a button.
    */
   public static void checkBoxes(String[] charArray)
   {
@@ -454,5 +450,4 @@ public class Menu extends JMenuBar implements ActionListener
     }
   }
 
-  
 }

@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
 /**
- * Class for keyboard actions
+ * Class for keyboard actions.
  * 
  * @author Joshua Hairston
  * 
@@ -28,7 +28,7 @@ public class PressAction extends AbstractAction
   /**
    * @param comp
    */
-  public PressAction(JComponent comp)
+  public PressAction(final JComponent comp)
   {
     super();
     this.comp = comp;
@@ -38,7 +38,7 @@ public class PressAction extends AbstractAction
    * method performing the button pressing action.
    */
   @Override
-  public void actionPerformed(ActionEvent e)
+  public void actionPerformed(final ActionEvent e)
   {
     if (comp instanceof JButton)
     {
