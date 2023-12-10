@@ -17,9 +17,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -28,13 +30,19 @@ import java.util.Locale;
 public class Menu extends JMenuBar implements ActionListener
 {
   private PieChartWindow pcw;
-  private final JCheckBoxMenuItem properMenuItem;
-  private final JCheckBoxMenuItem reducedMenuItem;
+  private static JCheckBoxMenuItem properMenuItem;
+  private static JCheckBoxMenuItem reducedMenuItem;
   private CalculatorWindow window; // TODO get rid of this coupling somehow.
-  private JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, pieChartMenuItem, printMenuItem,
+  private JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem,  printMenuItem,
       newCalcMenuItem;
-  private JRadioButton barMenuItem, slashMenuItem, solidusMenuItem;
+  private static JCheckBoxMenuItem pieChartMenuItem;
+
+  private static JRadioButton barMenuItem;
+  private static JRadioButton slashMenuItem;
+  private static JRadioButton solidusMenuItem;
   private History history;
+  
+  
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
@@ -52,6 +60,8 @@ public class Menu extends JMenuBar implements ActionListener
     JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "Ansehen"));
     JMenu styleDropDown = new JMenu(Language.translate("Style", "Modèle", "Stil"));
     JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "Hilfe"));
+    JMenu loadPrefDown = new JMenu(Language.translate("Preference", "Präferenz", "préférence"));
+
 
     // Creating sub menu objects
     String englishText = "Exit";
@@ -101,14 +111,100 @@ public class Menu extends JMenuBar implements ActionListener
     JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
     this.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
+    
+    
+    
+    JButton save = new JButton("Save");
+    save.addActionListener(new ActionListener()
+    {
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+        String encoding = "";
+
+        // Create a file chooser pointing to the specified path
+        JFileChooser fileChooser = new JFileChooser("d:");
+
+        // Open the save dialog
+        int userChoice = fileChooser.showSaveDialog(null);
+
+        if (userChoice == JFileChooser.APPROVE_OPTION)
+        {
+          // Get the selected file
+          File selectedFile = fileChooser.getSelectedFile();
+
+          // Append ".txt" extension if not already present
+          if (!selectedFile.getName().toLowerCase().endsWith(".txt"))
+          {
+            selectedFile = new File(selectedFile.getAbsolutePath() + ".txt");
+          }
+
+         
+
+          if (properMenuItem.isSelected())
+          {
+            encoding += "a";
+          }
+
+          if (reducedMenuItem.isSelected())
+          {
+            encoding += "b";
+          }
+
+          if (pieChartMenuItem.isSelected())
+          {
+            encoding += "c";
+          }
+
+          if (barMenuItem.isSelected())
+          {
+            encoding += "d";
+          }
+
+          if (slashMenuItem.isSelected())
+          {
+            encoding += "e";
+          }
+
+          if (solidusMenuItem.isSelected())
+          {
+            encoding += "f";
+          }
+
+          try (FileOutputStream fos = new FileOutputStream(selectedFile);
+              OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+              BufferedWriter writer = new BufferedWriter(osw))
+          {
+
+            // Write the encoding to the file
+            writer.write(encoding);
+
+            // Inform the user that the preferences have been saved
+            System.out.println("Preferences saved to: " + selectedFile.getAbsolutePath());
+
+          }
+          catch (IOException ex)
+          {
+            ex.printStackTrace();
+          }
+        }
+      }
+    });
+    
 
     // Adding sub menu objects to menu
+    viewDropDown.add(pieChartMenuItem);
+
+    
     fileDropDown.add(printMenuItem);
     fileDropDown.add(newCalcMenuItem);
     fileDropDown.add(exitMenuItem);
     viewDropDown.add(pieChartMenuItem);
     helpDropDown.add(aboutMenuItem);
     helpDropDown.add(helpMenuItem);
+    
+ // Adding save button to sub menu preference
+    loadPrefDown.add(save);
 
     // Adding main menu objects to menu
     add(fileDropDown);
@@ -116,6 +212,8 @@ public class Menu extends JMenuBar implements ActionListener
     add(viewDropDown);
     add(styleDropDown);
     add(helpDropDown);
+    add(loadPrefDown);
+
 
     // add action listeners
     newCalcMenuItem.addActionListener(this);
@@ -301,6 +399,58 @@ public class Menu extends JMenuBar implements ActionListener
     catch (IOException | URISyntaxException e)
     {
       e.printStackTrace();
+    }
+  }
+  
+  /**
+   * See what preferences need to be pressed.
+   * 
+   * @param charArray string of encoded letters that are linked to a button.
+   */
+  public static void checkBoxes(String[] charArray)
+  {
+
+    for (String character : charArray)
+    {
+      if (character.contentEquals("a"))
+      {
+
+        properMenuItem.doClick();
+      }
+
+      if (character.contentEquals("b"))
+      {
+
+        reducedMenuItem.doClick();
+
+      }
+
+      if (character.contentEquals("c") && pieChartMenuItem != null)
+      {
+
+        pieChartMenuItem.doClick();
+
+      }
+
+      if (character.contentEquals("d"))
+      {
+
+        barMenuItem.doClick();
+
+      }
+
+      if (character.contentEquals("e"))
+      {
+
+        slashMenuItem.doClick();
+
+      }
+
+      if (character.contentEquals("f"))
+      {
+
+        solidusMenuItem.doClick();
+      }
     }
   }
 
