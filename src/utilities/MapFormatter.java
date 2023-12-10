@@ -24,9 +24,7 @@ public class MapFormatter
     while (s.hasNext())
     {
       String key = s.next();
-      System.out.println("Key: " + key);
       String val = s.next();
-      System.out.println("Val: " + key);
       map.put(key, val);
     }
     s.close();
