@@ -7,6 +7,9 @@ import java.util.Map;
 
 import utilities.MapFormatter;
 
+/**
+ * 
+ */
 public class GuiConfig
 {
   
