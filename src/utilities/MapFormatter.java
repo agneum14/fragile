@@ -13,13 +13,23 @@ public class MapFormatter
   public static Map<String, String> read(String path) throws FileNotFoundException
   {
     File f = new File(path);
+    if (!f.exists())
+    {
+      throw new FileNotFoundException();
+    }
     Scanner s = new Scanner(f);
     HashMap<String, String> map = new HashMap<>();
 
-    s.useDelimiter(":\\\\s*");
+    s.useDelimiter("[;\\n]");
     while (s.hasNext())
     {
-      map.put(s.next(), s.next());
+      String key = s.next();
+      if (!s.hasNext())
+      {
+        break;
+      }
+      String val = s.next();
+      map.put(key, val);
     }
     s.close();
     return map;
@@ -38,7 +48,7 @@ public class MapFormatter
         continue;
       }
       f.write(key.toString());
-      f.write(": ");
+      f.write(";");
       f.write(val.toString());
       f.write("\n");
     }
