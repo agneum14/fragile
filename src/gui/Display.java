@@ -360,7 +360,8 @@ public class Display extends JPanel
         CalculatorButtons.LESS_THAN) || actionCommand.equals(
         CalculatorButtons.EQUAL_TO) || actionCommand.equals(
         CalculatorButtons.OPEN_PAREN) || actionCommand.equals(
-        CalculatorButtons.CLOSE_PAREN) || actionCommand.equals(CalculatorButtons.EQUALS))
+        CalculatorButtons.CLOSE_PAREN) || actionCommand.equals(
+        CalculatorButtons.EQUALS) || actionCommand.equals(CalculatorButtons.MEDIANT))
     {
 
       operator = operatorFromActionCommand(actionCommand);

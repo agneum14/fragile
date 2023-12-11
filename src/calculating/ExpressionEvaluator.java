@@ -9,7 +9,7 @@ import java.util.Stack;
 
 /**
  * This class evaluates expression of MixedFractions the multiplication, division, addition and
- * subtraction operands, and parenthesis. Order of operations is supported.
+ * subtraction mediant operators, and parenthesis. Order of operations is supported.
  *
  * This code complies with the JMU Honor Code
  *
@@ -183,7 +183,7 @@ public class ExpressionEvaluator
     }
     else
     {
-      throw new IllegalStateException(EXCEPTION_STR); // unreachable
+      result = MixedFraction.mediant(b, a);
     }
 
     final ArrayList<ExpressionElement> step = new ArrayList<>();
@@ -209,8 +209,9 @@ public class ExpressionEvaluator
     {
       case ADD -> 1;
       case SUB -> 1;
-      case MULT -> 1;
-      case DIV -> 1;
+      case MED -> 1;
+      case MULT -> 2;
+      case DIV -> 2;
       default -> 0;
     };
   }
