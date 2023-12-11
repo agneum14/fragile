@@ -48,7 +48,7 @@ public class MapFormatter
         continue;
       }
       f.write(key.toString());
-      f.write(":");
+      f.write(";");
       f.write(val.toString());
       f.write("\n");
     }
