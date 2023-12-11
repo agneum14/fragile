@@ -82,7 +82,7 @@ public class GuiConfig
   {
     Integer red = Integer.parseInt(map.get("red"));
     Integer green = Integer.parseInt(map.get("green"));
-    Integer blue = Integer.parseInt("blue");
+    Integer blue = Integer.parseInt(map.get("blue"));
     return new Color(red, green, blue);
   }
 

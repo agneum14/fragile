@@ -389,11 +389,8 @@ public class MixedFraction implements Comparable<MixedFraction>, ExpressionEleme
   @Override
   public String toString()
   {
-    String s;
-
-    s = String.format("sign: %s, whole: %s, num: %s, denom: %s", sign, whole, num, denom);
-
-    return s;
+    String signStr = (sign == -1) ? "-" : "";
+    return String.format("%s%d %d/%d", signStr, whole, num, denom);
   }
 
   /**

@@ -55,7 +55,7 @@ public class History extends JWindow implements ActionListener, Printable
    */
   private void setupLayout()
   {
-    getContentPane().setBackground(Display.POWDER_BLUE);
+    getContentPane().setBackground(Display.displayColor);
     setLayout(new BorderLayout());
     button = new JButton(GREATER);
     button.addActionListener(this);
@@ -72,10 +72,8 @@ public class History extends JWindow implements ActionListener, Printable
   /**
    * Add a new expression to the history and repaint.
    *
-   * @param expressionList
-   *     The expression (as a list of mixed fractions and operators) to add
-   * @param display
-   *     The display. This needs to be passed to create new mixed fraction panels
+   * @param expressionList The expression (as a list of mixed fractions and operators) to add
+   * @param display        The display. This needs to be passed to create new mixed fraction panels
    */
   public void update(final List<ExpressionElement> expressionList, final Display display)
   {
@@ -88,8 +86,7 @@ public class History extends JWindow implements ActionListener, Printable
         final MixedFraction mf = (MixedFraction) ee;
         final MixedFractionPanel mfp = new MixedFractionPanel(mf, display);
         expression.add(mfp);
-      }
-      else if (ee instanceof Operator)
+      } else if (ee instanceof Operator)
       {
         final Operator operator = (Operator) ee;
         final JLabel operatorLabel = new JLabel(operator.toString());
@@ -117,8 +114,7 @@ public class History extends JWindow implements ActionListener, Printable
         button.setText("<");
         timer.start();
       }
-    }
-    else
+    } else
     {
       opened = false;
       button.setText(GREATER);
@@ -140,15 +136,15 @@ public class History extends JWindow implements ActionListener, Printable
       if (currentWidth < targetWidth && newWidth >= targetWidth)
       {
         timer.stop();
-      }
-      else if (currentWidth > targetWidth && newWidth <= targetWidth)
+      } else if (currentWidth > targetWidth && newWidth <= targetWidth)
       {
         timer.stop();
       }
     }
   }
-  
-  public void actionPerformed() {
+
+  public void actionPerformed()
+  {
     PrinterJob job = PrinterJob.getPrinterJob();
     try
     {
@@ -158,11 +154,10 @@ public class History extends JWindow implements ActionListener, Printable
       {
         job.print();
       }
-    }
-    catch (PrinterException pe)
+    } catch (PrinterException pe)
     {
       JOptionPane.showMessageDialog(this, "Cannot print", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -194,9 +189,9 @@ public class History extends JWindow implements ActionListener, Printable
       this.printAll(g);
 
       status = Printable.PAGE_EXISTS;
-      
+
     }
     return status;
   }
-  
+
 }
