@@ -45,7 +45,7 @@ public class FractionStylePublisher
    *
    * @return The fraction style publisher instance
    */
-  public synchronized static FractionStylePublisher getInstance()
+  public static synchronized  FractionStylePublisher getInstance()
   {
     if (instance == null)
     {
@@ -104,7 +104,7 @@ public class FractionStylePublisher
   /**
    * Notify all the subscribers the separated perference has been changed.
    *
-   * @param separated
+   * @param separatedPref 
    *     The separated preference
    */
   public void notifySeparated(final boolean separatedPref)

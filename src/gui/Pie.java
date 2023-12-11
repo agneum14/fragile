@@ -16,6 +16,7 @@ public class Pie extends JPanel
 {
   protected static final int MARGIN = 2;
   protected static final int STROKE = 6;
+  private static final long serialVersionUID = 1L;
 
   /**
    * Override getPreferred size to make pies 50 by 50.

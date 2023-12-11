@@ -31,7 +31,7 @@ public class CurrentMixedFraction
    * Construct the current mixed fraction from the components of a mixed fraction.
    *
    * @param mf
-   *     The mixed fraction
+   *          The mixed fraction
    */
   public CurrentMixedFraction(final MixedFraction mf)
   {
@@ -46,9 +46,9 @@ public class CurrentMixedFraction
    * Add a digit to the either whole, num, or denom (depending on pos).
    *
    * @param d
-   *     The digit to add
+   *          The digit to add
    * @throws IllegalArgumentException
-   *     if d is greater than 9 or less than 0
+   *           if d is greater than 9 or less than 0
    */
   public void addDigit(final int d) throws IllegalArgumentException
   {
@@ -183,8 +183,7 @@ public class CurrentMixedFraction
   }
 
   /**
-   * Invert the current mixed fraction (e.g. fractionalize then swap the numerator and
-   * denominator).
+   * Invert the current mixed fraction (e.g. fractionalize then swap the numerator and denominator).
    */
   public void invert()
   {
@@ -261,30 +260,31 @@ public class CurrentMixedFraction
   public enum Pos
   {
     WHOLE
-        {
-          /**
-           * Override prev for WHOLE to return the last position.
-           *
-           * @return The last position (DENOM)
-           */
-          @Override
-          public Pos prev()
-          {
-            return values()[2];
-          }
-        }, NUM, DENOM
+    {
+      /**
+       * Override prev for WHOLE to return the last position.
+       *
+       * @return The last position (DENOM)
+       */
+      @Override
+      public Pos prev()
       {
-        /**
-         * Override next for DENOM to return the first position.
-         *
-         * @return The first position (WHOLE)
-         */
-        @Override
-        public Pos next()
-        {
-          return values()[0];
-        }
-      };
+        return values()[2];
+      }
+    },
+    NUM, DENOM
+    {
+      /**
+       * Override next for DENOM to return the first position.
+       *
+       * @return The first position (WHOLE)
+       */
+      @Override
+      public Pos next()
+      {
+        return values()[0];
+      }
+    };
 
     /**
      * Find the next position.

@@ -16,7 +16,7 @@ public class PieFull extends Pie
    * Paint a full circle on the JPanel.
    *
    * @param g
-   *     The panel's Graphics object
+   *          The panel's Graphics object
    */
   @Override
   protected void paintComponent(final Graphics g)

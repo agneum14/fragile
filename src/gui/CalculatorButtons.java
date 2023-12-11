@@ -10,12 +10,13 @@ import java.awt.event.KeyEvent;
 import java.net.URL;
 
 /**
- * Class for the calculator buttons, which is added to the main window.
+ * Class for the calculator buttons, which is added to the main window. The Calculator button class
+ * also uses the display to be able to have MixedFractions do what they are supposed to.
  *
  * @author Joshua Hairston
  * @version 11/2/2023
  *
- * This Code Complies with the JMU Honor Code.
+ *          This Code Complies with the JMU Honor Code.
  */
 public class CalculatorButtons extends JPanel implements ActionListener
 {
@@ -49,7 +50,8 @@ public class CalculatorButtons extends JPanel implements ActionListener
   /**
    * Constructor which takes in the class ButtonActions which is an ActionListener.
    *
-   * @param display the main window's display.
+   * @param display
+   *          the main window's display.
    */
   public CalculatorButtons(final Display display)
   {
@@ -61,7 +63,8 @@ public class CalculatorButtons extends JPanel implements ActionListener
   /**
    * Private helper method for making buttons.
    *
-   * @param string the button's text
+   * @param string
+   *          the button's text
    * @return JButton a new JButton
    */
   private JButton setButton(final String string)
@@ -69,7 +72,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
     JButton button = new JButton(string);
     button.addActionListener(this);
     button.setActionCommand(string);
-    //    button.setActionCommand(string); //TODO figure out why this is not needed
+    // button.setActionCommand(string); //TODO figure out why this is not needed
     Font font = new Font(Font.MONOSPACED, Font.BOLD, 15); // Changed the font
     button.setFont(font);
 
@@ -84,8 +87,10 @@ public class CalculatorButtons extends JPanel implements ActionListener
   /**
    * Helper function to create a calculator button.
    *
-   * @param string    The button text
-   * @param textColor The button text color
+   * @param string
+   *          The button text
+   * @param textColor
+   *          The button text color
    * @return The JButton
    */
   private JButton setButton(final String string, final Color textColor)
@@ -145,7 +150,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // Subtraction button
     c.gridx = 3;
     add(setButton(SUBTRACTION, AQUA), c);
-    
+
     // the greater than button
     c.gridx = 4;
     add(setButton(GREATER_THAN, AQUA), c);
@@ -168,11 +173,11 @@ public class CalculatorButtons extends JPanel implements ActionListener
     // the multiplication button
     c.gridx = 3;
     add(setButton(MULTIPLICATION, AQUA), c);
-    
-    //Less-than button
+
+    // Less-than button
     c.gridx = 4;
     add(setButton(LESS_THAN, AQUA), c);
-    
+
     // Simplify button
     c.gridx = 5;
     add(setButton(SIMPLIFY, PURPLE), c);
@@ -192,13 +197,12 @@ public class CalculatorButtons extends JPanel implements ActionListener
     c.gridx = 3;
     add(setButton(DIVISION, AQUA), c);
 
-    //the equal to by definition button
+    // the equal to by definition button
     c.gridx = 4;
     add(setButton(EQUAL_TO, AQUA), c);
 
     c.gridx = 5;
     add(setButton(OPEN_PAREN, Color.RED), c);
-
 
     // button for the number zero
     c.gridx = 0;
@@ -228,7 +232,7 @@ public class CalculatorButtons extends JPanel implements ActionListener
   }
 
   /**
-   * Method dealing with keyboard inputs.
+   * Method dealing with keyboard inputs. Setting the input map for the different keyboard presses.
    */
   private void keyboardInputs()
   {
@@ -251,6 +255,9 @@ public class CalculatorButtons extends JPanel implements ActionListener
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), RESET);
   }
 
+  /**
+   * The method which handles all of the display actions depending on the button pressed.
+   */
   @Override
   public void actionPerformed(final ActionEvent e)
   {

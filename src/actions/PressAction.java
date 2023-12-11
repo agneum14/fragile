@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
 /**
- * Class for keyboard actions.
+ * Class for keyboard actions to be pressed. Any JComponent can use this class.
  * 
  * @author Joshua Hairston
  * 
@@ -26,7 +26,10 @@ public class PressAction extends AbstractAction
   private JComponent comp;
 
   /**
+   * Contructor for the PressAction being made for the given JComponent.
+   * 
    * @param comp
+   *          the JComponent being made into a PressAction.
    */
   public PressAction(final JComponent comp)
   {
@@ -35,29 +38,34 @@ public class PressAction extends AbstractAction
   }
 
   /**
-   * method performing the button pressing action.
+   * method performing the button pressing action. Checks for the instance of the different
+   * JComponents and does the click action on the specific JComponent.
    */
   @Override
   public void actionPerformed(final ActionEvent e)
   {
+    // for JButtons
     if (comp instanceof JButton)
     {
       JButton p = (JButton) comp;
       p.grabFocus();
       p.doClick();
     }
+    // for JMenuItems
     else if (comp instanceof JMenuItem)
     {
       JMenuItem p = (JMenuItem) comp;
       p.grabFocus();
       p.doClick();
     }
+    // for JRadioButtons
     else if (comp instanceof JRadioButton)
     {
       JRadioButton p = (JRadioButton) comp;
       p.grabFocus();
       p.doClick();
     }
+    // for JCheckBoxMenuItems
     else if (comp instanceof JCheckBoxMenuItem)
     {
       JCheckBoxMenuItem p = (JCheckBoxMenuItem) comp;

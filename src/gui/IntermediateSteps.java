@@ -37,7 +37,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
    * Constructor for the History class.
    *
    * @param parent
-   *     The parent frame to attach the history to.
+   *          The parent frame to attach the history to.
    */
   public IntermediateSteps(final JFrame parent)
   {
@@ -45,7 +45,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
     this.parent = parent;
     opened = false; // Tracking the status of the window.
 
-    setBackground(Display.displayColor);
+    setBackground(Display.getColor());
     setLayout(new BorderLayout());
     button = new JButton(LESS);
     button.addActionListener(this);
@@ -67,9 +67,9 @@ public class IntermediateSteps extends JWindow implements ActionListener
    * display to keep it attached to the left side of the calculator window.
    *
    * @param x
-   *     The x position
+   *          The x position
    * @param y
-   *     The y position
+   *          The y position
    */
   public void setPosition(final int x, final int y)
   {
@@ -80,7 +80,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
    * Add a new expression to the history and repaint.
    *
    * @param steps
-   *     The steps to add
+   *          The steps to add
    */
   public void update(final List<List<ExpressionElement>> steps)
   {
@@ -100,25 +100,22 @@ public class IntermediateSteps extends JWindow implements ActionListener
       g.anchor = GridBagConstraints.WEST;
 
       g.gridy++;
-      final JLabel first = new JLabel(
-          String.format("STEPPING THROUGH %s %s %s", b.toString(), operator.toString(),
-              a.toString()));
+      final JLabel first = new JLabel(String.format("STEPPING THROUGH %s %s %s", b.toString(),
+          operator.toString(), a.toString()));
       stepContent.add(first, g);
 
       g.gridy++;
       MixedFraction aFrac = new MixedFraction(a).improper();
       final MixedFraction bFrac = new MixedFraction(b).improper();
-      final JLabel frac = new JLabel(
-          String.format("Convert the operands to improper: %s  %s", fracStr(bFrac),
-              fracStr(aFrac)));
+      final JLabel frac = new JLabel(String.format("Convert the operands to improper: %s  %s",
+          fracStr(bFrac), fracStr(aFrac)));
       stepContent.add(frac, g);
 
       if (operator == Operator.ADD || operator == Operator.SUB)
       {
         g.gridy++;
-        final JLabel gcd = new JLabel(
-            String.format("The GCD of the denominators %d and %d is %d", b.getDenom(), a.getDenom(),
-                result.getDenom()));
+        final JLabel gcd = new JLabel(String.format("The GCD of the denominators %d and %d is %d",
+            b.getDenom(), a.getDenom(), result.getDenom()));
         stepContent.add(gcd, g);
 
         g.gridy++;
@@ -126,9 +123,8 @@ public class IntermediateSteps extends JWindow implements ActionListener
             new MixedFraction(1, result.getDenom() / b.getDenom(), 0, 1));
         final MixedFraction aScale = MixedFraction.mult(a,
             new MixedFraction(1, result.getDenom() / a.getDenom(), 0, 1));
-        final JLabel scale = new JLabel(
-            String.format("Scale the operands to the GCD: %s  %s", fracStr(bScale),
-                fracStr(aScale)));
+        final JLabel scale = new JLabel(String.format("Scale the operands to the GCD: %s  %s",
+            fracStr(bScale), fracStr(aScale)));
         stepContent.add(scale, g);
 
         g.gridy++;
@@ -147,15 +143,13 @@ public class IntermediateSteps extends JWindow implements ActionListener
           stepContent.add(inv, g);
         }
         g.gridy++;
-        final JLabel mult = new JLabel(
-            String.format("Multiply the numerators: %d * %d = %d", bFrac.getNum(), aFrac.getNum(),
-                result.getNum()));
+        final JLabel mult = new JLabel(String.format("Multiply the numerators: %d * %d = %d",
+            bFrac.getNum(), aFrac.getNum(), result.getNum()));
         stepContent.add(mult, g);
 
         g.gridy++;
-        final JLabel denom = new JLabel(
-            String.format("Multiply the denominators: %d * %d = %d", bFrac.getDenom(),
-                aFrac.getDenom(), result.getDenom()));
+        final JLabel denom = new JLabel(String.format("Multiply the denominators: %d * %d = %d",
+            bFrac.getDenom(), aFrac.getDenom(), result.getDenom()));
         stepContent.add(denom, g);
 
         g.gridy++;
@@ -171,15 +165,13 @@ public class IntermediateSteps extends JWindow implements ActionListener
       else if (operator == Operator.MED)
       {
         g.gridy++;
-        JLabel num = new JLabel(
-            String.format("Add the numerators: %d + %d = %d", bFrac.getNum(), aFrac.getNum(),
-                result.getNum()));
+        JLabel num = new JLabel(String.format("Add the numerators: %d + %d = %d", bFrac.getNum(),
+            aFrac.getNum(), result.getNum()));
         stepContent.add(num, g);
 
         g.gridy++;
-        JLabel denom = new JLabel(
-            String.format("Add the denominators: %d + %d = %d", bFrac.getDenom(), aFrac.getDenom(),
-                result.getDenom()));
+        JLabel denom = new JLabel(String.format("Add the denominators: %d + %d = %d",
+            bFrac.getDenom(), aFrac.getDenom(), result.getDenom()));
         stepContent.add(denom, g);
 
         g.gridy++;
@@ -199,7 +191,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
    * Get a String representation of a MixedFraction without the whole component.
    *
    * @param mf
-   *     The mixed fraction
+   *          The mixed fraction
    * @return The String representation
    */
   private String fracStr(final MixedFraction mf)
@@ -243,7 +235,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
   }
 
   /**
-   * Animates the button.
+   * Animates the button which is animated due to the timer given to it.
    */
   private void animate()
   {

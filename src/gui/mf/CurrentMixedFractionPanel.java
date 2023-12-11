@@ -25,6 +25,7 @@ import java.awt.*;
  */
 public class CurrentMixedFractionPanel extends MixedFractionPanel
 {
+  private static final long serialVersionUID = 1L;
   private static final Dimension WHOLE_DIM = new Dimension(16, 30);
   private static final Dimension NUM_DIM = new Dimension(11, 22);
 
@@ -68,7 +69,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     {
       wholePanel = new JPanel();
       wholePanel.setPreferredSize(WHOLE_DIM);
-      wholePanel.setBackground(Display.displayColor);
+      wholePanel.setBackground(Display.getColor());
     }
   }
 
@@ -86,7 +87,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     {
       numPanel = new JPanel();
       numPanel.setPreferredSize(NUM_DIM);
-      numPanel.setBackground(Display.displayColor);
+      numPanel.setBackground(Display.getColor());
     }
   }
 
@@ -104,7 +105,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     {
       denomPanel = new JPanel();
       denomPanel.setPreferredSize(NUM_DIM);
-      denomPanel.setBackground(Display.displayColor);
+      denomPanel.setBackground(Display.getColor());
     }
   }
 

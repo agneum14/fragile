@@ -33,12 +33,14 @@ public class MixedFractionPanel extends JPanel
     implements FractionStyleSubscriber, FractionModeSubscriber, MouseListener, ActionListener
 {
   protected static final int MINUS_SIZE = 10;
+  private static final long serialVersionUID = 1L;
+  private static final String COPY = "copy";
   protected JPanel signPanel;
   protected JPanel wholePanel;
   protected JPanel numPanel;
   protected JPanel denomPanel;
   protected JPanel fractionPanel;
-
+  JPopupMenu context;
   private int sign;
   private Integer whole;
   private Integer num;
@@ -48,7 +50,6 @@ public class MixedFractionPanel extends JPanel
   private boolean proper;
   private boolean reduced;
 
-  JPopupMenu context;
   private Display display;
 
   /**
@@ -56,13 +57,9 @@ public class MixedFractionPanel extends JPanel
    * mode and reduced mode.
    *
    * @param mf
-   *     The MixedFraction to display
-   * @param style
-   *     The fraction style
-   * @param proper
-   *     The fraction proper mode
-   * @param reduced
-   *     The fraction reduced mode
+   *          The MixedFraction to display
+   * @param display
+   *          the main calculators display.
    */
   public MixedFractionPanel(final MixedFraction mf, final Display display)
   {
@@ -74,19 +71,15 @@ public class MixedFractionPanel extends JPanel
    * fraction. The fraction style, proper mode, and reduced mode are also specified.
    *
    * @param sign
-   *     The sign of the mixed fraction
+   *          The sign of the mixed fraction
    * @param whole
-   *     The whole number of the mixed fraction
+   *          The whole number of the mixed fraction
    * @param num
-   *     The numerator of the mixed fraction
+   *          The numerator of the mixed fraction
    * @param denom
-   *     The denominator of the mixed fraction
-   * @param style
-   *     The fraction style
-   * @param proper
-   *     The proper mode
-   * @param reduced
-   *     The reduced mode
+   *          The denominator of the mixed fraction
+   * @param display
+   *          the main calculators display.
    */
   protected MixedFractionPanel(final int sign, final Integer whole, final Integer num,
       final Integer denom, final Display display)
@@ -104,11 +97,11 @@ public class MixedFractionPanel extends JPanel
     FractionModePublisher.getInstance().addSubscriber(this);
 
     setLayout(new FlowLayout(FlowLayout.LEFT));
-    setBackground(Display.displayColor);
+    setBackground(Display.getColor());
 
     context = new JPopupMenu();
     JMenuItem copy = new JMenuItem("Copy to Current Mixed Fraction");
-    copy.setActionCommand("copy");
+    copy.setActionCommand(COPY);
     copy.addActionListener(this);
     context.add(copy);
     addMouseListener(this);
@@ -171,7 +164,7 @@ public class MixedFractionPanel extends JPanel
     final JLabel denomLabel = new JLabel(Language.separate(denom));
     denomLabel.setFont(fracFont);
     denomPanel.add(denomLabel);
-    denomPanel.setBackground(Display.displayColor);
+    denomPanel.setBackground(Display.getColor());
   }
 
   /**
@@ -184,7 +177,7 @@ public class MixedFractionPanel extends JPanel
     final JLabel numLabel = new JLabel(Language.separate(num));
     numLabel.setFont(fracFont);
     numPanel.add(numLabel);
-    numPanel.setBackground(Display.displayColor);
+    numPanel.setBackground(Display.getColor());
   }
 
   /**
@@ -200,7 +193,7 @@ public class MixedFractionPanel extends JPanel
     {
       signPanel = new JPanel();
     }
-    signPanel.setBackground(Display.displayColor);
+    signPanel.setBackground(Display.getColor());
   }
 
   /**
@@ -213,7 +206,7 @@ public class MixedFractionPanel extends JPanel
     final Font wholeLabelFont = new Font(wholeLabel.getFont().getName(), Font.PLAIN, 25);
     wholeLabel.setFont(wholeLabelFont);
     wholePanel.add(wholeLabel);
-    wholePanel.setBackground(Display.displayColor);
+    wholePanel.setBackground(Display.getColor());
   }
 
   /**
@@ -234,7 +227,7 @@ public class MixedFractionPanel extends JPanel
     denomFullPanel.add(new JSeparator(JSeparator.HORIZONTAL));
     denomFullPanel.add(denomPanel);
     fractionPanel.add(denomFullPanel, c);
-    fractionPanel.setBackground(Display.displayColor);
+    fractionPanel.setBackground(Display.getColor());
   }
 
   /**
@@ -247,7 +240,7 @@ public class MixedFractionPanel extends JPanel
     final JLabel solidus = new JLabel("/");
     fractionPanel.add(solidus);
     fractionPanel.add(denomPanel);
-    fractionPanel.setBackground(Display.displayColor);
+    fractionPanel.setBackground(Display.getColor());
   }
 
   /**
@@ -257,6 +250,8 @@ public class MixedFractionPanel extends JPanel
   {
     fractionPanel = new JPanel()
     {
+      private static final long serialVersionUID = 1L;
+
       @Override
       protected void paintComponent(final Graphics g)
       {
@@ -271,7 +266,7 @@ public class MixedFractionPanel extends JPanel
     fractionPanel.add(new JPanelBuilder().transparent());
     fractionPanel.add(new JPanelBuilder().transparent());
     fractionPanel.add(denomPanel);
-    fractionPanel.setBackground(Display.displayColor);
+    fractionPanel.setBackground(Display.getColor());
   }
 
   /**
@@ -305,7 +300,7 @@ public class MixedFractionPanel extends JPanel
    * Update the fraction style.
    *
    * @param fractionStyle
-   *     The fraction style
+   *          The fraction style
    */
   @Override
   public void handleStyle(final FractionStyle fractionStyle)
@@ -331,7 +326,7 @@ public class MixedFractionPanel extends JPanel
    * Update the fraction proper mode.
    *
    * @param properMode
-   *     The updated proper mode
+   *          The updated proper mode
    */
   @Override
   public void handleProperMode(final boolean properMode)
@@ -344,7 +339,7 @@ public class MixedFractionPanel extends JPanel
    * Update the fraction reduced mode.
    *
    * @param reducedMode
-   *     The updated reduced mode
+   *          The updated reduced mode
    */
   @Override
   public void handleReducedMode(final boolean reducedMode)
@@ -393,15 +388,21 @@ public class MixedFractionPanel extends JPanel
     return whole;
   }
 
+  /**
+   * Does nothing.
+   */
   @Override
-  public void mouseClicked(MouseEvent e)
+  public void mouseClicked(final MouseEvent e)
   {
     return;
 
   }
 
+  /**
+   * gets the mouse position. This is for copy and paste.
+   */
   @Override
-  public void mousePressed(MouseEvent e)
+  public void mousePressed(final MouseEvent e)
   {
     if (SwingUtilities.isRightMouseButton(e))
     {
@@ -409,29 +410,37 @@ public class MixedFractionPanel extends JPanel
     }
 
   }
-
+  /**
+   * Does nothing.
+   */
   @Override
-  public void mouseReleased(MouseEvent e)
+  public void mouseReleased(final MouseEvent e)
   {
     return;
   }
-
+  /**
+   * Does nothing.
+   */
   @Override
-  public void mouseEntered(MouseEvent e)
+  public void mouseEntered(final MouseEvent e)
   {
     return;
   }
-
+  /**
+   * Does nothing.
+   */
   @Override
-  public void mouseExited(MouseEvent e)
+  public void mouseExited(final MouseEvent e)
   {
     return;
   }
-
+  /**
+   * copy command for the mixedfraction.
+   */
   @Override
-  public void actionPerformed(ActionEvent e)
+  public void actionPerformed(final ActionEvent e)
   {
-    if (e.getActionCommand() == "copy")
+    if (e.getActionCommand().equals(COPY))
     {
       MixedFraction mf = new MixedFraction(sign, whole, num, denom);
       display.setCurrentMixedFractionPanel(mf);

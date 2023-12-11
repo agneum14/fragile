@@ -34,7 +34,13 @@ public class FractionModePublisher
     subscribers = new ArrayList<>();
   }
 
-  public synchronized static FractionModePublisher getInstance()
+  /**
+   * Singleton which returns the instance of the FractionModePublisher if there is already an
+   * instance, else it makes a new FractionModePublisher.
+   * 
+   * @return FractionModePublisher the publisher.
+   */
+  public static synchronized FractionModePublisher getInstance()
   {
     if (instance == null)
     {
@@ -48,7 +54,7 @@ public class FractionModePublisher
    * This method sets the proper mode and notifies subscribers the proper mode has changed.
    *
    * @param properMode
-   *     The new proper mode
+   *          The new proper mode
    */
   public void notifyProperMode(final boolean properMode)
   {
@@ -64,7 +70,7 @@ public class FractionModePublisher
    * This method sets the reduced mode and notifies subscribers the reduced mode has changed.
    *
    * @param reducedMode
-   *     The new proper mode
+   *          The new proper mode
    */
   public void notifyReducedMode(final boolean reducedMode)
   {
@@ -80,7 +86,7 @@ public class FractionModePublisher
    * Add a FractionModeSubscriber to subscribers.
    *
    * @param subscriber
-   *     The F;actionModeSubscriber to add
+   *          The F;actionModeSubscriber to add
    */
   public void addSubscriber(final FractionModeSubscriber subscriber)
   {
@@ -91,7 +97,7 @@ public class FractionModePublisher
    * Remove a FractionModeSubscriber from subscribers.
    *
    * @param subscriber
-   *     The FractionModeSubscriber to remove
+   *          The FractionModeSubscriber to remove
    */
   public void removeSubscriber(final FractionModeSubscriber subscriber)
   {
@@ -101,7 +107,7 @@ public class FractionModePublisher
   /**
    * Getter for proper.
    *
-   * @return proper
+   * @return proper the boolean for if its supposed to be proper.
    */
   public boolean getProper()
   {
@@ -111,7 +117,7 @@ public class FractionModePublisher
   /**
    * Getter for reduced.
    *
-   * @return reduced
+   * @return reduced the boolean for it its supposed to be Reduced.
    */
   public boolean getReduced()
   {

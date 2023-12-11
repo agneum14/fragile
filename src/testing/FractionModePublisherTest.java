@@ -6,25 +6,40 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * class for the FractionNodePublisher class.
+ */
 public class FractionModePublisherTest
 {
+  /**
+   * Inner class for a dummy subscriber implementing FractionNodeSubscriber.
+   */
   private class DummySubscriber implements FractionModeSubscriber
   {
-    public boolean proper;
-    public boolean reduced;
+    private boolean proper;
+    private boolean reduced;
 
+    /**
+     * The constructor for the dummy subscriber.
+     */
     public DummySubscriber()
     {
       proper = false;
       reduced = false;
     }
 
+    /**
+     * Returns boolean for the proper mode.
+     */
     @Override
     public void handleProperMode(final boolean properMode)
     {
       proper = properMode;
     }
 
+    /**
+     * Returns boolean for the reduced mode.
+     */
     @Override
     public void handleReducedMode(final boolean reducedMode)
     {
@@ -32,6 +47,9 @@ public class FractionModePublisherTest
     }
   }
 
+  /**
+   * Test method for notifying proper mode.
+   */
   @Test
   void notifyProperMode()
   {
@@ -42,6 +60,9 @@ public class FractionModePublisherTest
     assertEquals(true, fmp.getProper());
   }
 
+  /**
+   * Test method for notifying proper mode with a subscriber.
+   */
   @Test
   void notifyProperModeWithSubscriber()
   {
@@ -54,6 +75,9 @@ public class FractionModePublisherTest
     assertEquals(true, ds.proper);
   }
 
+  /**
+   * Test method for notifying reduced mode.
+   */
   @Test
   void notifyReducedMode()
   {
@@ -64,6 +88,9 @@ public class FractionModePublisherTest
     assertEquals(true, fmp.getReduced());
   }
 
+  /**
+   * Test method for notifying reduced mode with a subscriber.
+   */
   @Test
   void notifyReducedModeWithSubscriber()
   {
@@ -76,6 +103,9 @@ public class FractionModePublisherTest
     assertEquals(true, ds.reduced);
   }
 
+  /**
+   * Test method for removing a subscriber.
+   */
   @Test
   void removeSubscriber()
   {

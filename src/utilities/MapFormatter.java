@@ -8,9 +8,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * The MapFormatter class provides static methods to read and write key-value pairs from/to a file.
+ * It is designed to work with Map objects.
+ * 
+ * @author Ray
+ * 
+ * @author Asa Gittman
+ * 
+ * @version 12/11/2023
+ */
 public class MapFormatter
 {
-  public static Map<String, String> read(String path) throws FileNotFoundException
+  /**
+   * Reads keyvalue pairs from a file and returns them as a Map.
+   *
+   * @param path
+   *          The path to the file containing the keyvalue pairs.
+   * @return A Map containing the read keyvalue pairs.
+   * @throws FileNotFoundException
+   *           If the specified file is not found.
+   */
+  public static Map<String, String> read(final String path) throws FileNotFoundException
   {
     File f = new File(path);
     if (!f.exists())
@@ -35,8 +54,22 @@ public class MapFormatter
     return map;
   }
 
-  public static <K extends Object, V extends Object> void write(Map<K, V> map,
-                                                                String path) throws IOException
+  /**
+   * Writes keyvalue pairs from a Map to a file.
+   *
+   * @param map
+   *          The `Map` containing keyvalue pairs to be written.
+   * @param path
+   *          The path to the file where the keyvalue pairs will be written.
+   * @param <K>
+   *          The type of keys in the Map.
+   * @param <V>
+   *          The type of values in the Map.
+   * @throws IOException
+   *           If an I/O error occurs while writing to the file.
+   */
+  public static <K extends Object, V extends Object> void write(final Map<K, V> map,
+      final String path) throws IOException
   {
     FileWriter f = new FileWriter(path);
     for (Map.Entry<K, V> entry : map.entrySet())

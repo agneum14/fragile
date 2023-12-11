@@ -14,6 +14,7 @@ import java.awt.*;
  */
 public class PieFraction extends Pie
 {
+  private static final long serialVersionUID = 1L;
   private final int num;
   private final int denom;
 
@@ -21,7 +22,7 @@ public class PieFraction extends Pie
    * This constructor initializes num and denom from a MixedFraction.
    *
    * @param mf
-   *     The MixedFraction
+   *          The MixedFraction
    */
   public PieFraction(final MixedFraction mf)
   {
@@ -33,7 +34,7 @@ public class PieFraction extends Pie
    * Paint a fractional circle on the JPanel.
    *
    * @param g
-   *     The panel's Graphics object
+   *          The panel's Graphics object
    */
   protected void paintComponent(final Graphics g)
   {

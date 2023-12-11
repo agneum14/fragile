@@ -15,7 +15,6 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.List;
 
-
 /**
  * Class for the session history of the calculator.
  *
@@ -39,7 +38,8 @@ public class History extends JWindow implements ActionListener, Printable
   /**
    * Constructor for the History class.
    *
-   * @param frame The parent frame to attach the history to.
+   * @param frame
+   *          The parent frame to attach the history to.
    */
   public History(final JFrame frame)
   {
@@ -55,7 +55,7 @@ public class History extends JWindow implements ActionListener, Printable
    */
   private void setupLayout()
   {
-    getContentPane().setBackground(Display.displayColor);
+    getContentPane().setBackground(Display.getColor());
     setLayout(new BorderLayout());
     button = new JButton(GREATER);
     button.addActionListener(this);
@@ -72,8 +72,10 @@ public class History extends JWindow implements ActionListener, Printable
   /**
    * Add a new expression to the history and repaint.
    *
-   * @param expressionList The expression (as a list of mixed fractions and operators) to add
-   * @param display        The display. This needs to be passed to create new mixed fraction panels
+   * @param expressionList
+   *          The expression (as a list of mixed fractions and operators) to add
+   * @param display
+   *          The display. This needs to be passed to create new mixed fraction panels
    */
   public void update(final List<ExpressionElement> expressionList, final Display display)
   {
@@ -86,7 +88,8 @@ public class History extends JWindow implements ActionListener, Printable
         final MixedFraction mf = (MixedFraction) ee;
         final MixedFractionPanel mfp = new MixedFractionPanel(mf, display);
         expression.add(mfp);
-      } else if (ee instanceof Operator)
+      }
+      else if (ee instanceof Operator)
       {
         final Operator operator = (Operator) ee;
         final JLabel operatorLabel = new JLabel(operator.toString());
@@ -114,7 +117,8 @@ public class History extends JWindow implements ActionListener, Printable
         button.setText("<");
         timer.start();
       }
-    } else
+    }
+    else
     {
       opened = false;
       button.setText(GREATER);
@@ -136,13 +140,17 @@ public class History extends JWindow implements ActionListener, Printable
       if (currentWidth < targetWidth && newWidth >= targetWidth)
       {
         timer.stop();
-      } else if (currentWidth > targetWidth && newWidth <= targetWidth)
+      }
+      else if (currentWidth > targetWidth && newWidth <= targetWidth)
       {
         timer.stop();
       }
     }
   }
 
+  /**
+   * This is the print method that is called whenever the print menu item is pressed.
+   */
   public void actionPerformed()
   {
     PrinterJob job = PrinterJob.getPrinterJob();
@@ -154,15 +162,16 @@ public class History extends JWindow implements ActionListener, Printable
       {
         job.print();
       }
-    } catch (PrinterException pe)
+    }
+    catch (PrinterException pe)
     {
-      JOptionPane.showMessageDialog(this, "Cannot print", "Error",
-              JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, "Cannot print", "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
 
   @Override
-  public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
+  public int print(final Graphics graphics, final PageFormat pageFormat, final int pageIndex)
+      throws PrinterException
   {
     double componentHeight, componentWidth, height, scale, width, x, y;
     Graphics2D g;

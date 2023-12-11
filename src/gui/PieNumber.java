@@ -16,6 +16,11 @@ import java.awt.*;
 public class PieNumber extends Pie
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
    * This constructor uses the whole number of the mixed fraction to add a JLabel to the panel,
    * displaying that number textually.
    *

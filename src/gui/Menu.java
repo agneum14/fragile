@@ -29,25 +29,33 @@ import java.util.Map;
  */
 public class Menu extends JMenuBar implements ActionListener
 {
-  private static final long serialVersionUID = 1L;
-  private PieChartWindow pcw;
-  private ShortcutChooser shortcut;
-  public static JCheckBoxMenuItem properMenuItem;
-  public static JCheckBoxMenuItem reducedMenuItem;
-  public static JCheckBoxMenuItem thousandSeparator;
-  private CalculatorWindow window; // TODO get rid of this coupling somehow.
   public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem;
   public static JCheckBoxMenuItem shortcutsMenuItem;
   public static JCheckBoxMenuItem pieChartMenuItem;
   public static JRadioButtonMenuItem barMenuItem;
   public static JRadioButtonMenuItem slashMenuItem;
   public static JRadioButtonMenuItem solidusMenuItem;
+  public static JCheckBoxMenuItem properMenuItem;
+  public static JCheckBoxMenuItem reducedMenuItem;
+  public static JCheckBoxMenuItem thousandSeparator;
+  private static final long serialVersionUID = 1L;
+  private PieChartWindow pcw;
+  private ShortcutChooser shortcut;
+
+  private CalculatorWindow window; // TODO get rid of this coupling somehow.
   private History history;
 
   /**
    * Creates JMenuBar with all necessary drop downs for calculator.
-   *
-   * @return JMenuBar
+   * 
+   * @param pcw
+   *          the piechart window.
+   * @param history
+   *          the main calculators window for storying the past expressions.
+   * @param window
+   *          the main calculator window for the calculator.
+   * @param shortcut
+   *          the keyboardshortcut for the calculator.
    */
   public Menu(final PieChartWindow pcw, final History history, final CalculatorWindow window,
       final ShortcutChooser shortcut)
@@ -62,7 +70,7 @@ public class Menu extends JMenuBar implements ActionListener
     JMenu viewDropDown = new JMenu(Language.translate("View", "Voir", "Ansehen"));
     JMenu styleDropDown = new JMenu(Language.translate("Style", "Modèle", "Stil"));
     JMenu helpDropDown = new JMenu(Language.translate("Help", "Aide", "Hilfe"));
-    JMenu shortcuts = new JMenu(Language.translate("Shortcuts", "", ""));
+    JMenu shortcuts = new JMenu(Language.translate("Shortcuts", "Raccourcis", "Verknüpfungen"));
     JMenu loadPrefDown = new JMenu(Language.translate("Preference", "Präferenz", "préférence"));
 
     // Creating sub menu objects
@@ -115,9 +123,10 @@ public class Menu extends JMenuBar implements ActionListener
     JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
     Menu.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
-    
+
     englishText = "Separator";
-    JCheckBoxMenuItem thousandSeparator = new JCheckBoxMenuItem(Language.translate(englishText, "Séparateur", "Trennzeichen"));
+    JCheckBoxMenuItem thousandSeparator = new JCheckBoxMenuItem(
+        Language.translate(englishText, "Séparateur", "Trennzeichen"));
     thousandSeparator.setActionCommand(englishText);
     Menu.thousandSeparator = thousandSeparator;
 
@@ -125,7 +134,7 @@ public class Menu extends JMenuBar implements ActionListener
     load.addActionListener(new ActionListener()
     {
       @Override
-      public void actionPerformed(ActionEvent e)
+      public void actionPerformed(final ActionEvent e)
       {
         // Create a file picker dialog after the calculator is shown
         JFileChooser fileChooser = new JFileChooser();
@@ -275,7 +284,7 @@ public class Menu extends JMenuBar implements ActionListener
     thousandSeparator.addActionListener(this);
     // Adding Keyboard shortcuts
     shortcut.makeGUI();
-    MenuShortcuts();
+    menuShortcuts();
   }
 
   /**
@@ -311,9 +320,15 @@ public class Menu extends JMenuBar implements ActionListener
 
     // Words that need to be under the logo
     String companyInfo = Language.translate(
-        "Fragile v1.0\n\nFragile is a modern, easy-to-use mixed-fraction calculator.\nIt is a product of Sagacious Media that was developed by:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
-        "Fragile v1.0\n\nFragile est une calculatrice de fractions mixtes moderne et facile à utiliser.\nC'est un produit de Sagacious Media qui a été développé par:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
-        "Fragile v1.0\n\nFragile ist ein moderner, einfach zu bedienender Rechner für gemischte Brüche.\nEr ist ein Produkt von Sagacious Media, das entwickelt wurde von:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach");
+        "Fragile v1.0\n\nFragile is a modern, easy-to-use mixed-fraction "
+            + "calculator.\nIt is a product of Sagacious Media tha" + "t was developed "
+            + "by:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
+        "Fragile v1.0\n\nFragile est une calculatrice de "
+            + "fractions mixtes moderne et facile à utiliser.\nC'est un produit de"
+            + " Sagacious Media qui a été développé par:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
+        "Fragile v1.0\n\nFragile ist ein moderner, einfach zu bedienender"
+            + " Rechner für gemischte Brüche.\nEr ist ein Produkt von Sagacious"
+            + " Media, das entwickelt wurde von:\n\nJoshu" + "a, Andrew, Logan, Ray, Asa, Zach");
 
     // Putting the String companyInfo on the JDialog
     // Creating the pane to hold the companyInfo (centered)
@@ -354,8 +369,11 @@ public class Menu extends JMenuBar implements ActionListener
     aboutDialog.setLocationRelativeTo(null);
   }
 
+  /**
+   * ActionPerformed checks for which menuitem was selected.
+   */
   @Override
-  public void actionPerformed(ActionEvent e)
+  public void actionPerformed(final ActionEvent e)
   {
     switch (e.getActionCommand())
     {
@@ -378,15 +396,16 @@ public class Menu extends JMenuBar implements ActionListener
           .notifyProperMode(properMenuItem.isSelected());
       case "Reduced" -> FractionModePublisher.getInstance()
           .notifyReducedMode(reducedMenuItem.isSelected());
-          case "Separator" -> FractionStylePublisher.getInstance().notifySeparated(thousandSeparator.isSelected());
+      case "Separator" -> FractionStylePublisher.getInstance()
+          .notifySeparated(thousandSeparator.isSelected());
       default -> System.out.println("unknown menu option");
     }
   }
 
   /**
-   * private method for loading the KeyBoard shortcuts
+   * private method for loading the KeyBoard shortcuts.
    */
-  private void MenuShortcuts()
+  private void menuShortcuts()
   {
     ShortcutManager sh = ShortcutManager.newInstance();
     Map<String, String> map = sh.getMap();

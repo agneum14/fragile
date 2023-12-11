@@ -94,7 +94,7 @@ public class Fragile implements Runnable
   }
 
   /**
-   * Reads the letters from the file.
+   * Reads the letters from the file for the preferences.
    * 
    * @param filePath
    *          the file path.

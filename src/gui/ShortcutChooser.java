@@ -22,11 +22,19 @@ import utilities.MapFormatter;
 import utilities.ShortcutManager;
 
 /**
- * The ShortcutChooser class
+ * The ShortcutChooser class allows users to set keyboard shortcuts for specific menu items in the
+ * application. This class also makes use of a singleton which stores the hashmap for the saved data
+ * of the shortcuts.
+ * 
+ * @author Joshua Hairston
+ * 
+ * @version 12/11/2023
+ * 
+ *          This code complies with the JMU honor code.
  */
 public class ShortcutChooser extends JFrame implements ActionListener
 {
-
+  private static final String SET = "Set";
   private static final long serialVersionUID = 1L;
   private JComboBox<String> comboBox;
   private TextFieldHint text;
@@ -34,6 +42,9 @@ public class ShortcutChooser extends JFrame implements ActionListener
   private ShortcutManager manager = ShortcutManager.newInstance();
   private JLabel field;
 
+  /**
+   * Conatructs the ShortcutChooser window.
+   */
   public ShortcutChooser()
   {
     this.setTitle("Shortcut Helper");
@@ -42,6 +53,9 @@ public class ShortcutChooser extends JFrame implements ActionListener
     this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
   }
 
+  /**
+   * This method creates the GUI components for setting keyboard shortcuts.
+   */
   public void makeGUI()
   {
     String[] comp = {Menu.exitMenuItem.getActionCommand(), Menu.aboutMenuItem.getActionCommand(),
@@ -53,12 +67,15 @@ public class ShortcutChooser extends JFrame implements ActionListener
     comboBox = new JComboBox<String>(comp);
     field = new JLabel();
     field.setVisible(false);
-    String prompt = "Please enter in a key for your keyboard shortcut\n\n(note the key will be paired with the Control key)";
+    String prompt = "Please enter in a key for your keyboard shortcut"
+        + "\n\n(note the key will be paired with the Control key)";
     text = new TextFieldHint(prompt);
-    set = new JButton("Set");
+    set = new JButton(SET);
+    // adding listeners.
     set.addActionListener(this);
     comboBox.addActionListener(this);
     setLayout(new FlowLayout());
+    // adding components.
     this.add(comboBox);
     this.add(text);
     this.add(set);
@@ -79,13 +96,24 @@ public class ShortcutChooser extends JFrame implements ActionListener
 
   }
 
+  /**
+   * Toggles the visibility of the ShortcutChooser window.
+   */
   public void toggleVisibility()
   {
     setVisible(!isVisible());
 
   }
 
-  public static void setKeybind(String menuItem, char c)
+  /**
+   * Sets keyboard shortcuts for specified menu items based on user input.
+   *
+   * @param menuItem
+   *          The menu item for which to set the keyboard shortcut.
+   * @param c
+   *          The character representing the key for the shortcut.
+   */
+  public static void setKeybind(final String menuItem, final char c)
   {
     switch (menuItem)
     {
@@ -117,12 +145,15 @@ public class ShortcutChooser extends JFrame implements ActionListener
     }
   }
 
+  /**
+   * This action performed method is checking for the action "Set". If set is pushed the Shortcut
+   * manager saves the input given into the hashmap.
+   */
   @Override
-  public void actionPerformed(ActionEvent e)
+  public void actionPerformed(final ActionEvent e)
   {
-    if (e.getActionCommand().equals("Set"))
+    if (e.getActionCommand().equals(SET))
     {
-      System.out.println(comboBox.getSelectedItem());
       String menuItemText = comboBox.getSelectedItem().toString();
       String character = text.getText().toUpperCase();
       ShortcutManager sh = ShortcutManager.newInstance();

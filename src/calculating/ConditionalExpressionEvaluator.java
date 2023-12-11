@@ -25,10 +25,10 @@ public class ConditionalExpressionEvaluator
    * ExpressionEvaluator, and finally compare the mixed fractions.
    *
    * @param expression
-   *     The conditional expression
+   *          The conditional expression
    * @return The boolean result of the evaluation
    * @throws IllegalArgumentException
-   *     If the conditional expression is malformed
+   *           If the conditional expression is malformed
    */
   public static boolean evaluate(final List<ExpressionElement> expression)
       throws IllegalArgumentException

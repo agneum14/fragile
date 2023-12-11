@@ -18,13 +18,15 @@ public interface FractionStyleSubscriber
    * Handle a new mixed fraction style.
    *
    * @param style
-   *     The new mixed fraction style
+   *          The new mixed fraction style
    */
   public void handleStyle(final FractionStyle style);
-  
+
   /**
    * Handle a new separated preference.
- * @param separated The separated preference
- */
-public void handleSeparated(final boolean separated);
+   * 
+   * @param separated
+   *          The separated preference
+   */
+  public void handleSeparated(final boolean separated);
 }

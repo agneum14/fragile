@@ -31,11 +31,11 @@ public class ExpressionEvaluator
    * a reference to steps is kept so it can be populated by the evaluate function.
    *
    * @param expression
-   *     The expression to evaluate
+   *          The expression to evaluate
    * @param steps
-   *     The list to populate with each step
+   *          The list to populate with each step
    * @throws IllegalArgumentException
-   *     If expression or steps is null, or if expression is empty
+   *           If expression or steps is null, or if expression is empty
    */
   public ExpressionEvaluator(final List<ExpressionElement> expression,
       final List<List<ExpressionElement>> steps) throws IllegalArgumentException
@@ -64,10 +64,10 @@ public class ExpressionEvaluator
    *
    * @return The mixed fraction result of the expression
    * @throws IllegalStateException
-   *     If the expression is malformed. A malformed expression has unbalanced paranthesis,
-   *     consecutive operands or operators, an operand before an open parenthesis, an operator after
-   *     an open parenthesis, and operator before a closed parenthesis, or an operand after a closed
-   *     parenthesis.
+   *           If the expression is malformed. A malformed expression has unbalanced paranthesis,
+   *           consecutive operands or operators, an operand before an open parenthesis, an operator
+   *           after an open parenthesis, and operator before a closed parenthesis, or an operand
+   *           after a closed parenthesis.
    */
   public MixedFraction evaluate() throws IllegalStateException
   {
@@ -77,14 +77,14 @@ public class ExpressionEvaluator
     // check for invalid adjacencies
     for (int i = 1; i < expression.size(); i++)
     {
-      if (expression.get(i - 1) instanceof MixedFraction && expression.get(
-          i) instanceof MixedFraction)
+      if (expression.get(i - 1) instanceof MixedFraction
+          && expression.get(i) instanceof MixedFraction)
       {
         throw new IllegalStateException(EXCEPTION_STR);
       }
 
-      if (expression.get(i - 1) instanceof MixedFraction && expression.get(
-          i) == Operator.OPEN_PAREN)
+      if (expression.get(i - 1) instanceof MixedFraction
+          && expression.get(i) == Operator.OPEN_PAREN)
       {
         throw new IllegalStateException(EXCEPTION_STR);
       }
@@ -145,7 +145,7 @@ public class ExpressionEvaluator
    *
    * @return The result of the operation
    * @throws IllegalStateException
-   *     If the expression is malformed
+   *           If the expression is malformed
    */
   private MixedFraction performOperation() throws IllegalStateException
   {
@@ -200,7 +200,7 @@ public class ExpressionEvaluator
    * A helper function to get the precendence of a given operator.
    *
    * @param operator
-   *     The operator
+   *          The operator
    * @return The operator's precedence
    */
   private int precedence(final Operator operator)

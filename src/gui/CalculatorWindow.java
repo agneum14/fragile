@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * This class is for the main window of the mixed calculator.
+ * This class is for the main window of the mixed calculator. This class is where the Intermediate
+ * steps and the history is being set to. The class is also listening for the main window to move so
+ * that the other components can move with it.
  *
  * @author Joshua Hairston
  * @version 10/31/2023
@@ -29,7 +31,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   private ShortcutChooser shortcutChooser;
 
   /**
-   * Constructor
+   * Constructor for CalculatorWindow, initializes various components.
    */
   public CalculatorWindow()
   {
@@ -39,7 +41,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     intermediateSteps = new IntermediateSteps(this);
     display = new Display(pcw, history, intermediateSteps);
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
-    this.addComponentListener(this); // hold the display to make changes
+    this.addComponentListener(this);
     setupLayout(); // creating the layout of the window.
 
     // has the save action
@@ -47,7 +49,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     addWindowListener((WindowListener) new WindowAdapter()
     {
       @Override
-      public void windowClosed(WindowEvent e)
+      public void windowClosed(final WindowEvent e)
       {
 
         Menu.saveEncodingToFile();
@@ -60,7 +62,9 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     setVisible(true);
   }
 
-
+  /**
+   * Sets up the layout of the calculator window, including menus, buttons, logo, and display.
+   */
   private void setupLayout()
   {
 
@@ -104,10 +108,11 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   // IMPLEMENTATION FOR THE HISTORY WINDOW TRACING THE MAIN WINDOW.
 
   /**
-   * Method changes the history classes position dependent on the position of the window.
+   * Method changes the history and intermediate steps position dependent on the position of the
+   * window.
    */
   @Override
-  public void componentMoved(ComponentEvent e)
+  public void componentMoved(final ComponentEvent e)
   {
     int x = this.getX() + this.getWidth() - 8;
     int y = this.getY() + 110;
@@ -117,20 +122,29 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     intermediateSteps.setPosition(x, y);
   }
 
+  /**
+   * Does nothing but is needed due to the interface.
+   */
   @Override
-  public void componentShown(ComponentEvent e)
+  public void componentShown(final ComponentEvent e)
   {
     return;
   }
 
+  /**
+   * Does nothing but is needed due to the interface.
+   */
   @Override
-  public void componentHidden(ComponentEvent e)
+  public void componentHidden(final ComponentEvent e)
   {
     return;
   }
 
+  /**
+   * Does nothing but is needed due to the interface.
+   */
   @Override
-  public void componentResized(ComponentEvent e)
+  public void componentResized(final ComponentEvent e)
   {
     componentMoved(e);
 

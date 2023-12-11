@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class PieChartWindow extends JFrame
 {
+  private static final long serialVersionUID = 1L;
   private final JPanel heading;
   private final JPanel expression;
 
@@ -78,7 +79,7 @@ public class PieChartWindow extends JFrame
    * Update the pie chart window to reflect the current expression.
    *
    * @param currentExpression
-   *     The current expression
+   *          The current expression
    */
   public void update(final List<ExpressionElement> currentExpression)
   {
@@ -106,7 +107,7 @@ public class PieChartWindow extends JFrame
    * Add a JLabel with the operator to the expression.
    *
    * @param operator
-   *     The operator to add
+   *          The operator to add
    */
   private void addOperator(final String operator)
   {
@@ -120,7 +121,7 @@ public class PieChartWindow extends JFrame
    * Add a mixed fraction (an operand) to the expression.
    *
    * @param mf
-   *     The mixed fraction to add
+   *          The mixed fraction to add
    */
   private void addOperand(final MixedFraction mf)
   {

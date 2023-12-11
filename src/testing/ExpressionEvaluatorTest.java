@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * ExpressionEvaluatorTest
+ * ExpressionEvaluatorTest for the ExpressionEvaluator class.
  */
 public class ExpressionEvaluatorTest
 {
@@ -24,6 +24,9 @@ public class ExpressionEvaluatorTest
     steps = new ArrayList<>();
   }
 
+  /**
+   * Test method for a basic arithmetic expression.
+   */
   @Test
   void basic()
   {
@@ -36,16 +39,23 @@ public class ExpressionEvaluatorTest
     assertEquals(0, res.compareTo(new MixedFraction(1, 3, 0, 1)));
   }
 
+  /**
+   * Test method for an empty expression.
+   */
   @Test
   void emptyExpression()
   {
     ArrayList<ExpressionElement> expression = new ArrayList<>();
 
-    assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IllegalArgumentException.class, () -> 
+    {
       new ExpressionEvaluator(expression, steps).evaluate();
     });
   }
 
+  /**
+   * Test method for an expression with only one operand.
+   */
   @Test
   void oneOperand()
   {
@@ -56,17 +66,24 @@ public class ExpressionEvaluatorTest
     assertEquals(0, res.compareTo(new MixedFraction(1, 1, 0, 1)));
   }
 
+  /**
+   * Test method for an expression with only one operator.
+   */
   @Test
   void oneOperator()
   {
     ArrayList<ExpressionElement> expression = new ArrayList<>();
     expression.add(Operator.ADD);
 
-    assertThrows(IllegalStateException.class, () -> {
+    assertThrows(IllegalStateException.class, () -> 
+    {
       new ExpressionEvaluator(expression, steps).evaluate();
     });
   }
 
+  /**
+   * Test method for an expression with parentheses.
+   */
   @Test
   void paren()
   {
@@ -83,6 +100,9 @@ public class ExpressionEvaluatorTest
     assertEquals(0, res.compareTo(new MixedFraction(1, 16, 0, 1)));
   }
 
+  /**
+   * Test method for an expression with nested parentheses.
+   */
   @Test
   void nestedParen()
   {
@@ -104,6 +124,9 @@ public class ExpressionEvaluatorTest
     assertEquals(0, res.compareTo(new MixedFraction(1, 1, 0, 1)));
   }
 
+  /**
+   * Test method for an expression with nested parentheses and various operators.
+   */
   @Test
   void nestedParen2()
   {
@@ -125,12 +148,18 @@ public class ExpressionEvaluatorTest
     assertEquals(0, res.compareTo(new MixedFraction(1, 0, 140, 39)));
   }
 
+  /**
+   * Test method for a null expression.
+   */
   @Test
   void nullExpression()
   {
     assertThrows(IllegalArgumentException.class, () -> new ExpressionEvaluator(null, steps));
   }
 
+  /**
+   * Test method for null steps.
+   */
   @Test
   void nullSteps()
   {
@@ -139,6 +168,9 @@ public class ExpressionEvaluatorTest
     assertThrows(IllegalArgumentException.class, () -> new ExpressionEvaluator(expression, null));
   }
 
+  /**
+   * Test method for an expression with unmatched parentheses.
+   */
   @Test
   void unmatchedParen()
   {
@@ -154,11 +186,15 @@ public class ExpressionEvaluatorTest
     expression.add(Operator.DIV);
     expression.add(new MixedFraction(1, 5, 0, 1));
 
-    assertThrows(IllegalStateException.class, () -> {
+    assertThrows(IllegalStateException.class, () -> 
+    {
       new ExpressionEvaluator(expression, steps).evaluate();
     });
   }
 
+  /**
+   * Test method for consecutive operators in the expression.
+   */
   @Test
   void consecutiveOperators()
   {
@@ -172,6 +208,9 @@ public class ExpressionEvaluatorTest
         () -> new ExpressionEvaluator(expression, steps).evaluate());
   }
 
+  /**
+   * Test method for consecutive operands in the expression.
+   */
   @Test
   void consecutiveOperands()
   {
@@ -185,6 +224,9 @@ public class ExpressionEvaluatorTest
         () -> new ExpressionEvaluator(expression, steps).evaluate());
   }
 
+  /**
+   * Test method for an operand before an open parenthesis.
+   */
   @Test
   void operandBeforeOpenParen()
   {
@@ -202,6 +244,9 @@ public class ExpressionEvaluatorTest
         () -> new ExpressionEvaluator(expression, steps).evaluate());
   }
 
+  /**
+   * Test method for an operator after an open parenthesis.
+   */
   @Test
   void operatorAfterOpenParen()
   {
@@ -219,6 +264,9 @@ public class ExpressionEvaluatorTest
         () -> new ExpressionEvaluator(expression, steps).evaluate());
   }
 
+  /**
+   * Test method for an operator before a close parenthesis.
+   */
   @Test
   void operatorBeforeCloseParen()
   {

@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
- * Config Class for Fragile.
+ * Config Class for Fragile. Allows for different color schemes and logos to added.
  */
 public class GuiConfig
 {
@@ -22,14 +22,16 @@ public class GuiConfig
   private Map<String, String> map;
 
   /**
-   * Constructor for the GUI's config.
+   * Constructor for the GUI's config. Reads in the file and if the config file is not made already
+   * it loads the defaults.
    */
   private GuiConfig()
   {
     try
     {
       map = MapFormatter.read("config.txt");
-    } catch (FileNotFoundException | NoSuchElementException e)
+    }
+    catch (FileNotFoundException | NoSuchElementException e)
     {
       loadDefault();
     }
@@ -45,7 +47,6 @@ public class GuiConfig
     return instance;
   }
 
-
   /**
    * Loads default fragile if the config isn't present.
    */
@@ -57,7 +58,8 @@ public class GuiConfig
       ResourceManager rm = ResourceManager.newInstance();
       Path logoPath = Paths.get(rm.getResourcePath().toString(), "Fragile_Logo.png");
       map.put("logo", logoPath.toString());
-    } catch (Exception e)
+    }
+    catch (Exception e)
     {
       map.put("logo", "/html/Fragile_Logo.png");
     }
@@ -67,7 +69,8 @@ public class GuiConfig
     try
     {
       MapFormatter.write(map, "config.txt");
-    } catch (IOException e)
+    }
+    catch (IOException e)
     {
       throw new RuntimeException(e);
     }
