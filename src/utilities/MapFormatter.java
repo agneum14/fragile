@@ -20,10 +20,14 @@ public class MapFormatter
     Scanner s = new Scanner(f);
     HashMap<String, String> map = new HashMap<>();
 
-    s.useDelimiter("[:\\n]");
+    s.useDelimiter("[;\\n]");
     while (s.hasNext())
     {
       String key = s.next();
+      if (!s.hasNext())
+      {
+        break;
+      }
       String val = s.next();
       map.put(key, val);
     }
@@ -44,7 +48,7 @@ public class MapFormatter
         continue;
       }
       f.write(key.toString());
-      f.write(":");
+      f.write(";");
       f.write(val.toString());
       f.write("\n");
     }
