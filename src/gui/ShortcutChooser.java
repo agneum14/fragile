@@ -4,6 +4,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +15,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import utilities.MapFormatter;
+import utilities.ShortcutManager;
 
 /**
  * The ShortcutChooser class
@@ -27,21 +31,18 @@ public class ShortcutChooser extends JFrame implements ActionListener
   private JComboBox<String> comboBox;
   private TextFieldHint text;
   private JButton set;
-  private JButton save;
-  private JButton reset;
   private ShortcutManager manager = ShortcutManager.newInstance();
+  private JLabel field;
 
   public ShortcutChooser()
   {
-    makeGUI();
     this.setTitle("Shortcut Helper");
     this.setSize(300, 300);
     this.setResizable(false);
-    this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    this.setVisible(true);
+    this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
   }
 
-  private void makeGUI()
+  public void makeGUI()
   {
     String[] comp = {Menu.exitMenuItem.getActionCommand(), Menu.aboutMenuItem.getActionCommand(),
         Menu.helpMenuItem.getActionCommand(), Menu.printMenuItem.getActionCommand(),
@@ -50,18 +51,37 @@ public class ShortcutChooser extends JFrame implements ActionListener
         Menu.slashMenuItem.getActionCommand(), Menu.solidusMenuItem.getActionCommand(),
         Menu.properMenuItem.getActionCommand(), Menu.reducedMenuItem.getActionCommand()};
     comboBox = new JComboBox<String>(comp);
+    field = new JLabel();
+    field.setVisible(false);
     String prompt = "Please enter in a key for your keyboard shortcut\n\n(note the key will be paired with the Control key)";
     text = new TextFieldHint(prompt);
     set = new JButton("Set");
-    reset = new JButton("Reset");
     set.addActionListener(this);
-    reset.addActionListener(this);
     comboBox.addActionListener(this);
     setLayout(new FlowLayout());
     this.add(comboBox);
     this.add(text);
     this.add(set);
-    this.add(reset);
+    this.add(field);
+
+    addWindowListener(new WindowAdapter()
+    {
+      /**
+       * Toggle visibility instead of closing the window.
+       */
+      @Override
+      public void windowClosed(final WindowEvent e)
+      {
+        toggleVisibility();
+      }
+
+    });
+
+  }
+
+  public void toggleVisibility()
+  {
+    setVisible(!isVisible());
 
   }
 
@@ -111,18 +131,20 @@ public class ShortcutChooser extends JFrame implements ActionListener
         JOptionPane.showMessageDialog(null, "the key " + character + " is already set", "Error",
             JOptionPane.ERROR_MESSAGE);
       }
-      setKeybind(menuItemText, character.charAt(0));
-      manager.setKeybind(menuItemText, character.charAt(0));
+      else
+      {
+        setKeybind(menuItemText, character.charAt(0));
+        manager.setKeybind(menuItemText, character.charAt(0));
+        field
+            .setText(String.format("Your keybind for %s is Control + %s", menuItemText, character));
+        field.setVisible(true);
+
+      }
     }
     else if (e.getSource().equals(comboBox))
     {
       comboBox.setSelectedItem(comboBox.getSelectedItem());
       System.out.println(comboBox.getSelectedItem());
-    }
-
-    else if (e.getActionCommand().equals("Reset"))
-    {
-      manager.reset();
     }
 
   }

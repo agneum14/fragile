@@ -16,7 +16,7 @@ import java.io.IOException;
  * @author Joshua Hairston
  * @version 10/31/2023
  *
- * This code complies with the JMU Honor Code.
+ *          This code complies with the JMU Honor Code.
  */
 public class CalculatorWindow extends JFrame implements ComponentListener
 {
@@ -26,12 +26,14 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   private PieChartWindow pcw;
   private History history;
   private IntermediateSteps intermediateSteps;
+  private ShortcutChooser shortcutChooser;
 
   /**
    * Constructor
    */
   public CalculatorWindow()
   {
+    shortcutChooser = new ShortcutChooser();
     pcw = new PieChartWindow();
     history = new History(this);
     intermediateSteps = new IntermediateSteps(this);
@@ -40,8 +42,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     this.addComponentListener(this); // hold the display to make changes
     setupLayout(); // creating the layout of the window.
 
-
-    // has the save action 
+    // has the save action
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     addWindowListener((WindowListener) new WindowAdapter()
     {
@@ -51,15 +52,14 @@ public class CalculatorWindow extends JFrame implements ComponentListener
 
         Menu.saveEncodingToFile();
 
-
       }
     });
-
 
     setPreferredSize(new Dimension(400, 500));
     pack(); // sets the size of the window to the components preferred size.
     setVisible(true);
   }
+
 
   private void setupLayout()
   {
@@ -68,7 +68,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(new Menu(pcw, history, this));
+    setJMenuBar(new Menu(pcw, history, this, shortcutChooser));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window
@@ -83,7 +83,8 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     try
     {
       img = ImageIO.read(logoFile);
-    } catch (IOException e)
+    }
+    catch (IOException e)
     {
     }
     // Resizing the Fragile logo
@@ -111,8 +112,9 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     int x = this.getX() + this.getWidth() - 8;
     int y = this.getY() + 110;
     history.setLocation(x, y);
-
-    intermediateSteps.setPosition(getX(), getY());
+    x = this.getX() + 8;
+    y = getY();
+    intermediateSteps.setPosition(x, y);
   }
 
   @Override
