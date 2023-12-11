@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * This class notifies the FractionStyleSubscribers the mixed fraction style has changed. The
  * currently supported styles are bar, solidus, and slash, all of which are detailed in the Domain
- * Glossary.
+ * Glossary. The preference for using thousands separators is also updated here.
  *
  * This code complies with the JMU Honor Code
  *
@@ -28,6 +28,7 @@ public class FractionStylePublisher
 
   private final List<FractionStyleSubscriber> subscribers;
   private FractionStyle style;
+  private boolean separated;
 
   /**
    * This constructor initializes subscribers to an empty ArrayList and sets style to BAR.
@@ -36,8 +37,14 @@ public class FractionStylePublisher
   {
     subscribers = new ArrayList<>();
     style = FractionStyle.BAR;
+    separated = true;
   }
 
+  /**
+   * Get the instance of the fraction style publisher, or a new instance if none already exists.
+   *
+   * @return The fraction style publisher instance
+   */
   public synchronized static FractionStylePublisher getInstance()
   {
     if (instance == null)
@@ -95,6 +102,22 @@ public class FractionStylePublisher
   }
 
   /**
+   * Notify all the subscribers the separated perference has been changed.
+   *
+   * @param separated
+   *     The separated preference
+   */
+  public void notifySeparated(final boolean separatedPref)
+  {
+    separated = separatedPref;
+
+    for (FractionStyleSubscriber subscriber : subscribers)
+    {
+      subscriber.handleSeparated(separated);
+    }
+  }
+
+  /**
    * Getter for style.
    *
    * @return style
@@ -102,5 +125,15 @@ public class FractionStylePublisher
   public FractionStyle getStyle()
   {
     return style;
+  }
+
+  /**
+   * Getter for separated.
+   *
+   * @return separated
+   */
+  public boolean getSeparated()
+  {
+    return separated;
   }
 }
