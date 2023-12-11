@@ -105,6 +105,27 @@ public class ExpressionEvaluatorTest
   }
 
   @Test
+  void nestedParen2()
+  {
+    ArrayList<ExpressionElement> expression = new ArrayList<>();
+    expression.add(Operator.OPEN_PAREN);
+    expression.add(new MixedFraction(1, 0, 3, 4));
+    expression.add(Operator.MED);
+    expression.add(Operator.OPEN_PAREN);
+    expression.add(new MixedFraction(1, 2, 4, 5));
+    expression.add(Operator.SUB);
+    expression.add(new MixedFraction(1, 1, 2, 7));
+    expression.add(Operator.CLOSE_PAREN);
+    expression.add(Operator.CLOSE_PAREN);
+    expression.add(Operator.MULT);
+    expression.add(new MixedFraction(1, 2, 1, 2));
+
+    MixedFraction res = new ExpressionEvaluator(expression, steps).evaluate();
+
+    assertEquals(0, res.compareTo(new MixedFraction(1, 0, 140, 39)));
+  }
+
+  @Test
   void nullExpression()
   {
     assertThrows(IllegalArgumentException.class, () -> new ExpressionEvaluator(null, steps));
