@@ -324,6 +324,7 @@ public class MixedFractionPanel extends JPanel
   public void handleSeparated(final boolean separated)
   {
     update();
+    draw();
   }
 
   /**

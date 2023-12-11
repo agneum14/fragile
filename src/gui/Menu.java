@@ -112,11 +112,10 @@ public class Menu extends JMenuBar implements ActionListener
     Menu.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
     
-    // thousands Separator
-    englishText = ",";
-    JCheckBoxMenuItem thousandSeparator = new JCheckBoxMenuItem("Separator");
-    Language.translate(englishText, " ", ".");
-    this.thousandSeparator = thousandSeparator;
+    englishText = "Separator";
+    JCheckBoxMenuItem thousandSeparator = new JCheckBoxMenuItem(Language.translate(englishText, "Séparateur", "Trennzeichen"));
+    thousandSeparator.setActionCommand(englishText);
+    Menu.thousandSeparator = thousandSeparator;
 
     JButton load = new JButton("Load");
     load.addActionListener(new ActionListener()
@@ -269,6 +268,7 @@ public class Menu extends JMenuBar implements ActionListener
     shortcutsMenuItem.addActionListener(this);
     properMenuItem.addActionListener(this);
     reducedMenuItem.addActionListener(this);
+    thousandSeparator.addActionListener(this);
     // Adding Keyboard shortcuts
     MenuShortcuts();
   }
@@ -372,6 +372,7 @@ public class Menu extends JMenuBar implements ActionListener
           .notifyProperMode(properMenuItem.isSelected());
       case "Reduced" -> FractionModePublisher.getInstance()
           .notifyReducedMode(reducedMenuItem.isSelected());
+          case "Separator" -> FractionStylePublisher.getInstance().notifySeparated(thousandSeparator.isSelected());
       default -> System.out.println("unknown menu option");
     }
   }

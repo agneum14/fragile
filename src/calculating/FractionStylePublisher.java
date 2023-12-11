@@ -37,7 +37,7 @@ public class FractionStylePublisher
   {
     subscribers = new ArrayList<>();
     style = FractionStyle.BAR;
-    separated = true;
+    separated = false;
   }
 
   /**
