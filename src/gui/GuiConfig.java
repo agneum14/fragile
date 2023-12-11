@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Config Class for Fragile.
@@ -28,7 +29,7 @@ public class GuiConfig
     try
     {
       map = MapFormatter.read("config.txt");
-    } catch (FileNotFoundException e)
+    } catch (FileNotFoundException | NoSuchElementException e)
     {
       loadDefault();
     }
