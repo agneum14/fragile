@@ -43,20 +43,14 @@ public class ShortcutManager
     return instance;
   }
 
-  /**
-   * Loads default fragile if the config isn't present.
-   */
-  private void loadDefault()
-  {
-
-  }
 
   public void setKeybind(String str, Character character)
   {
     map.put(str, character.toString());
+    saveKeybinds();
   }
 
-  public void saveKeybinds()
+  private void saveKeybinds()
   {
     try
     {
@@ -67,6 +61,10 @@ public class ShortcutManager
     {
       e1.printStackTrace();
     }
+  }
+  
+  public void reset() {
+    map.clear();
   }
 
   public Map<String, String> getMap()
