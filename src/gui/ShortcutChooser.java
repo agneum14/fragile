@@ -20,6 +20,8 @@ import utilities.MapFormatter;
  */
 public class ShortcutChooser extends JFrame implements ActionListener
 {
+  
+  private static final long serialVersionUID = 1L;
   private JComboBox<String> comboBox;
   private JLabel label;
   private TextFieldHint text;

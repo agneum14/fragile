@@ -16,7 +16,7 @@ import java.nio.file.Paths;
  * The Fragile Application.
  * 
  * @author Joshua Hairston
- * @author Asa Gittmsn
+ * @author Asa Gittman
  * @author Ray Steen
  * @author Andrew
  * @author Zach

@@ -1,1 +1,2 @@
-Exit: E
+Print Session:P
+Exit:E
