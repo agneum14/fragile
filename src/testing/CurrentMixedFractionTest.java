@@ -110,4 +110,34 @@ public class CurrentMixedFractionTest
     assertEquals(5, mf.getNum());
     assertEquals(15, mf.getDenom());
   }
+  
+  @Test
+  void invertTest()
+  {
+    
+  }
+  
+  @Test
+  void simplifyTest()
+  {
+    
+  }
+  
+  @Test
+  void removeDigitTest()
+  {
+    
+  }
+  
+  @Test
+  void prevPosTest()
+  {
+    
+  }
+  
+  @Test
+  void cmfConstructorWithMFTest()
+  {
+    
+  }
 }

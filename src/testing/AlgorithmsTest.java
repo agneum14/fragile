@@ -31,5 +31,10 @@ public class AlgorithmsTest
     assertEquals(24, Algorithms.lcm(8, 12));
   }
   
+  @Test
+  void constructorTest()
+  {
+    Algorithms al = new Algorithms();
+  }
   
 }

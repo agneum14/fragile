@@ -18,7 +18,7 @@ public class ConditionExpressionEvaluatorTest
 {
 
   @Test
-  void basic()
+  void basicTest()
   {
     List<ExpressionElement> exp = new ArrayList<>();
     exp.add(new MixedFraction(new MixedFraction(1, 2, 0, 1)));
@@ -29,7 +29,7 @@ public class ConditionExpressionEvaluatorTest
   }
 
   @Test
-  void three()
+  void threeTest()
   {
     List<ExpressionElement> exp = new ArrayList<>();
     exp.add(new MixedFraction(new MixedFraction(1, 2, 0, 1)));
@@ -42,7 +42,7 @@ public class ConditionExpressionEvaluatorTest
   }
 
   @Test
-  void twoExpressions()
+  void twoExpressionsTest()
   {
     List<ExpressionElement> exp = new ArrayList<>();
     exp.add(new MixedFraction(new MixedFraction(1, 2, 0, 1)));
@@ -61,7 +61,7 @@ public class ConditionExpressionEvaluatorTest
   }
 
   @Test
-  void nullExpression()
+  void nullExpressionTest()
   {
     assertThrows(IllegalArgumentException.class, () -> {
       ConditionalExpressionEvaluator.evaluate(null);
@@ -69,7 +69,7 @@ public class ConditionExpressionEvaluatorTest
   }
 
   @Test
-  void noConditionals()
+  void noConditionalsTest()
   {
     List<ExpressionElement> exp = new ArrayList<>();
     exp.add(new MixedFraction(1, 1, 0, 1));
@@ -80,7 +80,7 @@ public class ConditionExpressionEvaluatorTest
   }
 
   @Test
-  void consecutiveConditionals()
+  void consecutiveConditionalsTest()
   {
     List<ExpressionElement> exp = new ArrayList<>();
     exp.add(new MixedFraction(new MixedFraction(1, 1, 0, 1)));
@@ -96,7 +96,7 @@ public class ConditionExpressionEvaluatorTest
   }
 
   @Test
-  void complex()
+  void complexTest()
   {
     ArrayList<ExpressionElement> exp = new ArrayList<>();
     exp.add(Operator.OPEN_PAREN);
@@ -115,4 +115,6 @@ public class ConditionExpressionEvaluatorTest
 
     assertFalse(ConditionalExpressionEvaluator.evaluate(exp));
   }
+  
+ 
 }

@@ -237,4 +237,16 @@ public class MixedFractionTest
     MixedFraction other = new MixedFraction(-1, 7, 16, 4);
     assertEquals(0, mf.compareTo(other));
   }
+  
+  @Test
+  void mediantTest()
+  {
+    //needs coverage.
+  }
+  
+  @Test
+  void intPowerTest()
+  {
+    //Either test it or remove intPower if we aren't doing it.
+  }
 }
