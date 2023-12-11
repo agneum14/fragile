@@ -24,6 +24,10 @@ public class MapFormatter
     while (s.hasNext())
     {
       String key = s.next();
+      if (!s.hasNext())
+      {
+        break;
+      }
       String val = s.next();
       map.put(key, val);
     }
