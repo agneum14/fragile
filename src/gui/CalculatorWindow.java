@@ -3,16 +3,10 @@ package gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * This class is for the main window of the mixed calculator.
@@ -20,7 +14,7 @@ import java.net.URL;
  * @author Joshua Hairston
  * @version 10/31/2023
  *
- *          This code complies with the JMU Honor Code.
+ * This code complies with the JMU Honor Code.
  */
 public class CalculatorWindow extends JFrame implements ComponentListener
 {
@@ -44,22 +38,23 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
     this.addComponentListener(this); // hold the display to make changes
     setupLayout(); // creating the layout of the window.
-    
-    
+
+
     // has the save action 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    addWindowListener((WindowListener) new WindowAdapter() {
+    addWindowListener((WindowListener) new WindowAdapter()
+    {
       @Override
-      public void windowClosed(WindowEvent e) {
-        
+      public void windowClosed(WindowEvent e)
+      {
+
         Menu.saveEncodingToFile();
-        
-          
+
+
       }
-  });
-    
-    
-    
+    });
+
+
     setPreferredSize(new Dimension(400, 500));
     pack(); // sets the size of the window to the components preferred size.
     setVisible(true);
@@ -78,13 +73,16 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     // Putting image of Fragile in the window
     JLabel label = new JLabel();
     BufferedImage img = null;
-
+    GuiConfig gc = GuiConfig.newInstance();
+    File logoFile = new File(gc.getLogoPath());
+    if (!logoFile.exists() || !logoFile.isFile())
+    {
+      throw new RuntimeException(String.format("Expected file at '%s'", gc.getLogoPath()));
+    }
     try
     {
-      URL imgURL = this.getClass().getResource("/html/Fragile_Logo.png");
-      img = ImageIO.read(imgURL);
-    }
-    catch (IOException e)
+      img = ImageIO.read(logoFile);
+    } catch (IOException e)
     {
     }
     // Resizing the Fragile logo
@@ -133,7 +131,6 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     componentMoved(e);
 
   }
-
 
 
 }

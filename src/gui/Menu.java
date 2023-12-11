@@ -3,27 +3,18 @@ package gui;
 import calculating.FractionModePublisher;
 import calculating.FractionStylePublisher;
 import calculating.FractionStylePublisher.FractionStyle;
-import html.ResourceCopier;
 import utilities.Language;
 import utilities.MapFormatter;
+import utilities.ResourceManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -37,16 +28,16 @@ import java.util.Map;
 public class Menu extends JMenuBar implements ActionListener
 {
   private static final long serialVersionUID = 1L;
+  private PieChartWindow pcw;
+  public static JCheckBoxMenuItem properMenuItem;
+  public static JCheckBoxMenuItem reducedMenuItem;
+  private CalculatorWindow window; // TODO get rid of this coupling somehow.
+  public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
+          shortcutsMenuItem;
   public static JCheckBoxMenuItem pieChartMenuItem;
   public static JRadioButtonMenuItem barMenuItem;
   public static JRadioButtonMenuItem slashMenuItem;
   public static JRadioButtonMenuItem solidusMenuItem;
-  public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
-      shortcutsMenuItem;
-  public static JCheckBoxMenuItem properMenuItem;
-  public static JCheckBoxMenuItem reducedMenuItem;
-  private PieChartWindow pcw;
-  private CalculatorWindow window; // TODO get rid of this coupling somehow.
   private History history;
 
   /**
@@ -83,17 +74,17 @@ public class Menu extends JMenuBar implements ActionListener
 
     englishText = "Pie Chart";
     pieChartMenuItem = new JCheckBoxMenuItem(
-        Language.translate(englishText, "Diagramme Circulaire", "Kreisdiagramm"));
+            Language.translate(englishText, "Diagramme Circulaire", "Kreisdiagramm"));
     pieChartMenuItem.setActionCommand(englishText);
 
     englishText = "Print Session";
     printMenuItem = new JMenuItem(
-        Language.translate(englishText, "Session d'impression", "Sitzung drucken"));
+            Language.translate(englishText, "Session d'impression", "Sitzung drucken"));
     printMenuItem.setActionCommand("Print Session");
 
     englishText = "New Calculator";
     newCalcMenuItem = new JMenuItem(
-        Language.translate(englishText, "Nouveau calculateur", "Neuer Taschenrechner"));
+            Language.translate(englishText, "Nouveau calculateur", "Neuer Taschenrechner"));
     newCalcMenuItem.setActionCommand("New Calculator");
     englishText = "Shortcuts";
     shortcutsMenuItem = new JMenuItem(Language.translate(englishText, "", ""));
@@ -113,10 +104,10 @@ public class Menu extends JMenuBar implements ActionListener
 
     // mode menu items
     JCheckBoxMenuItem properMenuItem = new JCheckBoxMenuItem("Proper");
-    this.properMenuItem = properMenuItem;
+    Menu.properMenuItem = properMenuItem;
     modeDropDown.add(properMenuItem);
     JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
-    this.reducedMenuItem = reducedMenuItem;
+    Menu.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
 
     JButton load = new JButton("Load");
@@ -150,8 +141,7 @@ public class Menu extends JMenuBar implements ActionListener
             String[] charArray = charList.toArray(new String[0]);
             Menu.checkBoxes(charArray);
 
-          }
-          catch (IOException ex)
+          } catch (IOException ex)
           {
             ex.printStackTrace();
           }
@@ -215,8 +205,8 @@ public class Menu extends JMenuBar implements ActionListener
           }
 
           try (FileOutputStream fos = new FileOutputStream(selectedFile);
-              OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
-              BufferedWriter writer = new BufferedWriter(osw))
+               OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+               BufferedWriter writer = new BufferedWriter(osw))
           {
 
             // Write the encoding to the file
@@ -225,8 +215,7 @@ public class Menu extends JMenuBar implements ActionListener
             // Inform the user that the preferences have been saved
             System.out.println("Preferences saved to: " + selectedFile.getAbsolutePath());
 
-          }
-          catch (IOException ex)
+          } catch (IOException ex)
           {
             ex.printStackTrace();
           }
@@ -292,10 +281,9 @@ public class Menu extends JMenuBar implements ActionListener
     try
     {
       URL imgUrl = new URL(
-          "https://w3.cs.jmu.edu/bernstdh/web/CS345/project/Fragile_Icon_32x32.png");
+              "https://w3.cs.jmu.edu/bernstdh/web/CS345/project/Fragile_Icon_32x32.png");
       img = ImageIO.read(imgUrl);
-    }
-    catch (IOException e)
+    } catch (IOException e)
     {
       e.printStackTrace();
     }
@@ -306,9 +294,9 @@ public class Menu extends JMenuBar implements ActionListener
 
     // Words that need to be under the logo
     String companyInfo = Language.translate(
-        "Fragile v1.0\n\nFragile is a modern, easy-to-use mixed-fraction calculator.\nIt is a product of Sagacious Media that was developed by:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
-        "Fragile v1.0\n\nFragile est une calculatrice de fractions mixtes moderne et facile à utiliser.\nC'est un produit de Sagacious Media qui a été développé par:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
-        "Fragile v1.0\n\nFragile ist ein moderner, einfach zu bedienender Rechner für gemischte Brüche.\nEr ist ein Produkt von Sagacious Media, das entwickelt wurde von:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach");
+            "Fragile v1.0\n\nFragile is a modern, easy-to-use mixed-fraction calculator.\nIt is a product of Sagacious Media that was developed by:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
+            "Fragile v1.0\n\nFragile est une calculatrice de fractions mixtes moderne et facile à utiliser.\nC'est un produit de Sagacious Media qui a été développé par:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach",
+            "Fragile v1.0\n\nFragile ist ein moderner, einfach zu bedienender Rechner für gemischte Brüche.\nEr ist ein Produkt von Sagacious Media, das entwickelt wurde von:\n\nJoshua, Andrew, Logan, Ray, Asa, Zach");
 
     // Putting the String companyInfo on the JDialog
     // Creating the pane to hold the companyInfo (centered)
@@ -326,8 +314,7 @@ public class Menu extends JMenuBar implements ActionListener
     try
     {
       doc.insertString(doc.getLength(), companyInfo, style);
-    }
-    catch (BadLocationException e)
+    } catch (BadLocationException e)
     {
       e.printStackTrace();
     }
@@ -369,9 +356,9 @@ public class Menu extends JMenuBar implements ActionListener
       case "Slash" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SLASH);
       case "Solidus" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SOLIDUS);
       case "Proper" -> FractionModePublisher.getInstance()
-          .notifyProperMode(properMenuItem.isSelected());
+              .notifyProperMode(properMenuItem.isSelected());
       case "Reduced" -> FractionModePublisher.getInstance()
-          .notifyReducedMode(reducedMenuItem.isSelected());
+              .notifyReducedMode(reducedMenuItem.isSelected());
       default -> System.out.println("unknown menu option");
     }
   }
@@ -387,9 +374,9 @@ public class Menu extends JMenuBar implements ActionListener
       for (String menuItems : shortcuts.keySet())
       {
         ShortcutChooser.setKeybind(menuItems, shortcuts.get(menuItems).charAt(0));
+
       }
-    }
-    catch (FileNotFoundException e)
+    } catch (FileNotFoundException e)
     {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -402,7 +389,8 @@ public class Menu extends JMenuBar implements ActionListener
     try
     {
       String pathString;
-      Path path = ResourceCopier.copyResourcesToTemp("temp", "");
+      ResourceManager rm = ResourceManager.newInstance();
+      Path path = rm.getResourcePath();
       switch (Locale.getDefault().getLanguage())
       {
         case "fr" -> pathString = path.toString() + "/helpFR.html";
@@ -417,8 +405,7 @@ public class Menu extends JMenuBar implements ActionListener
         case "de" -> Desktop.getDesktop().browse(file.toURI());
         default -> Desktop.getDesktop().browse(file.toURI());
       }
-    }
-    catch (IOException | URISyntaxException e)
+    } catch (IOException | URISyntaxException e)
     {
       e.printStackTrace();
     }
@@ -426,9 +413,8 @@ public class Menu extends JMenuBar implements ActionListener
 
   /**
    * See what preferences need to be pressed.
-   * 
-   * @param charArray
-   *          string of encoded letters that are linked to a button.
+   *
+   * @param charArray string of encoded letters that are linked to a button.
    */
   public static void checkBoxes(final String[] charArray)
   {
@@ -479,7 +465,7 @@ public class Menu extends JMenuBar implements ActionListener
 
   /**
    * Gets the encoding for preferece.
-   * 
+   *
    * @return a string for the encoding
    */
   public static String getEncoding()
@@ -528,8 +514,7 @@ public class Menu extends JMenuBar implements ActionListener
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("calculator_last_saved.txt")))
     {
       writer.write(Menu.getEncoding());
-    }
-    catch (IOException e)
+    } catch (IOException e)
     {
       e.printStackTrace(); // Handle the exception
     }
