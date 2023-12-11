@@ -211,25 +211,28 @@ public class MixedFractionTest
   {
     final MixedFraction mf1 = new MixedFraction(1, 2, 3, 4);
 
-    assertEquals("sign: 1, whole: 2, num: 3, denom: 4", mf1.toString());
+    assertEquals("2 3/4", mf1.toString());
   }
 
   @Test
-  void compareLess() {
+  void compareLess()
+  {
     MixedFraction mf = new MixedFraction(1, 1, 0, 1);
     MixedFraction other = new MixedFraction(1, 2, 0, 1);
     assertEquals(-1, mf.compareTo(other));
   }
 
   @Test
-  void compareGreater() {
+  void compareGreater()
+  {
     MixedFraction mf = new MixedFraction(1, 3, 0, 1);
     MixedFraction other = new MixedFraction(-1, 5, 0, 1);
     assertEquals(1, mf.compareTo(other));
   }
 
   @Test
-  void compareEqual() {
+  void compareEqual()
+  {
     MixedFraction mf = new MixedFraction(-1, 7, 8, 2);
     MixedFraction other = new MixedFraction(-1, 7, 16, 4);
     assertEquals(0, mf.compareTo(other));

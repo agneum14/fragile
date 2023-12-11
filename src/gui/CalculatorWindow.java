@@ -3,6 +3,8 @@ package gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,6 +25,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   private Display display;
   private PieChartWindow pcw;
   private History history;
+  private IntermediateSteps intermediateSteps;
 
   /**
    * Constructor
@@ -31,10 +34,8 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   {
     pcw = new PieChartWindow();
     history = new History(this);
-    display = new Display(pcw, history); // creation
-    // of the
-    // display
-    // obviously.
+    intermediateSteps = new IntermediateSteps(this);
+    display = new Display(pcw, history, intermediateSteps);
     buttons = new CalculatorButtons(display); // creation of the calculators buttons and the actions
     this.addComponentListener(this); // hold the display to make changes
     setupLayout(); // creating the layout of the window.
@@ -111,6 +112,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     int y = this.getY() + 110;
     history.setLocation(x, y);
 
+    intermediateSteps.setPosition(getX(), getY());
   }
 
   @Override
@@ -131,6 +133,4 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     componentMoved(e);
 
   }
-
-
 }
