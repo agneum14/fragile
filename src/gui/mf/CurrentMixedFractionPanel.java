@@ -34,8 +34,7 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
    * used for null components). Afterwards, a dashed border is added to the component in the current
    * position.
    *
-   * @param cmf
-   *     The current mixed fraction
+   * @param cmf The current mixed fraction
    */
   public CurrentMixedFractionPanel(final CurrentMixedFraction cmf)
   {
@@ -65,12 +64,11 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     if (getWhole() != null)
     {
       super.setWholePanel();
-    }
-    else
+    } else
     {
       wholePanel = new JPanel();
       wholePanel.setPreferredSize(WHOLE_DIM);
-      wholePanel.setBackground(Display.POWDER_BLUE);
+      wholePanel.setBackground(Display.displayColor);
     }
   }
 
@@ -84,12 +82,11 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     if (getNum() != null)
     {
       super.setNumPanel();
-    }
-    else
+    } else
     {
       numPanel = new JPanel();
       numPanel.setPreferredSize(NUM_DIM);
-      numPanel.setBackground(Display.POWDER_BLUE);
+      numPanel.setBackground(Display.displayColor);
     }
   }
 
@@ -103,12 +100,11 @@ public class CurrentMixedFractionPanel extends MixedFractionPanel
     if (getDenom() != null)
     {
       super.setDenomPanel();
-    }
-    else
+    } else
     {
       denomPanel = new JPanel();
       denomPanel.setPreferredSize(NUM_DIM);
-      denomPanel.setBackground(Display.POWDER_BLUE);
+      denomPanel.setBackground(Display.displayColor);
     }
   }
 
