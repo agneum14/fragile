@@ -1,19 +1,23 @@
 package gui;
 
 import calculating.ExpressionElement;
-import calculating.FractionModePublisher;
 import calculating.MixedFraction;
 import gui.Display.Operator;
-import gui.mf.MixedFractionPanel;
-import utilities.Algorithms;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The steps display shows a step-by-step breakdown of every operation performed in an expression.
+ *
+ * This code complies with the JMU Honor Code
+ *
+ * @author Andrew G. Neumann
+ * @version 1.0
+ */
 public class IntermediateSteps extends JWindow implements ActionListener
 {
   private static final long serialVersionUID = 1L;
@@ -23,24 +27,23 @@ public class IntermediateSteps extends JWindow implements ActionListener
   private static final int Y_OFFSET = 110;
   private static final String LESS = "<";
 
-  private JFrame parent;
+  private final JFrame parent;
   private boolean opened;
-  private JButton button;
-  private Timer timer;
-  private JPanel content;
-  private List<MixedFractionPanel> mfps;
+  private final JButton button;
+  private final Timer timer;
+  private final JPanel content;
 
   /**
    * Constructor for the History class.
    *
-   * @param parent The parent frame to attach the history to.
+   * @param parent
+   *     The parent frame to attach the history to.
    */
   public IntermediateSteps(final JFrame parent)
   {
     super(parent);
     this.parent = parent;
     opened = false; // Tracking the status of the window.
-    mfps = new ArrayList<>();
 
     setBackground(Display.displayColor);
     setLayout(new BorderLayout());
@@ -59,7 +62,16 @@ public class IntermediateSteps extends JWindow implements ActionListener
     setVisible(true);
   }
 
-  public void setPosition(int x, int y)
+  /**
+   * Called by the calculator window, this function updates the position of the intermediate steps
+   * display to keep it attached to the left side of the calculator window.
+   *
+   * @param x
+   *     The x position
+   * @param y
+   *     The y position
+   */
+  public void setPosition(final int x, final int y)
   {
     setLocation(x - getWidth(), y + Y_OFFSET);
   }
@@ -67,64 +79,96 @@ public class IntermediateSteps extends JWindow implements ActionListener
   /**
    * Add a new expression to the history and repaint.
    *
-   * @param expressionList The expression (as a list of mixed fractions and operators) to add
-   * @param display        The display. This needs to be passed to create new mixed fraction panels
+   * @param steps
+   * The steps to add
    */
-  public void update(List<List<ExpressionElement>> steps, Display display)
+  public void update(final List<List<ExpressionElement>> steps)
   {
-    for (List<ExpressionElement> step : steps)
-    {
-      MixedFraction b = (MixedFraction) step.get(0);
-      Operator operator = (Operator) step.get(1);
-      MixedFraction a = (MixedFraction) step.get(2);
-      MixedFraction result = (MixedFraction) step.get(3);
+    content.removeAll();
 
-      JPanel stepContent = new JPanel(new GridBagLayout());
-      GridBagConstraints g = new GridBagConstraints();
+    for (final List<ExpressionElement> step : steps)
+    {
+      final MixedFraction b = (MixedFraction) step.get(0);
+      final Operator operator = (Operator) step.get(1);
+      final MixedFraction a = (MixedFraction) step.get(2);
+      final MixedFraction result = (MixedFraction) step.get(3);
+
+      final JPanel stepContent = new JPanel(new GridBagLayout());
+      final GridBagConstraints g = new GridBagConstraints();
       g.gridx = 0;
       g.gridy = -1;
       g.anchor = GridBagConstraints.WEST;
 
-      JPanel first = new JPanel();
-      first.add(new JLabel("STEPPING THROUGH"));
-      first.add(createMFP(b, display));
-      first.add(new JLabel(operator.toString()));
-      first.add(createMFP(a, display));
       g.gridy++;
+      final JLabel first = new JLabel(
+          String.format("STEPPING THROUGH %s %s %s", b.toString(), operator.toString(),
+              a.toString()));
       stepContent.add(first, g);
 
-      JPanel fracAndReduce = new JPanel();
-      fracAndReduce.add(new JLabel("Reduce and fractionalize the operands:"));
-      MixedFractionPanel bRed = new MixedFractionPanel(b, display);
-      MixedFractionPanel aRed = new MixedFractionPanel(a, display);
-      bRed.handleReducedMode(true);
-      aRed.handleReducedMode(true);
-      bRed.handleReducedMode(false);
-      aRed.handleReducedMode(false);
-      bRed.handleProperMode(false);
-      aRed.handleProperMode(false);
-      fracAndReduce.add(bRed);
-      fracAndReduce.add(aRed);
       g.gridy++;
-      stepContent.add(fracAndReduce, g);
+      MixedFraction aFrac = new MixedFraction(a).improper();
+      final MixedFraction bFrac = new MixedFraction(b).improper();
+      final JLabel frac = new JLabel(
+          String.format("Convert the operands to improper: %s  %s", fracStr(bFrac),
+              fracStr(aFrac)));
+      stepContent.add(frac, g);
 
       if (operator == Operator.ADD || operator == Operator.SUB)
       {
         g.gridy++;
-        int gcd = Algorithms.gcd(bRed.getDenom(), aRed.getDenom());
-        stepContent.add(new JLabel(
-                String.format("The GCD of the denominators %d and %d is %d", bRed.getDenom(),
-                        aRed.getDenom(), gcd)), g);
+        final JLabel gcd = new JLabel(
+            String.format("The GCD of the denominators %d and %d is %d", b.getDenom(), a.getDenom(),
+                result.getDenom()));
+        stepContent.add(gcd, g);
 
         g.gridy++;
-        JPanel scale = new JPanel();
-        scale.add(new JLabel("Scale the operands so the denomintor is the GCD:"));
-      }
+        final MixedFraction bScale = MixedFraction.mult(b,
+            new MixedFraction(1, result.getDenom() / b.getDenom(), 0, 1));
+        final MixedFraction aScale = MixedFraction.mult(a,
+            new MixedFraction(1, result.getDenom() / a.getDenom(), 0, 1));
+        final JLabel scale = new JLabel(
+            String.format("Scale the operands to the GCD: %s  %s", fracStr(bScale),
+                fracStr(aScale)));
+        stepContent.add(scale, g);
 
-      g.weighty = 1;
-      g.fill = GridBagConstraints.BOTH;
-      g.gridy++;
-      stepContent.add(new JPanel(), g);
+        g.gridy++;
+        final JLabel perform = new JLabel(
+            String.format("Perform the operation: %s", fracStr(result)));
+        stepContent.add(perform, g);
+      }
+      else if (operator == Operator.DIV || operator == Operator.MULT)
+      {
+        if (operator == Operator.DIV)
+        {
+          g.gridy++;
+          aFrac = new MixedFraction(1, 0, aFrac.getDenom(), aFrac.getNum());
+          final JLabel inv = new JLabel(
+              String.format("Invert the second operand: %s", fracStr(aFrac)));
+          stepContent.add(inv, g);
+        }
+        g.gridy++;
+        final JLabel mult = new JLabel(
+            String.format("Multiply the numerators: %d * %d = %d", bFrac.getNum(), aFrac.getNum(),
+                result.getNum()));
+        stepContent.add(mult, g);
+
+        g.gridy++;
+        final JLabel denom = new JLabel(
+            String.format("Multiply the denominators: %d * %d = %d", bFrac.getDenom(),
+                aFrac.getDenom(), result.getDenom()));
+        stepContent.add(denom, g);
+
+        g.gridy++;
+        final JLabel res = new JLabel(
+            String.format("Combine to get the result: %s", fracStr(result)));
+        stepContent.add(res, g);
+
+        g.weighty = 1;
+        g.fill = GridBagConstraints.BOTH;
+        g.gridy++;
+        stepContent.add(new JPanel(), g);
+
+      }
 
       content.add(stepContent);
     }
@@ -133,12 +177,27 @@ public class IntermediateSteps extends JWindow implements ActionListener
     content.repaint();
   }
 
-  private MixedFractionPanel createMFP(MixedFraction mf, Display display)
+  /**
+   * Get a String representation of a MixedFraction without the whole component.
+   *
+   * @param mf
+   *     The mixed fraction
+   * @return The String representation
+   */
+  private String fracStr(final MixedFraction mf)
   {
-    MixedFractionPanel mfp = new MixedFractionPanel(mf, display);
-    FractionModePublisher.getInstance().removeSubscriber(mfp);
-    mfps.add(mfp);
-    return mfp;
+    final String neg = (mf.getSign() == -1) ? "-" : "";
+    return String.format("%s%d/%d", neg, mf.getNum(), mf.getDenom());
+  }
+
+  /**
+   * Reset the steps by clearing the content panel and repainting.
+   */
+  public void reset()
+  {
+    content.removeAll();
+    revalidate();
+    repaint();
   }
 
   /**
@@ -156,7 +215,8 @@ public class IntermediateSteps extends JWindow implements ActionListener
         button.setText(">");
         timer.start();
       }
-    } else
+    }
+    else
     {
       opened = false;
       button.setText(LESS);
@@ -173,14 +233,15 @@ public class IntermediateSteps extends JWindow implements ActionListener
     final int currentWidth = getWidth();
     if (currentWidth != targetWidth)
     {
-      int change = (currentWidth < targetWidth) ? 5 : -5;
-      int newWidth = currentWidth + change;
+      final int change = (currentWidth < targetWidth) ? 5 : -5;
+      final int newWidth = currentWidth + change;
       setSize(newWidth, HEIGHT);
       setPosition(parent.getX(), parent.getY());
       if (currentWidth < targetWidth && newWidth >= targetWidth)
       {
         timer.stop();
-      } else if (currentWidth > targetWidth && newWidth <= targetWidth)
+      }
+      else if (currentWidth > targetWidth && newWidth <= targetWidth)
       {
         timer.stop();
       }

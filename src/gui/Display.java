@@ -73,11 +73,13 @@ public class Display extends JPanel
   /**
    * Instantiate necessary objects and set up the layout.
    *
-   * @param pieChartWindow The infamous pie chart window
-   * @param history        The history
+   * @param pieChartWindow
+   *     The infamous pie chart window
+   * @param history
+   *     The history
    */
   public Display(final PieChartWindow pieChartWindow, final History history,
-                 final IntermediateSteps intermediateSteps)
+      final IntermediateSteps intermediateSteps)
   {
     GuiConfig gc = GuiConfig.newInstance();
     displayColor = gc.getColor();
@@ -149,12 +151,14 @@ public class Display extends JPanel
   /**
    * A utility method to convert an action command to an operator.
    *
-   * @param actionCommand The action command
+   * @param actionCommand
+   *     The action command
    * @return The corresponding operator
-   * @throws IllegalArgumentException If the action command isn't a valid operator
+   * @throws IllegalArgumentException
+   *     If the action command isn't a valid operator
    */
   private Operator operatorFromActionCommand(final String actionCommand)
-          throws IllegalArgumentException
+      throws IllegalArgumentException
   {
     return switch (actionCommand)
     {
@@ -176,7 +180,8 @@ public class Display extends JPanel
   /**
    * Add a mixed fraction panel to the current expression panel and redraw the display.
    *
-   * @param p The mixed fraction panel to add
+   * @param p
+   *     The mixed fraction panel to add
    */
   public void addToCurrentExpressionPanel(final MixedFractionPanel p)
   {
@@ -189,7 +194,8 @@ public class Display extends JPanel
    * Add an action command (which is just a String, so really any String) to the current expression
    * panel as a JLabel.
    *
-   * @param actionCommand The action command to add
+   * @param actionCommand
+   *     The action command to add
    */
   public void addToCurrentExpressionPanel(final String actionCommand)
   {
@@ -220,11 +226,13 @@ public class Display extends JPanel
    */
   public void reset()
   {
+    eval = null;
     clearCurrentExpressionPanel();
     clearCurrentMixedFractionPanel();
     currentExpression.removeAll(currentExpression);
     draw();
     pieChartWindow.reset();
+    intermediateSteps.reset();
   }
 
   /**
@@ -250,7 +258,8 @@ public class Display extends JPanel
    * Set the current mixed fraction and panel to the given mixed fraction and update the display.
    * This is used for copy and paste functionality in MixedFractionPanel.
    *
-   * @param mixedFraction The MixedFraction to paste
+   * @param mixedFraction
+   *     The MixedFraction to paste
    */
   public void setCurrentMixedFractionPanel(final MixedFraction mixedFraction)
   {
@@ -265,7 +274,8 @@ public class Display extends JPanel
    * particularly important, since it evaluates the expression and updates the pie chart window and
    * history.
    *
-   * @param actionEvent The action event to respond to
+   * @param actionEvent
+   *     The action event to respond to
    */
   public void handleButton(final ActionEvent actionEvent)
   {
@@ -282,7 +292,8 @@ public class Display extends JPanel
     try
     {
       digit = Integer.parseInt(actionCommand);
-    } catch (final NumberFormatException nfe)
+    }
+    catch (final NumberFormatException nfe)
     {
       digit = null;
     }
@@ -290,48 +301,57 @@ public class Display extends JPanel
     {
       currentMixedFraction.addDigit(digit);
       updateCurrentMixedFractionPanel();
-    } else if (actionCommand.equals(CalculatorButtons.BACK_SPACE))
+    }
+    else if (actionCommand.equals(CalculatorButtons.BACK_SPACE))
     {
       currentMixedFraction.removeDigit();
       updateCurrentMixedFractionPanel();
-    } else if (actionCommand.equals(CalculatorButtons.SIMPLIFY))
+    }
+    else if (actionCommand.equals(CalculatorButtons.SIMPLIFY))
     {
       try
       {
         currentMixedFraction.simplify();
         updateCurrentMixedFractionPanel();
-      } catch (final IllegalArgumentException arg)
+      }
+      catch (final IllegalArgumentException arg)
       {
         JOptionPane.showMessageDialog(null, arg.getMessage(), ERROR_TITLE,
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.ERROR_MESSAGE);
       }
-    } else if (actionCommand.equals(CalculatorButtons.INVERSE))
+    }
+    else if (actionCommand.equals(CalculatorButtons.INVERSE))
     {
       currentMixedFraction.invert();
       updateCurrentMixedFractionPanel();
-    } else if (actionCommand.equals(CalculatorButtons.SIGN))
+    }
+    else if (actionCommand.equals(CalculatorButtons.SIGN))
     {
       currentMixedFraction.changeSign();
       updateCurrentMixedFractionPanel();
-    } else if (actionCommand.equals(CalculatorButtons.POSITION))
+    }
+    else if (actionCommand.equals(CalculatorButtons.POSITION))
     {
       currentMixedFraction.nextPos();
       updateCurrentMixedFractionPanel();
-    } else if (actionCommand.equals(CalculatorButtons.RESET))
+    }
+    else if (actionCommand.equals(CalculatorButtons.RESET))
     {
       reset();
-    } else if (actionCommand.equals(CalculatorButtons.CLEAR))
+    }
+    else if (actionCommand.equals(CalculatorButtons.CLEAR))
     {
       clearCurrentMixedFractionPanel();
-    } else if (actionCommand.equals(CalculatorButtons.ADDITION) || actionCommand.equals(
-            CalculatorButtons.SUBTRACTION) || actionCommand.equals(
-            CalculatorButtons.MULTIPLICATION) || actionCommand.equals(
-            CalculatorButtons.DIVISION) || actionCommand.equals(
-            CalculatorButtons.GREATER_THAN) || actionCommand.equals(
-            CalculatorButtons.LESS_THAN) || actionCommand.equals(
-            CalculatorButtons.EQUAL_TO) || actionCommand.equals(
-            CalculatorButtons.OPEN_PAREN) || actionCommand.equals(
-            CalculatorButtons.CLOSE_PAREN) || actionCommand.equals(CalculatorButtons.EQUALS))
+    }
+    else if (actionCommand.equals(CalculatorButtons.ADDITION) || actionCommand.equals(
+        CalculatorButtons.SUBTRACTION) || actionCommand.equals(
+        CalculatorButtons.MULTIPLICATION) || actionCommand.equals(
+        CalculatorButtons.DIVISION) || actionCommand.equals(
+        CalculatorButtons.GREATER_THAN) || actionCommand.equals(
+        CalculatorButtons.LESS_THAN) || actionCommand.equals(
+        CalculatorButtons.EQUAL_TO) || actionCommand.equals(
+        CalculatorButtons.OPEN_PAREN) || actionCommand.equals(
+        CalculatorButtons.CLOSE_PAREN) || actionCommand.equals(CalculatorButtons.EQUALS))
     {
 
       operator = operatorFromActionCommand(actionCommand);
@@ -345,7 +365,8 @@ public class Display extends JPanel
           mf = eval;
           eval = null;
           reset();
-        } else
+        }
+        else
         {
           mf = new MixedFraction(currentMixedFraction);
         }
@@ -359,11 +380,12 @@ public class Display extends JPanel
       {
         currentExpression.add(operator);
 
-      } else
+      }
+      else
       {
         // determine if the expression is conditional
         if (currentExpression.contains(Operator.LESS) || currentExpression.contains(
-                Operator.GREATER) || currentExpression.contains(Operator.EQUAL_TO))
+            Operator.GREATER) || currentExpression.contains(Operator.EQUAL_TO))
         {
           Boolean result = null;
           condExecuted = true;
@@ -371,11 +393,12 @@ public class Display extends JPanel
           try
           {
             result = ConditionalExpressionEvaluator.evaluate(currentExpression);
-          } catch (final IllegalArgumentException e)
+          }
+          catch (final IllegalArgumentException e)
           {
             final String error = Language.translate("The conditional expression is malformed",
-                    "L'expression conditionnelle est mal formée",
-                    "Die bedingte Ausdruck ist fehlerhaft.");
+                "L'expression conditionnelle est mal formée",
+                "Die bedingte Ausdruck ist fehlerhaft.");
             JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
           }
 
@@ -385,35 +408,40 @@ public class Display extends JPanel
             if (result)
             {
               res = Language.translate("True", "Vrai", "Wahr");
-            } else
+            }
+            else
             {
               res = Language.translate("False", "Faux", "Falsch");
             }
             JOptionPane.showMessageDialog(null, res, "Info", JOptionPane.ERROR_MESSAGE);
           }
-        } else
+        }
+        else
         {
           MixedFraction result = null;
           try
           {
             final ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(
-                    currentExpression, steps);
+                currentExpression, steps);
             result = expressionEvaluator.evaluate();
-          } catch (final IllegalArgumentException e)
+          }
+          catch (final IllegalArgumentException e)
           {
             if (e.getMessage().equals("expression can't be empty"))
             {
               final String error = Language.translate("Expression can't be empty",
-                      "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
+                  "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
               JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
-            } else
+            }
+            else
             {
               throw e;
             }
-          } catch (final IllegalStateException e)
+          }
+          catch (final IllegalStateException e)
           {
             final String error = Language.translate("The expression is malformed",
-                    "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
+                "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
             JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
           }
 
@@ -424,7 +452,7 @@ public class Display extends JPanel
             currentExpression.add(result);
             pieChartWindow.update(currentExpression);
             history.update(currentExpression, this);
-            intermediateSteps.update(steps, this);
+            intermediateSteps.update(steps);
             eval = result;
           }
         }
