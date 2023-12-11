@@ -16,7 +16,7 @@ public class ShortcutManager
 {
   private static boolean exists = false;
   private static ShortcutManager instance;
-  private Map<String, String> map;
+  private static Map<String, String> map;
 
   /**
    * Constructor for the GUI's config.
@@ -29,7 +29,7 @@ public class ShortcutManager
     }
     catch (FileNotFoundException | NoSuchElementException e)
     {
-      e.printStackTrace();
+      map = new HashMap<>();
     }
   }
 
@@ -48,7 +48,7 @@ public class ShortcutManager
    */
   private void loadDefault()
   {
-    
+
   }
 
   public void setKeybind(String str, Character character)
@@ -67,6 +67,11 @@ public class ShortcutManager
     {
       e1.printStackTrace();
     }
+  }
+
+  public Map<String, String> getMap()
+  {
+    return new HashMap<String, String>(map);
   }
 
 }
