@@ -378,7 +378,15 @@ public class Display extends JPanel
         }
         else
         {
-          mf = new MixedFraction(currentMixedFraction);
+          try
+          {
+            mf = new MixedFraction(currentMixedFraction);
+          }
+          catch (IllegalArgumentException e)
+          {
+            showDivideByZeroDialog();
+            return;
+          }
         }
         addToCurrentExpressionPanel(new MixedFractionPanel(mf, this));
         currentExpression.add(mf);
