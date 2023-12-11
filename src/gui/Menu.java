@@ -22,9 +22,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
+/**
+ * 
+ */
 public class Menu extends JMenuBar implements ActionListener
 {
+  private static final long serialVersionUID = 1L;
   private PieChartWindow pcw;
   public static JCheckBoxMenuItem properMenuItem;
   public static JCheckBoxMenuItem reducedMenuItem;
@@ -32,7 +35,6 @@ public class Menu extends JMenuBar implements ActionListener
   public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
           shortcutsMenuItem;
   public static JCheckBoxMenuItem pieChartMenuItem;
-
   public static JRadioButtonMenuItem barMenuItem;
   public static JRadioButtonMenuItem slashMenuItem;
   public static JRadioButtonMenuItem solidusMenuItem;
@@ -43,7 +45,7 @@ public class Menu extends JMenuBar implements ActionListener
    *
    * @return JMenuBar
    */
-  public Menu(PieChartWindow pcw, History history, CalculatorWindow window)
+  public Menu(final PieChartWindow pcw,final History history, final CalculatorWindow window)
   {
     this.window = window;
     this.pcw = pcw;
@@ -102,10 +104,10 @@ public class Menu extends JMenuBar implements ActionListener
 
     // mode menu items
     JCheckBoxMenuItem properMenuItem = new JCheckBoxMenuItem("Proper");
-    this.properMenuItem = properMenuItem;
+    Menu.properMenuItem = properMenuItem;
     modeDropDown.add(properMenuItem);
     JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
-    this.reducedMenuItem = reducedMenuItem;
+    Menu.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
 
     JButton load = new JButton("Load");
@@ -371,7 +373,8 @@ public class Menu extends JMenuBar implements ActionListener
       Map<String, String> shortcuts = new HashMap<>(MapFormatter.read("shortcuts.txt"));
       for (String menuItems : shortcuts.keySet())
       {
-        ShortcutChooser.setKeybind(menuItems, shortcuts.get(menuItems));
+        ShortcutChooser.setKeybind(menuItems, shortcuts.get(menuItems).charAt(0));
+
       }
     } catch (FileNotFoundException e)
     {
@@ -413,7 +416,7 @@ public class Menu extends JMenuBar implements ActionListener
    *
    * @param charArray string of encoded letters that are linked to a button.
    */
-  public static void checkBoxes(String[] charArray)
+  public static void checkBoxes(final String[] charArray)
   {
 
     for (String character : charArray)

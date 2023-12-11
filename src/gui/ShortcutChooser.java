@@ -15,23 +15,27 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
 import utilities.MapFormatter;
-
+/**
+ * The ShortcutChooser class 
+ */
 public class ShortcutChooser extends JFrame implements ActionListener
 {
+  
+  private static final long serialVersionUID = 1L;
   private JComboBox<String> comboBox;
   private JLabel label;
   private TextFieldHint text;
   private JButton set;
   private JButton save;
-  private Map<String, String> keybinds;
+  private ShortcutManager manager = ShortcutManager.newInstance();
 
   public ShortcutChooser()
   {
-    keybinds = new HashMap<>();
     makeGUI();
     this.setTitle("Shortcut Helper");
     this.setSize(300, 300);
     this.setResizable(false);
+  this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     this.setVisible(true);
   }
 
@@ -58,9 +62,8 @@ public class ShortcutChooser extends JFrame implements ActionListener
 
   }
 
-  public static void setKeybind(String menuItem, String character)
+  public static void setKeybind(String menuItem, char c)
   {
-    char c = character.charAt(0);
     switch (menuItem)
     {
       case "Exit" -> Menu.exitMenuItem
@@ -98,9 +101,9 @@ public class ShortcutChooser extends JFrame implements ActionListener
     {
       System.out.println(comboBox.getSelectedItem());
       String menuItemText = comboBox.getSelectedItem().toString();
-      String character = text.getText().toUpperCase();
+      char character = text.getText().toUpperCase().charAt(0);
       setKeybind(menuItemText, character);
-      keybinds.put(menuItemText,character);
+      manager.setKeybind(menuItemText, character);
     }
     else if (e.getSource().equals(comboBox))
     {
@@ -109,16 +112,7 @@ public class ShortcutChooser extends JFrame implements ActionListener
     }
     else if (e.getActionCommand().equals("Save"))
     {
-      try
-      {
-        MapFormatter.write(keybinds, "shortcuts.txt");
-
-      }
-      catch (IOException e1)
-      {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-      }
+      manager.saveKeybinds();
     }
 
   }

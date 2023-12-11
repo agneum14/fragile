@@ -12,9 +12,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * The Fragile Application.
+ * 
+ * @author Joshua Hairston
+ * @author Asa Gittman
+ * @author Ray Steen
+ * @author Andrew
+ * @author Zach
+ * @author Logan
+ * 
+ * @version 12/10/2023
+ */
 public class Fragile implements Runnable
 {
-  public static void main(String[] args) throws InterruptedException, InvocationTargetException
+  /**
+   * Main method for the startup of the application.
+   * 
+   * @param args
+   *          the arguments for the main method.
+   * @throws InterruptedException
+   * @throws InvocationTargetException
+   */
+  public static void main(final String[] args)
+      throws InterruptedException, InvocationTargetException
   {
     SwingUtilities.invokeAndWait(new Fragile());
   }
@@ -25,8 +46,10 @@ public class Fragile implements Runnable
     try
     {
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-             | UnsupportedLookAndFeelException e)
+
+    }
+    catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+        | UnsupportedLookAndFeelException e)
     {
       e.printStackTrace();
     }
@@ -48,21 +71,23 @@ public class Fragile implements Runnable
       {
         Menu.checkBoxes(lettersArray);
 
-
       }
-    } else
+    }
+    else
+
     {
       System.out.println("File not found: " + filePath);
     }
   }
 
   /**
-   * Checks if the file exists.
-   *
+   * Private method which checks if the file exists.
+   * 
    * @param filePath
+   *          the file path.
    * @return true if the file exists, false otherwise
    */
-  private boolean fileExists(String filePath)
+  private boolean fileExists(final String filePath)
   {
     Path path = Paths.get(filePath);
     return Files.exists(path);
@@ -70,11 +95,12 @@ public class Fragile implements Runnable
 
   /**
    * Reads the letters from the file.
-   *
+   * 
    * @param filePath
-   * @return
+   *          the file path.
+   * @return content the letters used for preferences stored in an array.
    */
-  private String[] readLettersFromFile(String filePath)
+  private String[] readLettersFromFile(final String filePath)
   {
     try (BufferedReader reader = new BufferedReader(new FileReader(filePath)))
     {
@@ -93,10 +119,12 @@ public class Fragile implements Runnable
 
       String content = contentBuilder.toString();
       return content.split(""); // Splitting the content into an array of letters
-    } catch (IOException e)
+    }
+    catch (IOException e)
     {
       e.printStackTrace();
       return null; // Handle the exception
     }
   }
+
 }
