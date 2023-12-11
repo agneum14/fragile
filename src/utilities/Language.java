@@ -2,6 +2,8 @@ package utilities;
 
 import java.util.Locale;
 
+import calculating.FractionStylePublisher;
+
 /**
  * This class grabs the language from the user's default locale, which is necessary since Fragile
  * now supports French and Japanese in addition to English. It also provides methods useful for
@@ -65,10 +67,18 @@ public class Language
     };
 
     String nStr = String.valueOf(n);
-    String rev = new StringBuilder(nStr).reverse().toString();
-    rev = rev.replaceAll("(.{3})", "$1".concat(separator));
+    if (FractionStylePublisher.getInstance().getSeparated()) {
+        String rev = new StringBuilder(nStr).reverse().toString();
+        rev = rev.replaceAll("(.{3})", "$1".concat(separator));
 
-    return new StringBuilder(rev).reverse().toString();
+        String separated = new StringBuilder(rev).reverse().toString();
+        if (String.valueOf(separated.charAt(0)).equals(separator)) {
+            separated = separated.replaceFirst(separator, "");
+        }
+        return separated;
+    } else {
+        return nStr;
+    }
   }
 
   /**

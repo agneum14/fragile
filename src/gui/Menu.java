@@ -34,6 +34,7 @@ public class Menu extends JMenuBar implements ActionListener
   private ShortcutChooser shortcut;
   public static JCheckBoxMenuItem properMenuItem;
   public static JCheckBoxMenuItem reducedMenuItem;
+  public static JCheckBoxMenuItem thousandSeparator;
   private CalculatorWindow window; // TODO get rid of this coupling somehow.
   public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem;
   public static JCheckBoxMenuItem shortcutsMenuItem;
@@ -114,6 +115,11 @@ public class Menu extends JMenuBar implements ActionListener
     JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
     Menu.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
+    
+    englishText = "Separator";
+    JCheckBoxMenuItem thousandSeparator = new JCheckBoxMenuItem(Language.translate(englishText, "Séparateur", "Trennzeichen"));
+    thousandSeparator.setActionCommand(englishText);
+    Menu.thousandSeparator = thousandSeparator;
 
     JButton load = new JButton("Load");
     load.addActionListener(new ActionListener()
@@ -242,6 +248,7 @@ public class Menu extends JMenuBar implements ActionListener
     shortcuts.add(shortcutsMenuItem);
     loadPrefDown.add(load);
     loadPrefDown.add(save);
+    loadPrefDown.add(thousandSeparator);
 
     // Adding main menu objects to menu
     add(fileDropDown);
@@ -265,6 +272,7 @@ public class Menu extends JMenuBar implements ActionListener
     shortcutsMenuItem.addActionListener(this);
     properMenuItem.addActionListener(this);
     reducedMenuItem.addActionListener(this);
+    thousandSeparator.addActionListener(this);
     // Adding Keyboard shortcuts
     shortcut.makeGUI();
     MenuShortcuts();
@@ -369,6 +377,7 @@ public class Menu extends JMenuBar implements ActionListener
           .notifyProperMode(properMenuItem.isSelected());
       case "Reduced" -> FractionModePublisher.getInstance()
           .notifyReducedMode(reducedMenuItem.isSelected());
+          case "Separator" -> FractionStylePublisher.getInstance().notifySeparated(thousandSeparator.isSelected());
       default -> System.out.println("unknown menu option");
     }
   }

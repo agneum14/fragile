@@ -80,7 +80,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
    * Add a new expression to the history and repaint.
    *
    * @param steps
-   * The steps to add
+   *     The steps to add
    */
   public void update(final List<List<ExpressionElement>> steps)
   {
@@ -167,7 +167,25 @@ public class IntermediateSteps extends JWindow implements ActionListener
         g.fill = GridBagConstraints.BOTH;
         g.gridy++;
         stepContent.add(new JPanel(), g);
+      }
+      else if (operator == Operator.MED)
+      {
+        g.gridy++;
+        JLabel num = new JLabel(
+            String.format("Add the numerators: %d + %d = %d", bFrac.getNum(), aFrac.getNum(),
+                result.getNum()));
+        stepContent.add(num, g);
 
+        g.gridy++;
+        JLabel denom = new JLabel(
+            String.format("Add the denominators: %d + %d = %d", bFrac.getDenom(), aFrac.getDenom(),
+                result.getDenom()));
+        stepContent.add(denom, g);
+
+        g.gridy++;
+        JLabel res = new JLabel(
+            String.format("Combine both to get the result: %s", result.toString()));
+        stepContent.add(res, g);
       }
 
       content.add(stepContent);
