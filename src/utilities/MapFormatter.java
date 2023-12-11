@@ -20,7 +20,7 @@ public class MapFormatter
     Scanner s = new Scanner(f);
     HashMap<String, String> map = new HashMap<>();
 
-    s.useDelimiter("[:\\n]");
+    s.useDelimiter("[;\\n]");
     while (s.hasNext())
     {
       String key = s.next();
