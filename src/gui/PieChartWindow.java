@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,8 +38,8 @@ public class PieChartWindow extends JFrame
     final GridBagConstraints g = new GridBagConstraints();
 
     getContentPane().setLayout(new GridBagLayout());
-    setPreferredSize(new Dimension(750, 400));
-    setMinimumSize(new Dimension(750, 400));
+    setPreferredSize(new Dimension(750, 600));
+    setMinimumSize(new Dimension(750, 600));
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
     g.gridx = 0;
@@ -52,10 +53,8 @@ public class PieChartWindow extends JFrame
     g.gridy = 1;
     g.weightx = 1;
     g.fill = GridBagConstraints.BOTH;
-    final var gridLayout = new GridLayout(0, 3);
-    gridLayout.setVgap(20);
-    expression = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    expression.setOpaque(false);
+    expression = new JPanel(new WrapLayout());
+    expression.setOpaque(true);
     add(expression, g);
 
     g.gridy = 2;
@@ -99,6 +98,8 @@ public class PieChartWindow extends JFrame
       }
     }
 
+    expression.revalidate();
+    expression.repaint();
     revalidate();
     repaint();
   }
@@ -166,5 +167,35 @@ public class PieChartWindow extends JFrame
   public void toggleVisibility()
   {
     setVisible(!isVisible());
+  }
+
+  public static void main(String[] args) {
+      var pcw = new PieChartWindow();
+      ArrayList<ExpressionElement> expression = new ArrayList<>();
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+      expression.add(Operator.ADD);
+      expression.add(new MixedFraction(1, 5, 0, 1));
+
+      pcw.update(expression);
+
+      pcw.setVisible(true);
   }
 }
