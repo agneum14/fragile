@@ -27,11 +27,10 @@ public class ShortcutChooser extends JFrame implements ActionListener
   private TextFieldHint text;
   private JButton set;
   private JButton save;
-  private Map<String, Character> keybinds;
+  private ShortcutManager manager = ShortcutManager.newInstance();
 
   public ShortcutChooser()
   {
-    keybinds = new HashMap<>();
     makeGUI();
     this.setTitle("Shortcut Helper");
     this.setSize(300, 300);
@@ -104,7 +103,7 @@ public class ShortcutChooser extends JFrame implements ActionListener
       String menuItemText = comboBox.getSelectedItem().toString();
       char character = text.getText().toUpperCase().charAt(0);
       setKeybind(menuItemText, character);
-      keybinds.put(menuItemText,character);
+      manager.setKeybind(menuItemText, character);
     }
     else if (e.getSource().equals(comboBox))
     {
@@ -113,16 +112,7 @@ public class ShortcutChooser extends JFrame implements ActionListener
     }
     else if (e.getActionCommand().equals("Save"))
     {
-      try
-      {
-        MapFormatter.write(keybinds, "shortcuts.txt");
-
-      }
-      catch (IOException e1)
-      {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-      }
+      manager.saveKeybinds();
     }
 
   }

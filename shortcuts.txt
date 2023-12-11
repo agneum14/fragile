@@ -1,2 +1,4 @@
-Print Session:P
-Exit:E
+Bar;B
+Pie Chart;V
+Print Session;P
+Exit;E
