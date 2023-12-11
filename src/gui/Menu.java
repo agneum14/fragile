@@ -379,9 +379,8 @@ public class Menu extends JMenuBar implements ActionListener
     {
       case "Exit" ->
       {
-        System.out.println("heyeyeh");
         Menu.saveEncodingToFile();
-        window.dispose();
+        window.destroy();
       }
       case "New Calculator" -> new CalculatorWindow();
       case "Pie Chart" -> pcw.toggleVisibility();

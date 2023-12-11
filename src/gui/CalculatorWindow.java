@@ -9,6 +9,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is for the main window of the mixed calculator. This class is where the Intermediate
@@ -22,6 +24,8 @@ import java.io.IOException;
  */
 public class CalculatorWindow extends JFrame implements ComponentListener
 {
+  private static List<CalculatorWindow> instances;
+
   private static final long serialVersionUID = 1L;
   private CalculatorButtons buttons;
   private Display display;
@@ -31,10 +35,19 @@ public class CalculatorWindow extends JFrame implements ComponentListener
   private ShortcutChooser shortcutChooser;
 
   /**
+   * The static constructor initializes the list of instances to know when the program should be closed.
+   */
+  static 
+  {
+      instances = new ArrayList<>();
+  }
+
+  /**
    * Constructor for CalculatorWindow, initializes various components.
    */
   public CalculatorWindow()
   {
+    instances.add(this);
     shortcutChooser = new ShortcutChooser();
     pcw = new PieChartWindow();
     history = new History(this);
@@ -105,7 +118,22 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     add(display, BorderLayout.CENTER);
   }
 
-  // IMPLEMENTATION FOR THE HISTORY WINDOW TRACING THE MAIN WINDOW.
+  /**
+  *  Destory is called when the exit menu button is pressed. If this is the only running instance, the program terminates. Otherwise, all the GUI windows are disposed.
+  */
+public void destroy() 
+  {
+      instances.remove(this);
+
+      if (instances.size() == 0) {
+          System.exit(0);
+      } else {
+          pcw.dispose();
+          history.dispose();
+          intermediateSteps.dispose();
+          this.dispose();
+      }
+  }
 
   /**
    * Method changes the history and intermediate steps position dependent on the position of the
