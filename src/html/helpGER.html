@@ -1,141 +1,221 @@
 <!DOCTYPE html>
 <html lang="de">
     
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Fragile - Hilfeseite</title>
-        <meta name="description" content="Ein interaktiver Einstiegsleitfaden für Brackets.">
-        <link rel="stylesheet" href="main.css">
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fragile - Hilfeseite</title>
+    <meta name="description" content="Ein interaktiver Einstiegsguide für Brackets.">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<a href="Fragile_Logo.png">
+    <img alt="Ein Screenshot von CSS Quick Edit" src="Fragile_Logo.png"/>
+</a>
+
+<body>
     
-    <a href="Fragile_Logo.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/Fragile_Logo.png" />
-        </a>
+    <h1><center>Hilfeseite</center></h1>
+    <h2>1. Funktionalität der Kopfzeile</h2>
     
-    <body>
-        
-        <h1><center>Hilfeseite</center></h1>
-        <h2>1. Funktionalität der Kopfzeilenleiste</h2>
-        
-        <!-- Kopfzeilenleiste (Beenden)-->
-        
-        <a href="file.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/file.png" />
-        </a>
-        
-        <h3>Datei Dropdown-Menü:</h3>
-        
-        <p>
-            Wenn Sie den Kopfbereich von Fragile betrachten, sehen Sie drei verschiedene Dropdown-Menüs zur Auswahl. Das erste davon 
-            ist das Dropdown-Menü <b>Datei</b>.
-            Wenn Sie über das Dropdown-Menü <b>Datei</b> scrollen, wird Ihnen ein <b>Beenden</b>-Button angezeigt.
-            Mit diesem Button wird das Programm geschlossen. Eine alternative Möglichkeit, <b>Fragile</b> zu schließen, besteht darin, einfach das
-            Fenster oben rechts im Rahmen zu schließen.
-        </p>
-        
-        <!--
-            Kopfzeilenleiste (Ansicht)
-        -->
-        
-        <a href="View.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/View.png" />
-        </a>
-        
-        <h3>Ansicht Dropdown-Menü:</h3>
-        
-        <p>
-            Wenn Sie über das Dropdown-Menü <b>Ansicht</b> schweben, sehen Sie den <b>Kreisdiagramm</b>-Button. Dieser Button wird
-            es Ihnen ermöglichen, das Ergebnis Ihrer gemischten Bruchberechnung in Form eines Kreisdiagramms zu betrachten. Es zeigt Ihre
-            Ganzzahlen als volle Kreise und Ihren potenziell verbleibenden Bruch als Prozentsatz des Kreisdiagramms.
-        </p>
-        
-        <a href="piechart.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/piechart.png" />
-        </a>
-        
-        <!--
-            Funktionalität des Taschenrechners.
-        -->
-        
-        <h2>2. Layout des Taschenrechners für gemischte Brüche</h2>
-        
-        <a href="calc.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/calc.png" />
-        </a>
-        
-        <h3>Button-Layout:</h3>
-        <p>
-            Hier haben wir die Hauptoberfläche des <b>Taschenrechners für gemischte Brüche</b>. Wie die meisten Taschenrechner verfügt er über
-            eine Tastatur mit <b>Softbuttons</b>, <b>mathematischen Operationen</b> und einer <b>"="</b>-Taste. Dieser
-            Taschenrechner verfügt auch über eine zusätzliche Taste unten in der Reihe. Dies ist die <b>Bruch / Fokus ändern-Taste</b>.
-        </p>
-        
-        <a href="fracbut.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/fracbut.png" />
-        </a>
-        
-        <h3>Bruch-Taste:</h3>
-        <p>
-            Da dies ein <b>Taschenrechner für gemischte Brüche</b> ist, benötigen wir eine Möglichkeit, diese Brüche zu erstellen. Der Weg,
-            auf dem <b>Fragile</b> dies erreicht, besteht darin, dem Benutzer zu ermöglichen, den Fokus darauf zu legen, welche Zahl im Bruch sie ändern möchten. 
-            Wie durch das Rechteck im Anzeigerahmen unten gezeigt.
-        </p>
-        
-        <a href="rect.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/rect.png" />
-        </a>
-        
-        <h3>Fokusänderung:</h3>
-        <p>
-            Durch Drücken der <b>Bruch</b>-Taste wird das Rechteck zum <b>Zähler</b>, dann zum <b>Nenner</b> bewegt und
-            dann zurück zur Position des <b>Ganzzahls</b>. Dies ermöglicht es dem Benutzer, eine beliebige Zahl beliebig oft zu ändern, bevor er eine Berechnung durchführt.
-        </p>
-        
-        
-        <!--
-            Durchführung einer Berechnung.
-        -->
-        <h2>3. Durchführung einer Berechnung</h2>
-        
-        <h3>Erste Schritte:</h3>
-        <p>
-            Um mit der Durchführung einer Berechnung zu beginnen, müssen Sie die erste gemischte Zahl eingeben, auf der Sie die Berechnung durchführen möchten.
-            Füllen Sie dazu den Zähler und den Nenner mithilfe der zuvor genannten <b>Fokus</b>-Funktion aus. 
-        </p>
-        
-        <a href="frac.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/frac.png" />
-        </a>
-        
-        <h3>Gültiges Eingabebeispiel / Fehlermeldung:</h3>
-        <p>
-            Dies ist ein Beispiel für eine gültige Eingabe. Wenn eine ungültige Eingabe erfolgt, wird der Benutzer mit
-            dieser <b>Fehlermeldung</b> begrüßt.
-        </p>
-        
-        <a href="error.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/error.png" />
-        </a>
-        
-        <h3>Mathematische Operationen:</h3>
-        <p>
-            Nachdem eine gültige Eingabe erfolgt ist, wählen Sie die auszuführende <b>mathematische Operation</b> aus.
-        </p>
-        
-        <a href="math.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/math.png" />
-        </a>
-        
-        <h3>Das Ergebnis:</h3>
-        <p>
-            Nachdem die mathematische Operation ausgewählt wurde, geben Sie die zweite gemischte Zahl ein, auf der die Berechnung durchgeführt werden soll.
-            Wiederholen Sie den ersten Schritt dieses Prozesses. Nachdem die zweite Bruchzahl eingegeben wurde, drücken Sie die
-            <b>"="</b>-Taste, um den Ausdruck zu bewerten. Das resultierende Ergebnis wird wie folgt dargestellt.
-        </p>
-        
-        <a href="result.png">
-            <img alt="Ein Screenshot, der CSS Quick Edit zeigt" src="screenshots/result.png" />
-        </a>
-    </body>
+    <!-- Kopfzeile -->
+    
+    <a href="Menu.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="Menu.png" />
+    </a>
+    
+    
+    <h3>Dropdown-Menüs:</h3>
+    
+    <p>
+        Wenn Sie den Header von Fragile betrachten, sehen Sie 7 verschiedene Dropdown-Menüs zur Auswahl. Das erste davon ist das <b>Datei</b>-Dropdown-Menü.
+        Wenn Sie über das <b>Datei</b>-Dropdown-Menü fahren, wird Ihnen eine <b>Beenden</b>-Schaltfläche angezeigt.
+        Diese Schaltfläche schließt das Programm. Eine alternative Möglichkeit, Fragile zu schließen, besteht darin, einfach das Fenster oben rechts im Rahmen zu schließen. Es gibt auch eine Schaltfläche mit der Aufschrift <b>Neuer Taschenrechner</b>. Diese Schaltfläche öffnet eine neue Instanz des Taschenrechners. Schließlich gibt es eine <b>Sitzung drucken</b>-Schaltfläche, mit der Sie Ihre aktuelle Taschenrechnerverlaufssitzung auf ein Papiermedium drucken können.
+    </p>
+    
+    
+    
+    <h3>Mode Dropdown-Menü:</h3>
+    
+    <p>
+      Erforschen Sie den "Mode"-Header in Robust mit zwei Kontrollkästchen. Aktivieren Sie <b>Unrichtige Brüche</b> für eine breitere Palette von Bruchdarstellungen. Aktivieren Sie <b>Reduzierte Brüche</b>, um Bruchergebnisse zu vereinfachen und zu optimieren. Diese Optionen im Abschnitt "Mode" ermöglichen eine Anpassung Ihrer mathematischen Ausdrücke.
+    </p>
+    
+    <a href="improp.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="Improp.png" />
+    </a>
+    
+    
+    
+    <h3>Ansicht Dropdown-Menü:</h3>
+    
+    <p>
+      Schauen Sie sich das "Ansicht"-Menü an. Es gibt eine coole Funktion - aktivieren Sie das Kontrollkästchen <b>Kreisdiagramme</b>. Ihre Ergebnisse verwandeln sich in coole Kreisdiagramme. Es befindet sich direkt im Abschnitt "Ansicht" und verleiht Ihren Daten ein ansprechenderes Aussehen.
+    </p>
+    
+    <a href="piechart.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="piechart.png" />
+    </a>
+    
+    
+    <h3>Stil Dropdown-Menü:</h3>
+    
+    <p>
+        Gehen Sie zum "Stil"-Menü. Hier können Sie mit der Darstellung von Brüchen herumspielen. Sie haben Optionen wie <b>Strich</b>, <b>Schrägstrich</b> oder <b>Solidus</b>. Gehen Sie zum Abschnitt "Stil" und gestalten Sie Ihre mathematischen Ausdrücke nach Ihren Wünschen.
+    </p>
+    
+     <a href="style.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="style.png" />
+    </a>
+    
+    
+    <h3>Hilfe Dropdown-Menü:</h3>
+    
+    <p>
+        Brauchen Sie Hilfe? Klicken Sie auf "Hilfe". Dort finden Sie einen <b>Über</b>-Abschnitt mit Versions- und Entwicklerinformationen sowie eine Seite mit <b>Hilfedateien</b> für alle Fragen, die Sie haben könnten. (Die aktuelle Seite).
+    </p>
+    
+     <a href="help2.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="help2.png" />
+    </a>
+    
+    
+    <h3>Shortcuts Dropdown-Menü:</h3>
+    
+    <p>
+        Im "Shortcuts"-Menü können Sie auf ein eigenes Fenster zugreifen, um Tastenkombinationen zu ändern. Diese Funktion ermöglicht es Ihnen, bestehende Tastenkombinationen anzupassen oder neue nach Ihren Wünschen zu erstellen. Wenn nötig, gibt es auch eine Option, die Tastenkombinationen auf ihre Standardkonfigurationen zurückzusetzen.
+    </p>
+    
+     <a href="shortcuts.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="shortcuts.png" />
+    </a>
+    
+    <h3>Präferenz Dropdown-Menü:</h3>
+    
+    <p>
+        In den "Präferenzen" können Sie Einstellungen effizient über den Datei-Explorer speichern und laden. Dieses Menü bietet auch eine praktische Funktion zum Berechnen von Zahlen mit Tausendertrennzeichen.
+    </p>
+    
+    <a href="filex.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="filex.png" />
+    </a>
+    
+    
+    
+    <!--
+        Taschenrechner-Funktionalität.
+    -->
+    
+    
+    
+    <div class="line"></div>
+    
+    <h2>2. Layout des gemischten Bruchrechner</h2>
+    
+    <a href="calc.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="calc.png" />
+    </a>
+    
+    <h3>Schaltflächenlayout:</h3>
+    <p>
+        Hier haben wir die Hauptoberfläche für den <b>gemischten Bruchrechner</b>. Wie die meisten Taschenrechner verfügt er über eine Tastatur aus <b>Soft-Tasten</b>, <b>mathematische Operationen</b> und eine <b>"="</b>-Taste. Dieser Taschenrechner verfügt auch über zusätzliche Operationen, die auf einem Taschenrechner normalerweise nicht zu finden sind, wie einen Booleschen Ausgabeoperator, eine Vereinfachungstaste und eine
+        <b>Bruch- / Fokusschaltfläche</b>.
+    </p>
+    
+    <a href="fracbut.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="fracbut.png" />
+    </a>
+
+    <h3>Bruch-Taste:</h3>
+    <p>
+        Da dies ein <b>gemischter Bruchrechner</b> ist, benötigen wir eine Möglichkeit, diese Brüche zu erstellen. Die Methode,
+        die <b>Fragile</b> dafür verwendet, besteht darin, dem Benutzer zu ermöglichen, den Fokus darauf zu legen, welche Zahl im Bruch
+        geändert werden soll. Wie durch das Rechteck im unten gezeigten Anzeigerahmen angezeigt.
+    </p>
+
+    <a href="rect.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="rect.png" />
+    </a>
+
+    <h3>Fokussänderung:</h3>
+    <p>
+        Durch Drücken der <b>Bruch</b>-Taste wird das Rechteck zum <b>Zähler</b> bewegt, dann zum <b>Nenner</b>, dann zurück zur Position des <b>Ganzzahls</b>.
+        Der Benutzer kann jede Zahl beliebig oft ändern, bevor er sich entscheidet, eine Berechnung durchzuführen.
+    </p>
+
+
+    <!--
+        Durchführung einer Berechnung.
+    -->
+    <div class="line"></div>
+    <h2>3. Durchführung einer Berechnung</h2>
+
+    <h3>Erste Schritte:</h3>
+    <p>
+        Um mit einer Berechnung zu beginnen, müssen Sie die erste gemischte Fraktion eingeben, die berechnet werden soll.
+        Füllen Sie dazu den Zähler und den Nenner mit der zuvor erwähnten <b>Fokus</b>-Funktion aus.
+    </p>
+
+    <a href="frac.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="frac.png" />
+    </a>
+
+    <h3>Gültiges Eingabebeispiel / Fehlermeldung:</h3>
+    <p>
+        Dies ist ein Beispiel für eine gültige Eingabe. Bei ungültiger Eingabe wird dem Benutzer diese <b>Fehlermeldung</b> angezeigt.
+    </p>
+
+    <a href="error.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="error.png" />
+    </a>
+
+    <h3>Mathematische Operationen:</h3>
+    <p>
+        Nachdem eine gültige Eingabe erfolgt ist, wählen Sie die <b>mathematische Operation</b> aus, die durchgeführt werden soll. (Die aufgeführten Operationen sind: Addition, Subtraktion,
+        Multiplikation, Division, Median, Ungleichheiten und der Boolesche Operator).
+    </p>
+
+    <a href="math.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="math.png" />
+    </a>
+
+    <h3>Das Ergebnis:</h3>
+    <p>
+        Nach Auswahl der mathematischen Operation geben Sie die zweite gemischte Fraktion ein, die berechnet werden soll.
+        Wiederholen Sie den ersten Schritt dieses Prozesses. Nachdem die zweite Fraktion eingegeben wurde, drücken Sie
+        die <b>"="</b>-Taste, um den Ausdruck auszuwerten. Das resultierende Ergebnis wird wie unten dargestellt angezeigt.
+    </p>
+
+    <a href="result.png">
+        <img alt="Ein Screenshot von CSS Quick Edit" src="result.png" />
+    </a>
+    <div class="line"></div>
+    <h2>4. Tastenkombinationen</h2>
+    <P>Die unten aufgeführten Tastenkombinationen ermöglichen es Ihnen, jedes Menüelement einfach auszuwählen, ohne die Hand von der Tastatur zu nehmen! Und zusammen mit den Tastenkombinationen
+        ermöglicht Ihnen Fragile auch das Eingeben von Zahlen in den Taschenrechner mit Ihrem Ziffernblock.</P>
+    <dl>
+        <dt>&bullet; Hilfe </dt>
+        <dd>- Steuerung + H</dd>
+        <dt>&bullet; Drucken </dt>
+        <dd>- Steuerung + P</dd>
+        <dt>&bullet; Neuer Taschenrechner</dt>
+        <dd>- Steuerung + N</dd>
+        <dt>&bullet; Überseite</dt>
+        <dd>- Steuerung + A</dd>
+        <dt>&bullet; Beenden</dt>
+        <dd>- Steuerung + E</dd>
+        <dt>&bullet; Kreisdiagramm</dt>
+        <dd>- Steuerung + V</dd>
+        <dt>&bullet; Korrekt</dt>
+        <dd>- Umschalt + P</dd>
+        <dt>&bullet; Reduziert</dt>
+        <dd>- Steuerung + R</dd>
+        <dt>&bullet; Strich</dt>
+        <dd>- Steuerung + B</dd>
+        <dt>&bullet; Schrägstrich</dt>
+        <dd>- Steuerung + S</dd>
+        <dt>&bullet; Solidus</dt>
+        <dd>- Umschalt + S</dd>
+    </dl>
+</body>
 </html>
