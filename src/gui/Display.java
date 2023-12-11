@@ -268,6 +268,15 @@ public class Display extends JPanel
   }
 
   /**
+   * Shows a dialog for a divide by zero error.
+   */
+  private void showDivideByZeroDialog()
+  {
+    final String error = Language.translate("Divided by 0", "Divisé par 0", "Geteilt durch 0");
+    JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+  }
+
+  /**
    * This method drives the core functionality of the program, handling every calculator button
    * press and responding accordingly. The basic overview is certain buttons modify the current
    * mixed fraction while others add operators to the current expression. The equals button is
@@ -358,7 +367,8 @@ public class Display extends JPanel
 
       if (previousOperator != Operator.CLOSE_PAREN && operator != Operator.OPEN_PAREN)
       {
-        // MixedFraction mf = (eval != null) ? eval : new MixedFraction(currentMixedFraction);
+        // MixedFraction mf = (eval != null) ? eval : new
+        // MixedFraction(currentMixedFraction);
         MixedFraction mf;
         if (eval != null)
         {
@@ -401,6 +411,10 @@ public class Display extends JPanel
                 "Die bedingte Ausdruck ist fehlerhaft.");
             JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
           }
+          catch (final ArithmeticException e)
+          {
+            showDivideByZeroDialog();
+          }
 
           if (result != null)
           {
@@ -433,16 +447,16 @@ public class Display extends JPanel
                   "L'expression ne peut pas être vide", "Der Ausdruck darf nicht leer sein");
               JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
             }
-            else
-            {
-              throw e;
-            }
           }
           catch (final IllegalStateException e)
           {
             final String error = Language.translate("The expression is malformed",
                 "L'expression est mal formée", "Der Ausdruck ist fehlerhaft");
             JOptionPane.showMessageDialog(null, error, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+          }
+          catch (final ArithmeticException e)
+          {
+            showDivideByZeroDialog();
           }
 
           if (result != null)
