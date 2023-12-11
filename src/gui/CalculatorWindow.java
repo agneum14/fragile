@@ -68,7 +68,7 @@ public class CalculatorWindow extends JFrame implements ComponentListener
     Container contentPane = getContentPane();
     contentPane.setLayout(new BorderLayout(2, 2));
     // Adding the Menu
-    setJMenuBar(new Menu(pcw, history, this));
+    setJMenuBar(new Menu(pcw, history, this, new ShortcutChooser()));
     add(buttons, BorderLayout.SOUTH);
 
     // Putting image of Fragile in the window

@@ -6,6 +6,7 @@ import calculating.FractionStylePublisher.FractionStyle;
 import utilities.Language;
 import utilities.MapFormatter;
 import utilities.ResourceManager;
+import utilities.ShortcutManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -30,11 +31,12 @@ public class Menu extends JMenuBar implements ActionListener
 {
   private static final long serialVersionUID = 1L;
   private PieChartWindow pcw;
+  private ShortcutChooser shortcut;
   public static JCheckBoxMenuItem properMenuItem;
   public static JCheckBoxMenuItem reducedMenuItem;
   private CalculatorWindow window; // TODO get rid of this coupling somehow.
-  public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
-      shortcutsMenuItem;
+  public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem;
+  public static JCheckBoxMenuItem shortcutsMenuItem;
   public static JCheckBoxMenuItem pieChartMenuItem;
   public static JRadioButtonMenuItem barMenuItem;
   public static JRadioButtonMenuItem slashMenuItem;
@@ -46,11 +48,13 @@ public class Menu extends JMenuBar implements ActionListener
    *
    * @return JMenuBar
    */
-  public Menu(final PieChartWindow pcw, final History history, final CalculatorWindow window)
+  public Menu(final PieChartWindow pcw, final History history, final CalculatorWindow window,
+      final ShortcutChooser shortcut)
   {
     this.window = window;
     this.pcw = pcw;
     this.history = history;
+    this.shortcut = shortcut;
     // Creating the main menu objects
     JMenu fileDropDown = new JMenu(Language.translate("File", "Déposer", "Datei"));
     JMenu modeDropDown = new JMenu("Mode");
@@ -88,7 +92,7 @@ public class Menu extends JMenuBar implements ActionListener
         Language.translate(englishText, "Nouveau calculateur", "Neuer Taschenrechner"));
     newCalcMenuItem.setActionCommand("New Calculator");
     englishText = "Shortcuts";
-    shortcutsMenuItem = new JMenuItem(Language.translate(englishText, "", ""));
+    shortcutsMenuItem = new JCheckBoxMenuItem(Language.translate(englishText, "", ""));
     shortcutsMenuItem.setActionCommand(englishText);
     // style menu items
     barMenuItem = new JRadioButtonMenuItem(Language.translate("Bar", "Bar", "Bar"));
@@ -262,6 +266,7 @@ public class Menu extends JMenuBar implements ActionListener
     properMenuItem.addActionListener(this);
     reducedMenuItem.addActionListener(this);
     // Adding Keyboard shortcuts
+    shortcut.makeGUI();
     MenuShortcuts();
   }
 
@@ -355,7 +360,7 @@ public class Menu extends JMenuBar implements ActionListener
       case "Pie Chart" -> pcw.toggleVisibility();
       case "Print Session" -> history.actionPerformed();
       case "About" -> displayAboutDialog();
-      case "Shortcuts" -> new ShortcutChooser();
+      case "Shortcuts" -> shortcut.toggleVisibility();
       case "Help" -> openHelpPage();
       case "Bar" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.BAR);
       case "Slash" -> FractionStylePublisher.getInstance().notifyStyle(FractionStyle.SLASH);

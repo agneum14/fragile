@@ -1,4 +1,4 @@
-package gui;
+package utilities;
 
 import java.awt.Color;
 import java.io.FileNotFoundException;
@@ -8,9 +8,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
-import utilities.MapFormatter;
-import utilities.ResourceManager;
 
 public class ShortcutManager
 {
