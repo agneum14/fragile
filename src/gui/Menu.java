@@ -361,6 +361,7 @@ public class Menu extends JMenuBar implements ActionListener
     {
       case "Exit" ->
       {
+        System.out.println("heyeyeh");
         Menu.saveEncodingToFile();
         window.dispose();
       }
