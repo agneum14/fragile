@@ -32,6 +32,7 @@ public class Menu extends JMenuBar implements ActionListener
   private PieChartWindow pcw;
   public static JCheckBoxMenuItem properMenuItem;
   public static JCheckBoxMenuItem reducedMenuItem;
+  public static JCheckBoxMenuItem thousandSeparator;
   private CalculatorWindow window; // TODO get rid of this coupling somehow.
   public static JMenuItem exitMenuItem, aboutMenuItem, helpMenuItem, printMenuItem, newCalcMenuItem,
       shortcutsMenuItem;
@@ -110,6 +111,12 @@ public class Menu extends JMenuBar implements ActionListener
     JCheckBoxMenuItem reducedMenuItem = new JCheckBoxMenuItem("Reduced");
     Menu.reducedMenuItem = reducedMenuItem;
     modeDropDown.add(reducedMenuItem);
+    
+    // thousands Separator
+    englishText = ",";
+    JCheckBoxMenuItem thousandSeparator = new JCheckBoxMenuItem("Separator");
+    Language.translate(englishText, " ", ".");
+    this.thousandSeparator = thousandSeparator;
 
     JButton load = new JButton("Load");
     load.addActionListener(new ActionListener()
@@ -238,6 +245,7 @@ public class Menu extends JMenuBar implements ActionListener
     shortcuts.add(shortcutsMenuItem);
     loadPrefDown.add(load);
     loadPrefDown.add(save);
+    loadPrefDown.add(thousandSeparator);
 
     // Adding main menu objects to menu
     add(fileDropDown);
