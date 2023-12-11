@@ -33,8 +33,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
   /**
    * Constructor for the History class.
    *
-   * @param parent
-   *     The parent frame to attach the history to.
+   * @param parent The parent frame to attach the history to.
    */
   public IntermediateSteps(final JFrame parent)
   {
@@ -43,7 +42,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
     opened = false; // Tracking the status of the window.
     mfps = new ArrayList<>();
 
-    setBackground(Display.POWDER_BLUE);
+    setBackground(Display.displayColor);
     setLayout(new BorderLayout());
     button = new JButton(LESS);
     button.addActionListener(this);
@@ -68,10 +67,8 @@ public class IntermediateSteps extends JWindow implements ActionListener
   /**
    * Add a new expression to the history and repaint.
    *
-   * @param expressionList
-   *     The expression (as a list of mixed fractions and operators) to add
-   * @param display
-   *     The display. This needs to be passed to create new mixed fraction panels
+   * @param expressionList The expression (as a list of mixed fractions and operators) to add
+   * @param display        The display. This needs to be passed to create new mixed fraction panels
    */
   public void update(List<List<ExpressionElement>> steps, Display display)
   {
@@ -116,8 +113,8 @@ public class IntermediateSteps extends JWindow implements ActionListener
         g.gridy++;
         int gcd = Algorithms.gcd(bRed.getDenom(), aRed.getDenom());
         stepContent.add(new JLabel(
-            String.format("The GCD of the denominators %d and %d is %d", bRed.getDenom(),
-                aRed.getDenom(), gcd)), g);
+                String.format("The GCD of the denominators %d and %d is %d", bRed.getDenom(),
+                        aRed.getDenom(), gcd)), g);
 
         g.gridy++;
         JPanel scale = new JPanel();
@@ -159,8 +156,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
         button.setText(">");
         timer.start();
       }
-    }
-    else
+    } else
     {
       opened = false;
       button.setText(LESS);
@@ -184,8 +180,7 @@ public class IntermediateSteps extends JWindow implements ActionListener
       if (currentWidth < targetWidth && newWidth >= targetWidth)
       {
         timer.stop();
-      }
-      else if (currentWidth > targetWidth && newWidth <= targetWidth)
+      } else if (currentWidth > targetWidth && newWidth <= targetWidth)
       {
         timer.stop();
       }
